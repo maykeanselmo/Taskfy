@@ -60,7 +60,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 1. **Transparência:**
     - Salvar tarefas em formato de texto markdown puro.
     - Usar tags customizadas para configurar categorias, prazos, notificações, prioridade.
-        - Exemplo: Ter um tag #Taskfy #Taskfy> onde esses metadados são configurados.
+        - Exemplo: Ter um tag `<Taskfy> </Taskfy>` onde esses metadados são configurados.
         - Esses metadados devem ser referenciados pelo banco de dados a fim de permitir querys complexas.
 2. **Segurança:**
     - Implementar medidas contra ataques DOS e outras ameaças do ambiente Web.
@@ -180,7 +180,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
     - Um barra será colocado no canto inferior da tela. Nela Serão colocados botões principais que precisam ser acessados frequentemente. As funcionalidades dessa barra incluem:
         - Botão de abertura da paleta de comandos.
         - 2 Botões para navegar rapidamente entre tarefas abertas.
-        - Botão para abstrair a configuração de metadados. Nele, o usuário configura notificações, categorias, etc. E essa configuração é automaticamente escrita no topo do arquivo dentro da tags #Taskfy #Taskfy>.
+        - Botão para abstrair a configuração de metadados. Nele, o usuário configura notificações, categorias, etc. E essa configuração é automaticamente escrita no topo do arquivo dentro da tags `<Taskfy> </Taskfy>`.
 
 
 ## **Roadmap do Projeto Taskfy**
