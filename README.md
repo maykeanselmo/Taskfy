@@ -89,12 +89,53 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
     - Confiabilidade em gravações simultâneas: O PostgreSQL gerencia operações de gravação concorrentes de forma eficiente, evitando problemas como bloqueios ou corrupção de dados.
     - Integração facilitada: Muitos provedores de serviços oferecem suporte nativo para PostgreSQL, facilitando sua adoção e manutenção.
     - Conformidade com SQL padrão: Total suporte ao SQL padrão, permitindo a criação de consultas complexas e portabilidade do código.
+
 2. **Tabelas**
     - users: Armazena informações dos usuários.
     - tasks: Metadados das tarefas (título, descrição, prazo, status, prioridade).
         - podem ser separados em mais tabelas para cada tipo de metadado.
+     - folders: Para conter e organiar tasks.
     - Relacionamento:
-        - Um user pode ter várias tasks, mas cada task pertence a apenas um user.
+        - Um user pode ter várias folders, mas cada folder pertence a apenas um user.
+        - Toda task pertence a uma folder e uma folder pode ter várias tasks. Relacionamento expresso pelo campo parent na tabela tasks.
+
+3. **Estrutura de Banco de Dados**
+
+### Tabela `folders`
+| Campo        | Descrição                                   |
+|--------------|---------------------------------------------|
+| `id`         | Identificador único da pasta.               |
+| `user_id`    | Identificador do usuário dono da pasta.     |
+| `name`       | Nome da pasta.                              |
+| `created_at` | Data de criação.                            |
+| `updated_at` | Data da última modificação.                |
+
+### Tabela `tasks`
+| Campo            | Descrição                                                         |
+|------------------|-------------------------------------------------------------------|
+| `id`             | Identificador único da tarefa.                                   |
+| `folder_id`      | Identificador da pasta à qual a tarefa pertence.                 |
+| `parent_task_id` | Identificador da tarefa pai, caso haja uma hierarquia (subtarefa).|
+| `title`          | Título da tarefa.                                                |
+| `description`    | Descrição da tarefa.                                              |
+| `due_date`       | Data de vencimento.                                              |
+| `status`         | Status da tarefa (pendente, concluída, etc.).                     |
+| `priority`       | Prioridade da tarefa (baixa, média, alta).                       |
+| `created_at`     | Data de criação da tarefa.                                        |
+| `updated_at`     | Data da última modificação.                                       |
+
+### Tabela `tags` (opcional, para categorizar tarefas)
+| Campo        | Descrição                        |
+|--------------|----------------------------------|
+| `id`         | Identificador único da tag.      |
+| `name`       | Nome da tag.                     |
+
+### Tabela `task_tags` (relacionamento N:M entre tarefas e tags)
+| Campo      | Descrição                               |
+|------------|-----------------------------------------|
+| `task_id`  | Identificador da tarefa.               |
+| `tag_id`   | Identificador da tag.                  |
+
 
 ## Front-End: React
 1. **Por que React?**
