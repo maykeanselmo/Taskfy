@@ -143,7 +143,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 | `id`         | Identificador único da tag.      |
 | `name`       | Nome da tag.                     |
 
-### Tabela `task_tags` (relacionamento N:M entre tarefas e tags)
+### Tabela `tasks_tags` (relacionamento N:M entre tarefas e tags)
 | Campo      | Descrição                               |
 |------------|-----------------------------------------|
 | `task_id`  | Identificador da tarefa.               |
