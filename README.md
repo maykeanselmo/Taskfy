@@ -137,7 +137,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 | `created_at`     | Data de criação da tarefa.                                        |
 | `updated_at`     | Data da última modificação.                                       |
 
-### Tabela `tags` (opcional, para categorizar tarefas)
+### Tabela `tags` (para categorizar tarefas)
 | Campo        | Descrição                        |
 |--------------|----------------------------------|
 | `id`         | Identificador único da tag.      |
