@@ -119,7 +119,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 |--------------|------------------------------------------------------------|
 | `id`         | Identificador único da pasta.                              |
 | `user_id`    | Identificador do usuário dono da pasta.                    |
-| `parent_id`  | Identificador da folder pai, para hierarquia de folders    |
+| `parent_id`  | Identificador da pasta pai, para hierarquia de pastas.     |
 | `name`       | Nome da pasta.                                             |
 | `created_at` | Data de criação.                                           |
 | `updated_at` | Data da última modificação.                                |
