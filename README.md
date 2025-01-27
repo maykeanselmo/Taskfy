@@ -155,8 +155,8 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
      ```
 
 ### **Fase 2: Configuração do Banco de Dados**
-1. Configurar o PostgreSQL localmente.
-2. Criar o banco de dados e as tabelas essencias (users, tasks).
+1. **Configurar o PostgreSQL localmente.**
+2. **Criar o banco de dados e as tabelas essencias (users, tasks).**
 
 ### **Fase 3: Desenvolvimento do Back-End**
 1. **Configurar o projeto Spring Boot:**
