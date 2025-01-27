@@ -101,6 +101,19 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 
 3. **Estrutura de Banco de Dados**
 
+### Tabela `users`
+| Campo        | Descrição                                     |
+|--------------|-----------------------------------------------|
+| `id`         | Identificador único do usuário.              |
+| `username`   | Nome de usuário (único).                      |
+| `nickname`   | Nome opcional para exibição no perfil.
+| `email`      | Endereço de e-mail do usuário (único).        |
+| `password`   | Senha criptografada do usuário.               |
+| `created_at` | Data de criação da conta.                    |
+| `updated_at` | Data da última modificação.                  |
+| `is_active`  | Status da conta (ativa ou inativa).          |
+
+
 ### Tabela `folders`
 | Campo        | Descrição                                   |
 |--------------|---------------------------------------------|
