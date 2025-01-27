@@ -221,7 +221,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 3. **Testar os endpoints localmente.**
 
 ### **Fase 4: Desenvolvimento do Front-End**
-1. **Configurar o projeto front-end em React.**
+1. **Configurar o projeto front-end em React 18.**
 2. **Criar as telas principais:**
     - Tela de login.
     - Tela de criação/edição de tarefas.
