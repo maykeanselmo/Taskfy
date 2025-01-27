@@ -102,40 +102,40 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 3. **Estrutura de Banco de Dados**
 
 ### Tabela `users`
-| Campo        | Descrição                                     |
-|--------------|-----------------------------------------------|
-| `id`         | Identificador único do usuário.              |
-| `username`   | Nome de usuário (único).                      |
-| `nickname`   | Nome opcional para exibição no perfil.
-| `email`      | Endereço de e-mail do usuário (único).        |
-| `password`   | Senha criptografada do usuário.               |
-| `created_at` | Data de criação da conta.                    |
-| `updated_at` | Data da última modificação.                  |
-| `is_active`  | Status da conta (ativa ou inativa).          |
+| Campo        | Descrição                                      |
+|--------------|------------------------------------------------|
+| `id`         | Identificador único do usuário.                |
+| `username`   | Nome de usuário (único).                       |
+| `nickname`   | Nome opcional para exibição no perfil.         |
+| `email`      | Endereço de e-mail do usuário (único).         |
+| `password`   | Senha criptografada do usuário.                |
+| `created_at` | Data de criação da conta.                      |
+| `updated_at` | Data da última modificação.                    |
+| `is_active`  | Status da conta (ativa ou inativa).            |
 
 
 ### Tabela `folders`
-| Campo        | Descrição                                   |
-|--------------|---------------------------------------------|
-| `id`         | Identificador único da pasta.               |
-| `user_id`    | Identificador do usuário dono da pasta.     |
-| `name`       | Nome da pasta.                              |
-| `created_at` | Data de criação.                            |
-| `updated_at` | Data da última modificação.                |
+| Campo        | Descrição                                                  |
+|--------------|------------------------------------------------------------|
+| `id`         | Identificador único da pasta.                              |
+| `user_id`    | Identificador do usuário dono da pasta.                    |
+| `parent_id`  | Identificador da folder pai, para hierarquia de folders    |
+| `name`       | Nome da pasta.                                             |
+| `created_at` | Data de criação.                                           |
+| `updated_at` | Data da última modificação.                                |
 
 ### Tabela `tasks`
-| Campo            | Descrição                                                         |
-|------------------|-------------------------------------------------------------------|
-| `id`             | Identificador único da tarefa.                                   |
-| `folder_id`      | Identificador da pasta à qual a tarefa pertence.                 |
-| `parent_task_id` | Identificador da tarefa pai, caso haja uma hierarquia (subtarefa).|
-| `title`          | Título da tarefa.                                                |
-| `description`    | Descrição da tarefa.                                              |
-| `due_date`       | Data de vencimento.                                              |
-| `status`         | Status da tarefa (pendente, concluída, etc.).                     |
-| `priority`       | Prioridade da tarefa (baixa, média, alta).                       |
-| `created_at`     | Data de criação da tarefa.                                        |
-| `updated_at`     | Data da última modificação.                                       |
+| Campo            | Descrição                                                          |
+|------------------|--------------------------------------------------------------------|
+| `id`             | Identificador único da tarefa.                                     |
+| `folder_id`      | Identificador da pasta à qual a tarefa pertence.                   |
+| `title`          | Título da tarefa.                                                  |
+| `description`    | Descrição da tarefa.                                               |
+| `due_date`       | Data de vencimento.                                                |
+| `status`         | Status da tarefa (pendente, concluída, etc.).                      |
+| `priority`       | Prioridade da tarefa (baixa, média, alta).                         |
+| `created_at`     | Data de criação da tarefa.                                         |
+| `updated_at`     | Data da última modificação.                                        |
 
 ### Tabela `tags` (para categorizar tarefas)
 | Campo        | Descrição                        |
@@ -144,10 +144,10 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 | `name`       | Nome da tag.                     |
 
 ### Tabela `tasks_tags` (relacionamento N:M entre tarefas e tags)
-| Campo      | Descrição                               |
-|------------|-----------------------------------------|
-| `task_id`  | Identificador da tarefa.               |
-| `tag_id`   | Identificador da tag.                  |
+| Campo      | Descrição                                |
+|------------|------------------------------------------|
+| `task_id`  | Identificador da tarefa.                 |
+| `tag_id`   | Identificador da tag.                    |
 
 
 ## Front-End: React
