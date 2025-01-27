@@ -113,7 +113,6 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 | `updated_at` | Data da última modificação.                    |
 | `is_active`  | Status da conta (ativa ou inativa).            |
 
-
 ### Tabela `folders`
 | Campo        | Descrição                                                  |
 |--------------|------------------------------------------------------------|
@@ -197,9 +196,9 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
      - **Linux:** Use o gerenciador de pacotes da sua distribuição (ex.: `apt` para Debian/Ubuntu ou `dnf` para Fedora).
      - **MacOS:** Instale o [Homebrew](https://brew.sh/) para gerenciar pacotes.
 2. **Instalar ferramentas essenciais:**
-   - **PostgreSQL:**  
+   - **PostgreSQL 17:**  
      - [Download e instruções](https://www.postgresql.org/download/) para instalação no seu sistema.
-   - **Node.js:**  
+   - **Node.js v22.13.1 LTS:**  
      - [Download e instruções](https://nodejs.org/) para instalação.
    - **Java JDK 21 LTS (Oracle):**  
      - [Download do Java JDK](https://www.oracle.com/java/technologies/downloads/#java21)
