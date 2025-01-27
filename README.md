@@ -147,8 +147,8 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
      - [Download e instruções](https://www.postgresql.org/download/) para instalação no seu sistema.
    - **Node.js:**  
      - [Download e instruções](https://nodejs.org/) para instalação.
-   - **Java JDK 22 (Oracle):**  
-     - [Download do Java JDK](https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html)
+   - **Java JDK 21 LTS (Oracle):**  
+     - [Download do Java JDK](https://www.oracle.com/java/technologies/downloads/#java21)
 3. **Clone do repositório:**
      ```bash
      https://github.com/maykeanselmo/Taskfy.git
