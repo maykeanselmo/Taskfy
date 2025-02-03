@@ -245,3 +245,40 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 ### **Fase 7: Manutenção**
 1. **Monitorar logs e desempenho da aplicação.**
 2. **Corrigir bugs e implementar melhorias conforme necessário.**
+
+
+## Backlog do Produto ##
+
+Gerenciamento de Tarefas
+
+    Como um usuário, gostaria de criar uma nova tarefa para organizar meu trabalho.
+    Como um usuário, gostaria de editar uma tarefa existente para atualizar suas informações.
+    Como um usuário, gostaria de remover uma tarefa para manter minha lista organizada.
+    Como um usuário, gostaria de definir um prazo para uma tarefa para acompanhar melhor meus compromissos.
+    Como um usuário, gostaria de marcar uma tarefa como concluída para saber que já finalizei.
+
+📂 Organização com Pastas e Tags
+
+    Como um usuário, gostaria de organizar tarefas em pastas para manter a estrutura do meu fluxo de trabalho.
+    Como um usuário, gostaria de adicionar tags às tarefas para classificá-las de forma mais flexível.
+
+🔔 Notificações e Lembretes
+
+    Como um usuário, gostaria de receber notificações de tarefas pendentes para não esquecer meus compromissos.
+    Como um usuário, gostaria de definir lembretes para tarefas importantes para me preparar com antecedência.
+
+🔐 Autenticação e Segurança
+
+    Como um usuário, gostaria de fazer login com minha conta para acessar minhas tarefas de qualquer lugar.
+    Como um usuário, gostaria de recuperar minha senha caso a esqueça.
+
+📊 Relatórios e Análises
+
+    Como um usuário, gostaria de visualizar um resumo das minhas tarefas concluídas para acompanhar minha produtividade.
+    Como um usuário, gostaria de filtrar tarefas por status, tags ou datas para encontrar informações rapidamente.
+
+📱 Sincronização e Acesso Remoto
+
+    Como um usuário, gostaria de acessar minhas tarefas pelo celular para gerenciar meu trabalho em qualquer lugar.
+    Como um usuário, gostaria de sincronizar minhas tarefas com o Google Drive para ter um backup seguro.
+
