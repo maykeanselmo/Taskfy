@@ -17,6 +17,7 @@ Gerenciador de tarefas moderno e personalizável, com Java Spring Boot no back-e
    - [Fase 5: Testes](#fase-5-testes)
    - [Fase 6: Deploy](#fase-6-deploy)
    - [Fase 7: Manutenção](#fase-7-manutenção)
+9. [Backlog do Produto](#backlog-do-produto)
 
 ## Objetivo do Projeto
 Criar uma aplicação que permita aos usuários organizarem suas tarefas e projetos,
@@ -249,7 +250,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 2. **Corrigir bugs e implementar melhorias conforme necessário.**
 
 
-## Backlog do Produto ##
+## Backlog do Produto
 
 📌 Gerenciamento de Tarefas
 
