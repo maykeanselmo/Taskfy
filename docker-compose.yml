@@ -18,7 +18,7 @@ services:
     image: openjdk:17-jdk
     container_name: java_backend
     build:
-      context: ./taskfy/taskfy
+      context: ./api/taskfy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskfy
       SPRING_DATASOURCE_USERNAME: taskfy
