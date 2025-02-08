@@ -1,0 +1,54 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: taskfy
+      POSTGRES_PASSWORD: 76t4e23
+      POSTGRES_DB: taskfy
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - taskfy_network
+
+  java_backend:
+    image: openjdk:17-jdk
+    container_name: java_backend
+    build:
+      context: ./taskfy/taskfy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskfy
+      SPRING_DATASOURCE_USERNAME: taskfy
+      SPRING_DATASOURCE_PASSWORD: 76t4e23
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - taskfy_network
+
+  node_frontend:
+    image: node:22
+    container_name: node_frontend
+    build:
+      context: ./taskfy_web_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskfy
+      SPRING_DATASOURCE_USERNAME: taskfy
+      SPRING_DATASOURCE_PASSWORD: 76t4e23
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    networks:
+      - taskfy_network
+
+volumes:
+  postgres_data:
+
+networks:
+  taskfy_network:
+    driver: bridge

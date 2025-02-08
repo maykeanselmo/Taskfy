@@ -195,17 +195,19 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
      - **Windows:** Utilize o [Chocolatey](https://chocolatey.org/) ou [Scoop](https://scoop.sh/) para gerenciar pacotes.
      - **Linux:** Use o gerenciador de pacotes da sua distribuição (ex.: `apt` para Debian/Ubuntu ou `dnf` para Fedora).
      - **MacOS:** Instale o [Homebrew](https://brew.sh/) para gerenciar pacotes.
-2. **Instalar ferramentas essenciais:**
-   - **PostgreSQL 17:**  
-     - [Download e instruções](https://www.postgresql.org/download/) para instalação no seu sistema.
-   - **Node.js v22.13.1 LTS:**  
-     - [Download e instruções](https://nodejs.org/) para instalação.
-   - **Java JDK 21 LTS (Oracle):**  
-     - [Download do Java JDK](https://www.oracle.com/java/technologies/downloads/#java21)
+2. **Instalar o Docker:**
+   - **Docker Desktop v27:**  
+     - [Download e instruções](https://docs.docker.com/get-started/get-docker/) para instalação no seu sistema.
 3. **Clone do repositório:**
      ```bash
      https://github.com/maykeanselmo/Taskfy.git
      ```
+4. **Build e Inicialização:**
+    - **Execute os seguintes comandos no terminal com o Docker já configurado e disponível:**
+    ```bash
+        docker compose build^
+        docker compose up
+    ```
 
 ### **Fase 2: Configuração do Banco de Dados**
 1. **Configurar o PostgreSQL localmente.**
@@ -249,7 +251,7 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 
 ## Backlog do Produto ##
 
-Gerenciamento de Tarefas
+📌 Gerenciamento de Tarefas
 
     Como um usuário, gostaria de criar uma nova tarefa para organizar meu trabalho.
     Como um usuário, gostaria de editar uma tarefa existente para atualizar suas informações.
