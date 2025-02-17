@@ -1,34 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
-import logo from './logo.svg';
-
-// Componentes para as páginas
-import Home from './pages/Home';
-import Login from './pages/Login';
+import Home from './components/Home';
+import About from './components/About';
+import Editor from './features/Editor';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  // Função para mudar a página
-  const navigateTo = (page) => {
-    setCurrentPage(page);
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <Router>
+      <div className="App">
+        {/* Menu de navegação */}
         <nav>
-          <button onClick={() => navigateTo('home')}>Home</button> |
-          <button onClick={() => navigateTo('login')}>Login</button>
+          <Link to="/">Home</Link> |
+          <Link to="/about">Sobre</Link> |
+          <Link to="/task/new">Nova Task</Link> {/* Link para criar uma nova task */}
         </nav>
-      </header>
 
-      <main>
-        {currentPage === 'home' && <Home />}
-        {currentPage === 'login' && <Login />}
-      </main>
-    </div>
+        {/* Rotas */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/task/:taskId" element={<Editor />} /> {/* Rota correta */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

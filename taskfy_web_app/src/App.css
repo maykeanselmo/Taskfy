@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: Arial, sans-serif;
 }
 
 .App-logo {
@@ -35,4 +36,47 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+
+/* Estilos para o menu de navegação */
+nav {
+  background-color: #282c34;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para a página inicial */
+.home {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.home h1 {
+  color: #333;
+}
+
+/* Estilos para a página Sobre */
+.about {
+  background-color: #d0e7ff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.about h1 {
+  color: #0056b3;
 }
