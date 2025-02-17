@@ -1,0 +1,66 @@
+.TextEditor {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .HeaderBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #282c34;
+    color: white;
+  }
+  
+  .SettingsButton,
+  .TasksButton,
+  .SaveTaskButton {
+    background-color: #61dafb;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .EditorMain {
+    flex-grow: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .TaskTitleInput {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .TaskDescriptionInput {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .TaskList {
+    position: absolute;
+    top: 4rem;
+    right: 0;
+    width: 300px;
+    background: #f4f4f4;
+    border-left: 1px solid #ccc;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  
+  .TaskItem {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+  }
+  .TaskItem:hover {
+    background: #ddd;
+  }
+  

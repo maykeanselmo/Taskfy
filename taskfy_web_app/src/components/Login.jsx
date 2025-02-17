@@ -4,6 +4,8 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  console.log('Login component rendered'); // Adicione este console.log
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === 'admin' && password === '1234') {
@@ -14,7 +16,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <div>
@@ -24,6 +26,7 @@ function Login() {
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -33,6 +36,7 @@ function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <button type="submit">Entrar</button>
