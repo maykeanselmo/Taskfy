@@ -1,10 +1,11 @@
 import React from 'react';
+import { t } from '../utils/translations'
 
 function Home() {
   return (
     <div className="home">
-      <h1>Página Inicial</h1>
-      <p>Bem-vindo à página inicial!</p>
+      <h1>{t("initial_page")}</h1>
+      <p>{t("welcome_message")}</p>
     </div>
   );
 }

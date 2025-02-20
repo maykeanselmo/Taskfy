@@ -36,17 +36,15 @@ services:
     build:
       context: ./taskfy_web_app
     environment:
-      CHOKIDAR_USEPOLLING: "true" # Força o uso de polling
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskfy
+      SPRING_DATASOURCE_USERNAME: taskfy
+      SPRING_DATASOURCE_PASSWORD: 76t4e23
     depends_on:
       - postgres
     ports:
       - "3000:3000"
     networks:
       - taskfy_network
-    volumes:
-      - ./taskfy_web_app:/usr/src/app # Sincroniza o código do host com o contêiner
-      - /usr/src/app/node_modules     # Evita sobrescrita do node_modules
-    command: npm start               # Garante que o React execute no modo dev
 
 volumes:
   postgres_data:

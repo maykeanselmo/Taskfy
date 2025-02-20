@@ -22,3 +22,4 @@ EXPOSE 3000
 
 # Comando para rodar o servidor do frontend
 CMD ["npm", "start"]
+
