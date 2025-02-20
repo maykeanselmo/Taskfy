@@ -1,0 +1,64 @@
+/* HeaderBar.css */
+
+/* Estilo geral da barra superior */
+.headerbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d2d2d;
+    color: white;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    gap: 16px; /* Espaço entre os elementos */
+}
+
+/* Botão do menu de 3 barras (lado esquerdo) */
+.headerbar .menu-button {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Centralizar o nome da task */
+.headerbar .title-container {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center; /* Centraliza o texto horizontalmente */
+    max-width: 50%; /* Limita a largura do título */
+}
+
+/* Estilo do nome da task */
+.headerbar .task-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Trunca o texto com '...' se for muito longo */
+}
+
+/* Estilo dos botões à direita (Modo e Settings) */
+.headerbar .right-buttons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Estilo dos botões */
+.headerbar button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #3b3b3b;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+/* Estilo do hover nos botões */
+.headerbar button:hover {
+    background-color: #575757;
+}

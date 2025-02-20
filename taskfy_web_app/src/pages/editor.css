@@ -1,0 +1,56 @@
+/* Editor.css */
+
+/* Layout principal da página */
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Garantir que ocupe toda a altura da tela */
+}
+
+/* Botões de idioma (logo abaixo da HeaderBar) */
+.language-buttons {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background-color: #e0e0e0;
+}
+
+/* Corpo principal (Sidebar e TextInputField) */
+.main-content {
+    display: flex;
+    flex-grow: 1; /* Preenche o restante do espaço disponível */
+}
+
+/* Sidebar (área lateral) */
+.sidebar {
+    width: 250px; /* Largura fixa para a sidebar */
+    background-color: #f0f0f0;
+    padding: 16px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Área de conteúdo principal */
+.textarea-container {
+    flex-grow: 1;
+    background-color: white;
+    padding: 16px;
+    overflow-y: auto; /* Permite rolar o conteúdo */
+}
+
+/* Estilo básico para os botões */
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.bg-blue-500 {
+    background-color: #1D4ED8;
+    color: white;
+}
+
+button.bg-green-500 {
+    background-color: #10B981;
+    color: white;
+}
