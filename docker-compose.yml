@@ -31,7 +31,7 @@ services:
       - taskfy_network
 
   node_frontend:
-    image: node:22
+    image: node:22.13.1
     container_name: node_frontend
     build:
       context: ./taskfy_web_app
