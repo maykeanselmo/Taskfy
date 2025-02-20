@@ -1,66 +1,76 @@
-// src/pages/editor.jsx
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { languageState } from '../model/state';
-import { t, setLanguage } from '../utils/translations';
 
-import HeaderBar from '../components/header_bar';
-import TextInputField from '../components/text_input_field';
+import { t, setLanguage } from '../utils/translations';
+import { addTask, getTasks, updateTask, deleteTask } from '../services/crud';  // As funções de IndexedDB
+
+import HeaderBar from '../components/editor/headerbar';
+import TextInputField from '../components/editor/text_input_field';
+import Sidebar from '../components/editor/sidebar';
+
+// Importando o arquivo de estilos
+import './editor.css';
 
 const Editor = () => {
     const [taskContent, setTaskContent] = useState("");
     const [taskTitle, setTaskTitle] = useState("Untitled");
     const [isEditingMode, setIsEditingMode] = useState(true);
 
-    // Recoil hook para acessar o estado de idioma
-    const [language, setLanguageState] = useRecoilState(languageState);
-
     const toggleEditMode = () => {
         setIsEditingMode(!isEditingMode);
     };
 
-    const HandlechangeLanguage = (lang) => {
-        setLanguageState(setLanguage(lang)); // Altera o idioma e salva no localStorage
+    // Função para salvar a tarefa no IndexedDB
+    const saveTask = async () => {
+        const taskName = prompt("Qual nome você deseja dar à tarefa?");
+        if (taskName) {
+            const task = {
+                title: taskName,
+                content: taskContent,
+                folder_id: 1, // Defina o ID da pasta conforme sua estrutura
+            };
+            await addTask(task);  // Salva a tarefa no IndexedDB
+        }
     };
 
     return (
-        <div className="TextEditor bg-gray-200 h-screen overflow-hidden flex flex-col">
-            <HeaderBar
-                taskTitle={taskTitle}
-                onToggleView={toggleEditMode}
-                onSettingsClick={() => alert(t("settings_button"))} // Exemplo de tradução com a chave "settings_button"
-                onOpenFileSystem={() => alert(t("open_file_system"))} // Exemplo de tradução com a chave "open_file_system"
-            />
-
-            <div className="flex-grow p-4 bg-white">
-                {isEditingMode ? (
-                    <TextInputField value={taskContent} onChange={setTaskContent} />
-                ) : (
-                    <div className="bg-gray-100 p-4 border rounded shadow-md">
-                        <h3 className="text-lg font-bold mb-2">{taskTitle}</h3>
-                        <div
-                            className="prose max-w-full"
-                            dangerouslySetInnerHTML={{
-                                __html: taskContent ? renderMarkdown(taskContent) : "<p>Sem conteúdo.</p>",
-                            }}
-                        ></div>
-                    </div>
-                )}
+        <div className="editor-container">
+            {/* HeaderBar no topo */}
+            <div className="headerbar">
+                <HeaderBar
+                    taskTitle={taskTitle}
+                    onToggleView={toggleEditMode}
+                    onSettingsClick={() => alert(t("settings_button"))}
+                    onOpenFileSystem={() => alert(t("open_file_system"))}
+                />
             </div>
 
-            <div className="p-4 bg-gray-100">
-                <button
-                    onClick={() => HandlechangeLanguage("en")}
-                    className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                    English
-                </button>
-                <button
-                    onClick={() => HandlechangeLanguage("pt")}
-                    className="px-4 py-2 bg-green-500 text-white rounded"
-                >
-                    Português
-                </button>
+            {/* Layout com Sidebar à esquerda e TextInputField ocupando o resto do espaço */}
+            <div className="main-content">
+                <div className="sidebar">
+                    <Sidebar
+                        onAddFolder={() => alert("Adicionar pasta")}
+                        onAddTask={saveTask}  // Passando a função para salvar tarefas
+                        onDelete={() => alert("Excluir")}
+                        onRename={() => alert("Renomear")}
+                        onMove={() => alert("Mover")}
+                    />
+                </div>
+
+                <div className="textarea-container">
+                    {isEditingMode ? (
+                        <TextInputField value={taskContent} onChange={setTaskContent} />
+                    ) : (
+                        <div className="bg-gray-100 p-4 border rounded shadow-md">
+                            <h3 className="text-lg font-bold mb-2">{taskTitle}</h3>
+                            <div
+                                className="prose max-w-full"
+                                dangerouslySetInnerHTML={{
+                                    __html: taskContent ? renderMarkdown(taskContent) : "<p>Sem conteúdo.</p>",
+                                }}
+                            ></div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

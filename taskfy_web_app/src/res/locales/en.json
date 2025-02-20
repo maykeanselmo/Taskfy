@@ -1,8 +1,28 @@
 {
+    "about": "About",
+    "editor": "Editor",
+    "settings": "Settings",
+    "home": "Home",
+
+    "initial_page": "Home Page",
+    "welcome_message":  "Welcome!",
+
+    "about_us": "About us",
+    "about_content": "Taskfy is a task management app.",
+
+    "settings_buttom": "Settings",
+    "mode_buttom": "Mode",
+
+    "text_line": "Line",
+    "text_column": "Column",
+
     "settings_button": "Settings",
+    "settings_title": "Settings",
+    "change_language": "Change Language",
+    "select_color": "Select color",
+
     "open_file_system": "Open File System",
     "header_bar_title_default": "No task open",
-    "text_input_tooltip": "Enter task here",
-    "initial_page": "Home Page",
-    "welcome_message":  "Welcome!"
-  }
+    "text_input_tooltip": "Enter task here"
+
+}

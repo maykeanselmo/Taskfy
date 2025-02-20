@@ -4,6 +4,9 @@ import './App.css';
 import Home from './pages/home';
 import About from './pages/about';
 import Editor from './pages/editor';
+import Settings from './pages/settings';
+
+import { t } from './utils/translations';
 
 function App() {
   return (
@@ -11,9 +14,10 @@ function App() {
       <div className="App">
         {/* Menu de navegação */}
         <nav>
-          <Link to="/">Home</Link> |
-          <Link to="/about">Sobre</Link> |
-          <Link to="/editor">Editor</Link>
+          <Link to="/">{t("home")}</Link> |
+          <Link to="/about">{t("about")}</Link> |
+          <Link to="/editor">{t("editor")}</Link> |
+          <Link to="/settings">{t("settings")}</Link>
         </nav>
 
         {/* Rotas */}
@@ -21,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/editor" element={<Editor />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </Router>

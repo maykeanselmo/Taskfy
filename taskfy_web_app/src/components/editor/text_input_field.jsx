@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { t } from '../utils/translations';
+import { t } from '../../utils/translations';
 
 const TextInputField = ({ value, onChange }) => {
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -40,8 +40,8 @@ const TextInputField = ({ value, onChange }) => {
         placeholder={t("text_input_tooltip")}
       />
       <div className="absolute bottom-2 right-4 text-xs text-gray-500">
-        Linha: {value.substr(0, cursorPosition).split('\n').length},
-        Coluna: {cursorPosition - value.lastIndexOf('\n', cursorPosition - 1)}
+        {t("text_line")}: {value.substr(0, cursorPosition).split('\n').length},
+        {t("text_column")}: {cursorPosition - value.lastIndexOf('\n', cursorPosition - 1)}
       </div>
     </div>
   );

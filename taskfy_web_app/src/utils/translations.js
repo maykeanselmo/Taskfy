@@ -11,11 +11,11 @@ const translations = {
 // Função para obter a tradução com base na chave e no idioma atual
 export const t = (key) => {
   const [language] = useRecoilState(languageState);
-  return translations[language]?.[key] || translations["eng"]?.[key] || key;
+  return translations[language]?.[key] || translations["en"]?.[key] || key;
 };
 
 // Função para mudar o idioma e salvar no localStorage
 export const setLanguage = (newLanguage) => {
   localStorage.setItem('language', newLanguage);
-  return newLanguage; 
+  return newLanguage;
 };
