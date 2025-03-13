@@ -1,4 +1,4 @@
-package com.taskfy.core.domain;
+package com.taskfy.core.domain.users.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
