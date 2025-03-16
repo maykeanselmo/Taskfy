@@ -63,4 +63,10 @@ public class UsersController {
         return ResponseEntity.ok(newPassword);
     }
 
+    @PutMapping("/users/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        Users user = usersService.deleteUser(id);
+        return ResponseEntity.ok("Usuário desativado com sucesso");
+    }
+
 }

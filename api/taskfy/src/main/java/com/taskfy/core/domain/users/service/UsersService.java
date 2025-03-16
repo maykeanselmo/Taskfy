@@ -81,4 +81,12 @@ public class UsersService {
 
     }
 
+    // Ao invés de remover do campo, apenas muda o status da conta. Para fins de preservação de histórico
+    @Transactional
+    public Users deleteUser(Long id) {
+        Users existingUser = getUserById(id);
+        existingUser.setActive(false);
+        return usersRepository.save(existingUser);
+    }
+
 }
