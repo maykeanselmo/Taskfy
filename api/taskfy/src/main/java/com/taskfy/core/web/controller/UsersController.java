@@ -59,4 +59,11 @@ public class UsersController {
         return ResponseEntity.ok(usersPage.map(UsersMapper::toDto));
     }
 
+    @PutMapping("/users/{id}/password")
+    public ResponseEntity<UpdatePasswordDto> updatePassword(@PathVariable Long id , @Valid @RequestBody UpdatePasswordDto updatedPassword) {
+        Users user = usersService.updatePassword(id, updatedPassword);
+        UpdatePasswordDto newPassword = new UpdatePasswordDto(updatedPassword.getNewPassword(), updatedPassword.getCurrentPassword());
+        return ResponseEntity.ok(newPassword);
+    }
+
 }
