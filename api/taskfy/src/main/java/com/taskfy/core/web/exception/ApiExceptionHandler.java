@@ -1,6 +1,7 @@
 package com.taskfy.core.web.exception;
 
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
+import com.taskfy.core.domain.users.model.IncorrectPasswordExcpetion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +38,13 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.CONFLICT, ex.getMessage()));
+    }
+    @ExceptionHandler(IncorrectPasswordExcpetion.class)
+    public ResponseEntity<ErrorMessage> handIncorrectPasswordExcpetion(IncorrectPasswordExcpetion ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
 }
