@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -14,10 +16,14 @@ import lombok.*;
 @NoArgsConstructor
 
 public class UserCreateDto {
+
     @NotBlank
     @Column(name = "username", nullable = false, unique = true)
     @Size(min = 3, max = 30, message = "O nome de usuário deve ter entre 3 e 30 caracteres")
     private String username;
+
+    @Column(name = "nickname", nullable = true)
+    private String nickname;
 
     @NotBlank
     @Email(message = "Formato inválido de email")
