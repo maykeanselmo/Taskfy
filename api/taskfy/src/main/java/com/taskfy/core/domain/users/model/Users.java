@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,6 +27,9 @@ public class Users implements Serializable {
     @Size(min = 3, max = 30, message = "O nome de usuário deve ter entre 3 e 30 caracteres")
     private String username;
 
+    @Column(name = "nickname", nullable = true)
+    private String nickname;
+
     @NotBlank
     @Email(message = "Formato inválido de email")
     @Column(name = "email", nullable = false, unique = true)
@@ -39,10 +43,28 @@ public class Users implements Serializable {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+
     @PrePersist
-    @PreUpdate
-    private void formatFields() {
+    public void prePersist() {
         this.email = this.email.toLowerCase();
         this.username = this.username.toLowerCase();
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+        this.updatedAt = LocalDateTime.now();
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.email = this.email.toLowerCase();
+        this.username = this.username.toLowerCase();
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }
