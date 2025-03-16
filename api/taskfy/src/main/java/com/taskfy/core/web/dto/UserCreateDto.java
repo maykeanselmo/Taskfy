@@ -1,5 +1,6 @@
 package com.taskfy.core.web.dto;
 
+import com.taskfy.core.domain.users.model.UserRole;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,5 +38,6 @@ public class UserCreateDto {
 
     @Column(name = "active", nullable = false)
     private boolean active;
+    private UserRole role;
 
 }

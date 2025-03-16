@@ -1,5 +1,6 @@
 package com.taskfy.core.web.dto;
 
+import com.taskfy.core.domain.users.model.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +18,5 @@ public class UserResponseDto {
     private boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private UserRole role;
 }
