@@ -60,5 +60,13 @@ public class UsersService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         return (Page<Users>) usersRepository.findAll(pageable);
     }
+    public Users updatePassword(Long id, UpdatePasswordDto updatePasswordDto) {
+        Users existingUser = getUserById(id);
+        if (existingUser.getPassword().equals(updatePasswordDto.getCurrentPassword())) {
+            existingUser.setPassword(updatePasswordDto.getNewPassword());
+            return usersRepository.save(existingUser);
+        } else
+            throw new IncorrectPasswordExcpetion("Senha incorreta");
+    }
 
 }
