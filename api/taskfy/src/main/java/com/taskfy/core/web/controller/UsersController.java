@@ -2,10 +2,7 @@ package com.taskfy.core.web.controller;
 
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.service.UsersService;
-import com.taskfy.core.web.dto.UpdatePasswordDto;
-import com.taskfy.core.web.dto.UpdateUserDto;
-import com.taskfy.core.web.dto.UserCreateDto;
-import com.taskfy.core.web.dto.UserResponseDto;
+import com.taskfy.core.web.dto.*;
 import com.taskfy.core.web.dto.mapper.UsersMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,9 +57,9 @@ public class UsersController {
     }
 
     @PutMapping("/users/{id}/password")
-    public ResponseEntity<UpdatePasswordDto> updatePassword(@PathVariable Long id , @Valid @RequestBody UpdatePasswordDto updatedPassword) {
+    public ResponseEntity<UpdatePasswordResponse> updatePassword(@PathVariable Long id , @Valid @RequestBody UpdatePasswordDto updatedPassword) {
         Users user = usersService.updatePassword(id, updatedPassword);
-        UpdatePasswordDto newPassword = new UpdatePasswordDto(updatedPassword.getNewPassword(), updatedPassword.getCurrentPassword());
+        UpdatePasswordResponse newPassword = new UpdatePasswordResponse(user.getPassword());
         return ResponseEntity.ok(newPassword);
     }
 
