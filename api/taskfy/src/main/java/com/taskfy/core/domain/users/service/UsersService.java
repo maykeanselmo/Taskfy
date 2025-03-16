@@ -43,4 +43,14 @@ public class UsersService {
         );
     }
 
+    @Transactional
+    public Users updateUser(Long id, UpdateUserDto dto){
+        Users existingUser =getUserById(id);
+
+        existingUser.setEmail(dto.getEmail());
+        existingUser.setUsername(dto.getUsername());
+        existingUser.setNickname(dto.getNickname());
+        return usersRepository.save(existingUser);
+    }
+
 }
