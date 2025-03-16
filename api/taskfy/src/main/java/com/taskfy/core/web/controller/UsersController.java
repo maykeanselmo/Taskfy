@@ -39,4 +39,12 @@ public class UsersController {
         UserResponseDto userResponseDto = UsersMapper.toDto(user);
         return ResponseEntity.ok(userResponseDto);
     }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserDto dto) {
+
+        Users userUpdated = usersService.updateUser(id, dto);
+        log.info("Usuario atualizado com sucesso");
+        return ResponseEntity.ok(UsersMapper.toDto(userUpdated));
+    }
 }
