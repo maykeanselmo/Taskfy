@@ -53,4 +53,12 @@ public class UsersService {
         return usersRepository.save(existingUser);
     }
 
+    @Transactional
+    public Page<Users> getAllUsersPaginated(int page, int size, String sortBy, String direction) {
+
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+        return (Page<Users>) usersRepository.findAll(pageable);
+    }
+
 }
