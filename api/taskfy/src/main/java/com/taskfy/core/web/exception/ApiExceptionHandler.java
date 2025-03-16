@@ -1,7 +1,7 @@
 package com.taskfy.core.web.exception;
 
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
-import com.taskfy.core.domain.users.model.IncorrectPasswordExcpetion;
+import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
