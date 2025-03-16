@@ -68,5 +68,17 @@ public class UsersService {
         } else
             throw new IncorrectPasswordExcpetion("Senha incorreta");
     }
+    @Transactional
+    public Users getUserByEmail(String email) {
+
+        Users user=  usersRepository.findByEmail(email);
+        if(user == null){
+            throw new EntityNotFoundException("Nenhum usuário foi encontrado com o e-mail: " + email);
+        }
+        else{
+            return user;
+        }
+
+    }
 
 }
