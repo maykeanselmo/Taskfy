@@ -47,4 +47,16 @@ public class UsersController {
         log.info("Usuario atualizado com sucesso");
         return ResponseEntity.ok(UsersMapper.toDto(userUpdated));
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<Page<UserResponseDto>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Page<Users> usersPage = (Page<Users>) usersService.getAllUsersPaginated(page, size, sortBy, direction);
+        return ResponseEntity.ok(usersPage.map(UsersMapper::toDto));
+    }
+
 }
