@@ -2,7 +2,7 @@ package com.taskfy.core.domain.users.service;
 
 
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
-import com.taskfy.core.domain.users.model.IncorrectPasswordExcpetion;
+import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.repository.UsersRepository;
 import com.taskfy.core.web.dto.UpdatePasswordDto;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -24,10 +25,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Users createUser(Users user){
+
         try{
+            String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptedPassword);
             return usersRepository.save(user);
         } catch (DataIntegrityViolationException e){
             throw new UserAlreadyExistsException("Já existe usuário cadastrado com esse email ou username");
@@ -62,8 +67,9 @@ public class UsersService {
     }
     public Users updatePassword(Long id, UpdatePasswordDto updatePasswordDto) {
         Users existingUser = getUserById(id);
-        if (existingUser.getPassword().equals(updatePasswordDto.getCurrentPassword())) {
-            existingUser.setPassword(updatePasswordDto.getNewPassword());
+        if (passwordEncoder.matches(updatePasswordDto.getCurrentPassword(), existingUser.getPassword())) {
+            String encryptedPassword = passwordEncoder.encode(updatePasswordDto.getNewPassword());
+            existingUser.setPassword(encryptedPassword);
             return usersRepository.save(existingUser);
         } else
             throw new IncorrectPasswordExcpetion("Senha incorreta");
@@ -71,7 +77,7 @@ public class UsersService {
     @Transactional
     public Users getUserByEmail(String email) {
 
-        Users user=  usersRepository.findByEmail(email);
+        Users user= (Users) usersRepository.findByEmail(email);
         if(user == null){
             throw new EntityNotFoundException("Nenhum usuário foi encontrado com o e-mail: " + email);
         }
