@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, Typography, Link, Box, Container, CssBaseline } from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom'; // Atualizado para useNavigate
 
 const LoginPage = () => {
@@ -44,15 +43,6 @@ const LoginPage = () => {
       setError(err.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = (response) => {
-    if (response.error) {
-      setError('Falha ao autenticar com o Google');
-    } else {
-      // Lógica para processar login com Google (ex: enviar o token para o backend)
-      navigate('/dashboard');  // Redireciona após login com Google
     }
   };
 
@@ -100,12 +90,6 @@ const LoginPage = () => {
         </Button>
 
         {/* Login via Google */}
-        <GoogleLogin
-          onSuccess={handleGoogleLogin}
-          onError={() => setError('Falha ao autenticar com o Google')}
-          useOneTap
-        />
-
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid item xs>
             <Link href="#" variant="body2">

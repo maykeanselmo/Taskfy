@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google'; // Importe o provedor do Google OAuth
 import './App.css';
 import LoginPage from './pages/login';
 import Home from './pages/home';
@@ -12,7 +11,6 @@ import { t } from './utils/translations';
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="SUA_CHAVE_DO_GOOGLE_AQUI">
       <Router>
         <div className="App">
           {/* Menu de navegação */}
@@ -36,7 +34,6 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </GoogleOAuthProvider>
   );
 }
 
