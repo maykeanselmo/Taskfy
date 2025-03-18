@@ -1,0 +1,27 @@
+{
+  "about": "소개",
+  "editor": "편집기",
+  "settings": "설정",
+  "home": "홈",
+
+  "initial_page": "홈페이지",
+  "welcome_message": "환영합니다!",
+
+  "about_us": "우리에 대해",
+  "about_content": "Taskfy는 작업 관리 앱입니다.",
+
+  "settings_buttom": "설정",
+  "mode_buttom": "모드",
+
+  "text_line": "라인",
+  "text_column": "열",
+
+  "settings_button": "설정",
+  "settings_title": "설정",
+  "change_language": "언어 변경",
+  "select_color": "색상 선택",
+
+  "open_file_system": "파일 시스템 열기",
+  "header_bar_title_default": "열린 작업 없음",
+  "text_input_tooltip": "여기에 작업을 입력하세요"
+}

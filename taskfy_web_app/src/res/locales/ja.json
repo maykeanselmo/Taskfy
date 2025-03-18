@@ -1,0 +1,28 @@
+{
+  "about": "概要",
+  "editor": "エディター",
+  "settings": "設定",
+  "home": "ホーム",
+
+  "initial_page": "ホームページ",
+  "welcome_message": "ようこそ！",
+
+  "about_us": "私たちについて",
+  "about_content": "Taskfyはタスク管理アプリです。",
+
+  "settings_buttom": "設定",
+  "mode_buttom": "モード",
+
+  "text_line": "行",
+  "text_column": "列",
+
+  "settings_button": "設定",
+  "settings_title": "設定",
+  "change_language": "言語を変更",
+  "select_color": "色を選択",
+
+  "open_file_system": "ファイルシステムを開く",
+  "header_bar_title_default": "開いているタスクはありません",
+  "text_input_tooltip": "ここにタスクを入力してください"
+}
+

@@ -1,0 +1,28 @@
+{
+  "about": "เกี่ยวกับ",
+  "editor": "ตัวแก้ไข",
+  "settings": "การตั้งค่า",
+  "home": "หน้าหลัก",
+
+  "initial_page": "หน้าหลัก",
+  "welcome_message": "ยินดีต้อนรับ!",
+
+  "about_us": "เกี่ยวกับเรา",
+  "about_content": "Taskfy เป็นแอปจัดการงาน",
+
+  "settings_buttom": "การตั้งค่า",
+  "mode_buttom": "โหมด",
+
+  "text_line": "บรรทัด",
+  "text_column": "คอลัมน์",
+
+  "settings_button": "การตั้งค่า",
+  "settings_title": "การตั้งค่า",
+  "change_language": "เปลี่ยนภาษา",
+  "select_color": "เลือกสี",
+
+  "open_file_system": "เปิดระบบไฟล์",
+  "header_bar_title_default": "ไม่มีงานที่เปิดอยู่",
+  "text_input_tooltip": "ป้อนงานที่นี่"
+}
+

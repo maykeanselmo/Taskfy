@@ -1,0 +1,28 @@
+{
+  "about": "Hakkında",
+  "editor": "Editör",
+  "settings": "Ayarlar",
+  "home": "Ana Sayfa",
+
+  "initial_page": "Ana Sayfa",
+  "welcome_message": "Hoş geldiniz!",
+
+  "about_us": "Hakkımızda",
+  "about_content": "Taskfy bir görev yönetimi uygulamasıdır.",
+
+  "settings_buttom": "Ayarlar",
+  "mode_buttom": "Mod",
+
+  "text_line": "Satır",
+  "text_column": "Sütun",
+
+  "settings_button": "Ayarlar",
+  "settings_title": "Ayarlar",
+  "change_language": "Dili değiştir",
+  "select_color": "Renk seç",
+
+  "open_file_system": "Dosya sistemini aç",
+  "header_bar_title_default": "Açık görev yok",
+  "text_input_tooltip": "Görevi buraya girin"
+}
+

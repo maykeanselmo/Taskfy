@@ -1,0 +1,27 @@
+{
+  "about": "Über",
+  "editor": "Editor",
+  "settings": "Einstellungen",
+  "home": "Startseite",
+
+  "initial_page": "Startseite",
+  "welcome_message": "Willkommen!",
+
+  "about_us": "Über uns",
+  "about_content": "Taskfy ist eine Aufgabenverwaltungs-App.",
+
+  "settings_buttom": "Einstellungen",
+  "mode_buttom": "Modus",
+
+  "text_line": "Zeile",
+  "text_column": "Spalte",
+
+  "settings_button": "Einstellungen",
+  "settings_title": "Einstellungen",
+  "change_language": "Sprache ändern",
+  "select_color": "Farbe auswählen",
+
+  "open_file_system": "Dateisystem öffnen",
+  "header_bar_title_default": "Keine Aufgabe geöffnet",
+  "text_input_tooltip": "Aufgabe hier eingeben"
+}

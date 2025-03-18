@@ -1,0 +1,28 @@
+{
+  "about": "के बारे में",
+  "editor": "संपादक",
+  "settings": "सेटिंग्स",
+  "home": "होम",
+
+  "initial_page": "मुख्य पृष्ठ",
+  "welcome_message": "स्वागत है!",
+
+  "about_us": "हमारे बारे में",
+  "about_content": "Taskfy एक टास्क प्रबंधन ऐप है।",
+
+  "settings_buttom": "सेटिंग्स",
+  "mode_buttom": "मोड",
+
+  "text_line": "पंक्ति",
+  "text_column": "स्तंभ",
+
+  "settings_button": "सेटिंग्स",
+  "settings_title": "सेटिंग्स",
+  "change_language": "भाषा बदलें",
+  "select_color": "रंग चुनें",
+
+  "open_file_system": "फ़ाइल प्रणाली खोलें",
+  "header_bar_title_default": "कोई कार्य खुला नहीं है",
+  "text_input_tooltip": "यहां कार्य दर्ज करें"
+}
+

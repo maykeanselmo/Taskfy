@@ -1,0 +1,28 @@
+{
+  "about": "关于",
+  "editor": "编辑器",
+  "settings": "设置",
+  "home": "首页",
+
+  "initial_page": "主页",
+  "welcome_message": "欢迎！",
+
+  "about_us": "关于我们",
+  "about_content": "Taskfy 是一个任务管理应用程序。",
+
+  "settings_buttom": "设置",
+  "mode_buttom": "模式",
+
+  "text_line": "行",
+  "text_column": "列",
+
+  "settings_button": "设置",
+  "settings_title": "设置",
+  "change_language": "更改语言",
+  "select_color": "选择颜色",
+
+  "open_file_system": "打开文件系统",
+  "header_bar_title_default": "没有打开的任务",
+  "text_input_tooltip": "在此输入任务"
+}
+

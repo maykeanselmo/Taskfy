@@ -1,0 +1,28 @@
+{
+  "about": "Tentang",
+  "editor": "Editor",
+  "settings": "Pengaturan",
+  "home": "Beranda",
+
+  "initial_page": "Halaman Utama",
+  "welcome_message": "Selamat datang!",
+
+  "about_us": "Tentang kami",
+  "about_content": "Taskfy adalah aplikasi manajemen tugas.",
+
+  "settings_buttom": "Pengaturan",
+  "mode_buttom": "Mode",
+
+  "text_line": "Baris",
+  "text_column": "Kolom",
+
+  "settings_button": "Pengaturan",
+  "settings_title": "Pengaturan",
+  "change_language": "Ganti Bahasa",
+  "select_color": "Pilih warna",
+
+  "open_file_system": "Buka Sistem File",
+  "header_bar_title_default": "Tidak ada tugas yang terbuka",
+  "text_input_tooltip": "Masukkan tugas di sini"
+}
+

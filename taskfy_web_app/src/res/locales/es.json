@@ -1,0 +1,28 @@
+{
+  "about": "Acerca de",
+  "editor": "Editor",
+  "settings": "Configuraciones",
+  "home": "Inicio",
+
+  "initial_page": "Página de inicio",
+  "welcome_message": "¡Bienvenido!",
+
+  "about_us": "Acerca de nosotros",
+  "about_content": "Taskfy es una aplicación para gestión de tareas.",
+
+  "settings_buttom": "Configuraciones",
+  "mode_buttom": "Modo",
+
+  "text_line": "Línea",
+  "text_column": "Columna",
+
+  "settings_button": "Configuraciones",
+  "settings_title": "Configuraciones",
+  "change_language": "Cambiar idioma",
+  "select_color": "Seleccionar color",
+
+  "open_file_system": "Abrir sistema de archivos",
+  "header_bar_title_default": "Ninguna tarea abierta",
+  "text_input_tooltip": "Introduzca la tarea aquí"
+}
+
