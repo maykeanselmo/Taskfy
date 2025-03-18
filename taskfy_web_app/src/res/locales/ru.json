@@ -3,8 +3,9 @@
   "editor": "Редактор",
   "settings": "Настройки",
   "home": "Главная",
+  "login": "Войти",
 
-  "initial_page": "Главная страница",
+  "initial_page": "Главная",
   "welcome_message": "Добро пожаловать!",
 
   "about_us": "О нас",
@@ -22,7 +23,21 @@
   "select_color": "Выбрать цвет",
 
   "open_file_system": "Открыть файловую систему",
-  "header_bar_title_default": "Задача не открыта",
-  "text_input_tooltip": "Введите задачу здесь"
+  "header_bar_title_default": "Нет открытых задач",
+  "text_input_tooltip": "Введите задачу здесь",
+
+  "login_title": "Вход",
+  "login_username_label": "Имя пользователя:",
+  "login_password_label": "Пароль:",
+  "login_button": "Войти",
+  "login_success": "Вход выполнен успешно!",
+  "login_error": "Неверные учетные данные!",
+
+  "prompt_task_name": "Какое имя вы хотите дать задаче?",
+  "add_folder": "Добавить папку",
+  "delete_task": "Удалить задачу",
+  "rename_task": "Переименовать задачу",
+  "move_task": "Переместить задачу"
 }
+
 

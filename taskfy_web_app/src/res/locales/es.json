@@ -3,12 +3,13 @@
   "editor": "Editor",
   "settings": "Configuraciones",
   "home": "Inicio",
+  "login": "Iniciar sesión",
 
-  "initial_page": "Página de inicio",
+  "initial_page": "Inicio",
   "welcome_message": "¡Bienvenido!",
 
   "about_us": "Acerca de nosotros",
-  "about_content": "Taskfy es una aplicación para gestión de tareas.",
+  "about_content": "Taskfy es una aplicación de gestión de tareas.",
 
   "settings_buttom": "Configuraciones",
   "mode_buttom": "Modo",
@@ -19,10 +20,22 @@
   "settings_button": "Configuraciones",
   "settings_title": "Configuraciones",
   "change_language": "Cambiar idioma",
-  "select_color": "Seleccionar color",
+  "select_color": "Selecciona un color",
 
-  "open_file_system": "Abrir sistema de archivos",
+  "open_file_system": "Abrir el sistema de archivos",
   "header_bar_title_default": "Ninguna tarea abierta",
-  "text_input_tooltip": "Introduzca la tarea aquí"
-}
+  "text_input_tooltip": "Ingresa tu tarea aquí",
 
+  "login_title": "Iniciar sesión",
+  "login_username_label": "Usuario:",
+  "login_password_label": "Contraseña:",
+  "login_button": "Entrar",
+  "login_success": "¡Inicio de sesión exitoso!",
+  "login_error": "¡Credenciales inválidas!",
+
+  "prompt_task_name": "¿Qué nombre deseas darle a la tarea?",
+  "add_folder": "Añadir carpeta",
+  "delete_task": "Eliminar tarea",
+  "rename_task": "Renombrar tarea",
+  "move_task": "Mover tarea"
+}

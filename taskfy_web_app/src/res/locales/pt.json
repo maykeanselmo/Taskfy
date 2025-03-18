@@ -1,27 +1,41 @@
 {
-    "about": "Sobre",
-    "editor": "Editor",
-    "settings": "Configurações",
-    "home": "Página Inicial",
+  "about": "Sobre",
+  "editor": "Editor",
+  "settings": "Configurações",
+  "home": "Início",
+  "login": "Entrar",
 
-    "initial_page": "Página Inicial",
-    "welcome_message":  "Bem vindo!",
+  "initial_page": "Início",
+  "welcome_message": "Bem-vindo!",
 
-    "about_us": "Sobre nós",
-    "about_content": "Taskfy é uma aplicação de gerenciamento de tarefas.",
+  "about_us": "Sobre nós",
+  "about_content": "Taskfy é um aplicativo de gerenciamento de tarefas.",
 
-    "settings_buttom": "Configurações",
-    "mode_buttom": "Modo",
+  "settings_buttom": "Configurações",
+  "mode_buttom": "Modo",
 
-    "text_line": "Linha",
-    "text_column": "Coluna",
+  "text_line": "Linha",
+  "text_column": "Coluna",
 
-    "settings_button": "Configurações",
-    "settings_title": "Configurações",
-    "change_language": "Mudar Idioma",
-    "select_color": "Selecione uma cor",
+  "settings_button": "Configurações",
+  "settings_title": "Configurações",
+  "change_language": "Mudar idioma",
+  "select_color": "Selecionar uma cor",
 
-    "open_file_system": "Abrir Sistema de Arquivos",
-    "header_bar_title_default": "Nenhuma tarefa aberta",
-    "text_input_tooltip": "Entre sua tarefa aqui"
-  }
+  "open_file_system": "Abrir sistema de arquivos",
+  "header_bar_title_default": "Nenhuma tarefa aberta",
+  "text_input_tooltip": "Digite sua tarefa aqui",
+
+  "login_title": "Entrar",
+  "login_username_label": "Usuário:",
+  "login_password_label": "Senha:",
+  "login_button": "Entrar",
+  "login_success": "Login bem-sucedido!",
+  "login_error": "Credenciais inválidas!",
+
+  "prompt_task_name": "Que nome você deseja dar para a tarefa?",
+  "add_folder": "Adicionar pasta",
+  "delete_task": "Excluir tarefa",
+  "rename_task": "Renomear tarefa",
+  "move_task": "Mover tarefa"
+}

@@ -3,25 +3,40 @@
   "editor": "Éditeur",
   "settings": "Paramètres",
   "home": "Accueil",
-
-  "initial_page": "Page d'accueil",
-  "welcome_message": "Bienvenue !",
-
+  "login": "Connexion",
+  
+  "initial_page": "Accueil",
+  "welcome_message": "Bienvenue!",
+  
   "about_us": "À propos de nous",
-  "about_content": "Taskfy est une application de gestion des tâches.",
-
+  "about_content": "Taskfy est une application de gestion de tâches.",
+  
   "settings_buttom": "Paramètres",
   "mode_buttom": "Mode",
-
+  
   "text_line": "Ligne",
   "text_column": "Colonne",
-
+  
   "settings_button": "Paramètres",
   "settings_title": "Paramètres",
-  "change_language": "Changer de langue",
-  "select_color": "Sélectionner une couleur",
-
+  "change_language": "Changer la langue",
+  "select_color": "Sélectionnez une couleur",
+  
   "open_file_system": "Ouvrir le système de fichiers",
   "header_bar_title_default": "Aucune tâche ouverte",
-  "text_input_tooltip": "Entrez la tâche ici"
+  "text_input_tooltip": "Entrez votre tâche ici",
+  
+  "login_title": "Connexion",
+  "login_username_label": "Nom d'utilisateur :",
+  "login_password_label": "Mot de passe :",
+  "login_button": "Se connecter",
+  "login_success": "Connexion réussie !",
+  "login_error": "Identifiants invalides !",
+  
+  "prompt_task_name": "Quel nom souhaitez-vous donner à la tâche ?",
+  "add_folder": "Ajouter un dossier",
+  "delete_task": "Supprimer la tâche",
+  "rename_task": "Renommer la tâche",
+  "move_task": "Déplacer la tâche"
 }
+

@@ -3,25 +3,40 @@
   "editor": "Editor",
   "settings": "Einstellungen",
   "home": "Startseite",
-
+  "login": "Anmelden",
+  
   "initial_page": "Startseite",
   "welcome_message": "Willkommen!",
-
+  
   "about_us": "Über uns",
-  "about_content": "Taskfy ist eine Aufgabenverwaltungs-App.",
-
+  "about_content": "Taskfy ist eine Aufgabenverwaltungsanwendung.",
+  
   "settings_buttom": "Einstellungen",
   "mode_buttom": "Modus",
-
+  
   "text_line": "Zeile",
   "text_column": "Spalte",
-
+  
   "settings_button": "Einstellungen",
   "settings_title": "Einstellungen",
   "change_language": "Sprache ändern",
-  "select_color": "Farbe auswählen",
-
+  "select_color": "Wähle eine Farbe",
+  
   "open_file_system": "Dateisystem öffnen",
   "header_bar_title_default": "Keine Aufgabe geöffnet",
-  "text_input_tooltip": "Aufgabe hier eingeben"
+  "text_input_tooltip": "Geben Sie Ihre Aufgabe hier ein",
+  
+  "login_title": "Anmelden",
+  "login_username_label": "Benutzername:",
+  "login_password_label": "Passwort:",
+  "login_button": "Anmelden",
+  "login_success": "Anmeldung erfolgreich!",
+  "login_error": "Ungültige Anmeldedaten!",
+  
+  "prompt_task_name": "Welchen Namen möchten Sie der Aufgabe geben?",
+  "add_folder": "Ordner hinzufügen",
+  "delete_task": "Aufgabe löschen",
+  "rename_task": "Aufgabe umbenennen",
+  "move_task": "Aufgabe verschieben"
 }
+

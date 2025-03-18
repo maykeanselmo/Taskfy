@@ -3,12 +3,13 @@
   "editor": "エディター",
   "settings": "設定",
   "home": "ホーム",
+  "login": "ログイン",
 
-  "initial_page": "ホームページ",
+  "initial_page": "ホーム",
   "welcome_message": "ようこそ！",
 
   "about_us": "私たちについて",
-  "about_content": "Taskfyはタスク管理アプリです。",
+  "about_content": "Taskfyはタスク管理アプリケーションです。",
 
   "settings_buttom": "設定",
   "mode_buttom": "モード",
@@ -18,11 +19,25 @@
 
   "settings_button": "設定",
   "settings_title": "設定",
-  "change_language": "言語を変更",
-  "select_color": "色を選択",
+  "change_language": "言語を変更する",
+  "select_color": "色を選択する",
 
   "open_file_system": "ファイルシステムを開く",
   "header_bar_title_default": "開いているタスクはありません",
-  "text_input_tooltip": "ここにタスクを入力してください"
+  "text_input_tooltip": "ここにタスクを入力してください",
+
+  "login_title": "ログイン",
+  "login_username_label": "ユーザー名:",
+  "login_password_label": "パスワード:",
+  "login_button": "サインイン",
+  "login_success": "ログインに成功しました！",
+  "login_error": "無効な認証情報です！",
+
+  "prompt_task_name": "タスクにどのような名前を付けますか？",
+  "add_folder": "フォルダーを追加",
+  "delete_task": "タスクを削除する",
+  "rename_task": "タスクの名前を変更する",
+  "move_task": "タスクを移動する"
 }
+
 

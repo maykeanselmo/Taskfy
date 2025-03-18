@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './login.css';
+import { t }  from '../utils/translations';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log('Login component rendered'); // Adicione este console.log
+  // Atualiza o título da aba do navegador
+  useEffect(() => {
+    document.title = 'Login'; // Define o título como "Login"
+  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();

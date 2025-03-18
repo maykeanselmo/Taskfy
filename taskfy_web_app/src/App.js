@@ -5,6 +5,7 @@ import Home from './pages/home';
 import About from './pages/about';
 import Editor from './pages/editor';
 import Settings from './pages/settings';
+import Login from './pages/login';
 
 import { t } from './utils/translations';
 
@@ -17,7 +18,8 @@ function App() {
           <Link to="/">{t("home")}</Link> |
           <Link to="/about">{t("about")}</Link> |
           <Link to="/editor">{t("editor")}</Link> |
-          <Link to="/settings">{t("settings")}</Link>
+          <Link to="/settings">{t("settings")}</Link> |
+          <Link to="/login">{t("login")}</Link> 
         </nav>
 
         {/* Rotas */}
@@ -26,6 +28,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/editor" element={<Editor />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

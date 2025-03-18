@@ -2,7 +2,8 @@
   "about": "关于",
   "editor": "编辑器",
   "settings": "设置",
-  "home": "首页",
+  "home": "主页",
+  "login": "登录",
 
   "initial_page": "主页",
   "welcome_message": "欢迎！",
@@ -18,11 +19,23 @@
 
   "settings_button": "设置",
   "settings_title": "设置",
-  "change_language": "更改语言",
+  "change_language": "切换语言",
   "select_color": "选择颜色",
 
   "open_file_system": "打开文件系统",
   "header_bar_title_default": "没有打开的任务",
-  "text_input_tooltip": "在此输入任务"
-}
+  "text_input_tooltip": "在这里输入您的任务",
 
+  "login_title": "登录",
+  "login_username_label": "用户名：",
+  "login_password_label": "密码：",
+  "login_button": "登录",
+  "login_success": "登录成功！",
+  "login_error": "凭证无效！",
+
+  "prompt_task_name": "您想给任务命名为什么？",
+  "add_folder": "添加文件夹",
+  "delete_task": "删除任务",
+  "rename_task": "重命名任务",
+  "move_task": "移动任务"
+}

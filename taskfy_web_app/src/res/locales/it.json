@@ -3,26 +3,40 @@
   "editor": "Editor",
   "settings": "Impostazioni",
   "home": "Home",
-
-  "initial_page": "Pagina iniziale",
+  "login": "Accedi",
+  
+  "initial_page": "Home",
   "welcome_message": "Benvenuto!",
-
+  
   "about_us": "Chi siamo",
-  "about_content": "Taskfy è un'app per la gestione delle attività.",
-
+  "about_content": "Taskfy è un'applicazione per la gestione delle attività.",
+  
   "settings_buttom": "Impostazioni",
   "mode_buttom": "Modalità",
-
+  
   "text_line": "Linea",
   "text_column": "Colonna",
-
+  
   "settings_button": "Impostazioni",
   "settings_title": "Impostazioni",
   "change_language": "Cambia lingua",
-  "select_color": "Seleziona colore",
-
-  "open_file_system": "Apri file system",
-  "header_bar_title_default": "Nessuna attività aperta",
-  "text_input_tooltip": "Inserisci qui il compito"
+  "select_color": "Seleziona un colore",
+  
+  "open_file_system": "Apri il file system",
+  "header_bar_title_default": "Nessun compito aperto",
+  "text_input_tooltip": "Inserisci qui il tuo compito",
+  
+  "login_title": "Accedi",
+  "login_username_label": "Nome utente:",
+  "login_password_label": "Password:",
+  "login_button": "Accedi",
+  "login_success": "Accesso effettuato con successo!",
+  "login_error": "Credenziali non valide!",
+  
+  "prompt_task_name": "Che nome vuoi dare al compito?",
+  "add_folder": "Aggiungi cartella",
+  "delete_task": "Elimina compito",
+  "rename_task": "Rinomina compito",
+  "move_task": "Sposta compito"
 }
 
