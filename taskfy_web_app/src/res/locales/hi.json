@@ -1,0 +1,43 @@
+{
+  "about": "के बारे में",
+  "editor": "संपादक",
+  "settings": "सेटिंग्स",
+  "home": "होम",
+  "login": "लॉग इन",
+
+  "initial_page": "होम",
+  "welcome_message": "स्वागत है!",
+
+  "about_us": "हमारे बारे में",
+  "about_content": "Taskfy एक कार्य प्रबंधन एप्लिकेशन है।",
+
+  "settings_buttom": "सेटिंग्स",
+  "mode_buttom": "मोड",
+
+  "text_line": "पंक्ति",
+  "text_column": "स्तंभ",
+
+  "settings_button": "सेटिंग्स",
+  "settings_title": "सेटिंग्स",
+  "change_language": "भाषा बदलें",
+  "select_color": "एक रंग चुनें",
+
+  "open_file_system": "फ़ाइल सिस्टम खोलें",
+  "header_bar_title_default": "कोई कार्य खुला नहीं है",
+  "text_input_tooltip": "यहाँ अपना कार्य दर्ज करें",
+
+  "login_title": "लॉग इन",
+  "login_username_label": "उपयोगकर्ता नाम:",
+  "login_password_label": "पासवर्ड:",
+  "login_button": "साइन इन",
+  "login_success": "लॉगिन सफल हुआ!",
+  "login_error": "अमान्य प्रमाणीकरण!",
+
+  "prompt_task_name": "आप कार्य को कौन सा नाम देना चाहते हैं?",
+  "add_folder": "फ़ोल्डर जोड़ें",
+  "delete_task": "कार्य हटाएं",
+  "rename_task": "कार्य का नाम बदलें",
+  "move_task": "कार्य स्थानांतरित करें"
+}
+
+

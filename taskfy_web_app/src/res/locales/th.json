@@ -1,0 +1,41 @@
+{
+  "about": "เกี่ยวกับ",
+  "editor": "ตัวแก้ไข",
+  "settings": "การตั้งค่า",
+  "home": "หน้าหลัก",
+  "login": "เข้าสู่ระบบ",
+  
+  "initial_page": "หน้าหลัก",
+  "welcome_message": "ยินดีต้อนรับ!",
+  
+  "about_us": "เกี่ยวกับเรา",
+  "about_content": "Taskfy เป็นแอปพลิเคชันสำหรับจัดการงาน",
+  
+  "settings_buttom": "การตั้งค่า",
+  "mode_buttom": "โหมด",
+  
+  "text_line": "บรรทัด",
+  "text_column": "คอลัมน์",
+  
+  "settings_button": "การตั้งค่า",
+  "settings_title": "การตั้งค่า",
+  "change_language": "เปลี่ยนภาษา",
+  "select_color": "เลือกสี",
+  
+  "open_file_system": "เปิดระบบไฟล์",
+  "header_bar_title_default": "ไม่มีงานที่เปิดอยู่",
+  "text_input_tooltip": "กรอกงานของคุณที่นี่",
+  
+  "login_title": "เข้าสู่ระบบ",
+  "login_username_label": "ชื่อผู้ใช้:",
+  "login_password_label": "รหัสผ่าน:",
+  "login_button": "เข้าสู่ระบบ",
+  "login_success": "เข้าสู่ระบบสำเร็จ!",
+  "login_error": "ข้อมูลรับรองไม่ถูกต้อง!",
+  
+  "prompt_task_name": "คุณต้องการตั้งชื่ออะไรให้กับงาน?",
+  "add_folder": "เพิ่มโฟลเดอร์",
+  "delete_task": "ลบงาน",
+  "rename_task": "เปลี่ยนชื่องาน",
+  "move_task": "ย้ายงาน"
+}

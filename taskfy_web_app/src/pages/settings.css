@@ -10,6 +10,7 @@
 /* Estilo da seção de idioma */
 .language-section {
     margin-bottom: 30px;
+    
 }
 
 .language-buttons {
@@ -17,14 +18,16 @@
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    
 }
 
 .language-buttons button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     background-color: #f0f0f0;
+    color: black;
     transition: background-color 0.3s;
 }
 
@@ -45,16 +48,16 @@
 .color-picker {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 30px;
+    margin-top: 20px;
 }
 
 .color-circle {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 70%;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 7px solid transparent;
     transition: border-color 0.3s;
 }
 
