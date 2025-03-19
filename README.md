@@ -279,9 +279,3 @@ aumentando a produtividade e o controle sobre suas atividades, de forma segura e
 
     Como um usuário, gostaria de visualizar um resumo das minhas tarefas concluídas para acompanhar minha produtividade.
     Como um usuário, gostaria de filtrar tarefas por status, tags ou datas para encontrar informações rapidamente.
-
-📱 Sincronização e Acesso Remoto
-
-    Como um usuário, gostaria de acessar minhas tarefas pelo celular para gerenciar meu trabalho em qualquer lugar.
-    Como um usuário, gostaria de sincronizar minhas tarefas com o Google Drive para ter um backup seguro.
-
