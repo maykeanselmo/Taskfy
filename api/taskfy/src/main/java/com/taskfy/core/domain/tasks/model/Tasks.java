@@ -25,8 +25,9 @@ public class Tasks {
     private Long id;
 
     @NotNull(message = "Folder ID cannot be null")
-    @Column(name = "folder_id", nullable = false)
-    private Long folderId;
+    @ManyToOne
+    @JoinColumn(name = "folder_id", nullable = false)
+    private Folder folder;
 
     @NotBlank(message = "Title cannot be empty")
     @Size(max = 255, message = "Title cannot be longer than 255 characters")
@@ -71,6 +72,5 @@ public class Tasks {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.taskfy.core.domain.tasks.model;
 
+import com.taskfy.core.domain.users.model.Users;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,17 +19,22 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "folder")
 public class Folder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    // Relacionamento muitos-para-um com User (cada folder pertence a um user)
     @NotNull(message = "User ID cannot be null")
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    // Relacionamento auto-referencial: um folder pode ter outro folder como "pasta pai"
+    @ManyToOne
+    @JoinColumn(name = "parent_id", nullable = true)
+    private Folder parentFolder;
 
     @NotBlank(message = "Folder name cannot be empty")
     @Size(max = 255, message = "Folder name cannot be longer than 255 characters")
