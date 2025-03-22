@@ -6,6 +6,8 @@ import { addTask, getTasks, updateTask, deleteTask } from '../services/crud';  /
 import HeaderBar from '../components/editor/headerbar';
 import TextInputField from '../components/editor/text_input_field';
 import Sidebar from '../components/editor/sidebar';
+import { FoldersNav } from '../components/FoldersNav';
+
 
 // Importando o arquivo de estilos
 import './editor.css';
@@ -33,8 +35,12 @@ const Editor = () => {
     };
 
     return (
+
         <div className="editor-container">
+
+
             {/* HeaderBar no topo */}
+           
             <div className="headerbar">
                 <HeaderBar
                     taskTitle={taskTitle}
@@ -46,6 +52,9 @@ const Editor = () => {
 
             {/* Layout com Sidebar à esquerda e TextInputField ocupando o resto do espaço */}
             <div className="main-content">
+                
+                <FoldersNav/>
+                
                 <div className="sidebar">
                     <Sidebar
                         onAddFolder={() => alert("Adicionar pasta")}
