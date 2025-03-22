@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { t, setLanguage } from '../utils/translations';
 import { addTask, getTasks, updateTask, deleteTask } from '../services/crud';  // As funções de IndexedDB
 
 import HeaderBar from '../components/editor/headerbar';
@@ -36,12 +35,7 @@ const Editor = () => {
         <div className="editor-container">
             {/* HeaderBar no topo */}
             <div className="headerbar">
-                <HeaderBar
-                    taskTitle={taskTitle}
-                    onToggleView={toggleEditMode}
-                    onSettingsClick={() => alert(t("settings_button"))}
-                    onOpenFileSystem={() => alert(t("open_file_system"))}
-                />
+                <HeaderBar/>
             </div>
 
             {/* Layout com Sidebar à esquerda e TextInputField ocupando o resto do espaço */}

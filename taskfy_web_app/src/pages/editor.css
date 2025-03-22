@@ -35,7 +35,25 @@
     background-color: white;
     padding: 16px;
     overflow-y: auto; /* Permite rolar o conteúdo */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Alinha o textarea ao centro */
 }
+
+/* Estilo do textarea */
+.textarea-container textarea {
+    width: 100%;  /* Agora usa toda a largura disponível no contêiner */
+    height: 60vh; /* Define a altura inicial para 60% da altura da tela */
+    padding: 16px;
+    font-size: 1rem; /* Tamanho da fonte um pouco maior */
+    background-color: #1e1e1e;
+    color: white;
+    border: none;
+    resize: none; /* Desativa o redimensionamento manual */
+    font-family: 'Courier New', monospace;
+    outline: none;
+}
+
 
 /* Estilo básico para os botões */
 button {
