@@ -1,4 +1,4 @@
-package com.taskfy.core.web.exception;
+package com.taskfy.core.application.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

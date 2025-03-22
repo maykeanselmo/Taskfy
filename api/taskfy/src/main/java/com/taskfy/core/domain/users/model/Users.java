@@ -1,5 +1,6 @@
 package com.taskfy.core.domain.users.model;
 
+import com.taskfy.core.domain.users.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;

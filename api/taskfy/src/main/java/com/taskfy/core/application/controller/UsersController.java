@@ -1,9 +1,13 @@
-package com.taskfy.core.web.controller;
+package com.taskfy.core.application.controller;
 
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.service.UsersService;
-import com.taskfy.core.web.dto.*;
-import com.taskfy.core.web.dto.mapper.UsersMapper;
+import com.taskfy.core.application.dto.mapper.UsersMapper;
+import com.taskfy.core.application.dto.request.UpdatePasswordDto;
+import com.taskfy.core.application.dto.request.UpdateUserDto;
+import com.taskfy.core.application.dto.request.UserCreateDto;
+import com.taskfy.core.application.dto.response.UpdatePasswordResponse;
+import com.taskfy.core.application.dto.response.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

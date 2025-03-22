@@ -1,4 +1,4 @@
-package com.taskfy.core.web.dto;
+package com.taskfy.core.application.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

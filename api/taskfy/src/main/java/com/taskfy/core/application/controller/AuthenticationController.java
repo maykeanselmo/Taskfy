@@ -1,12 +1,12 @@
-package com.taskfy.core.web.controller;
+package com.taskfy.core.application.controller;
 
 
 
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.repository.UsersRepository;
 import com.taskfy.core.infra.security.TokenService;
-import com.taskfy.core.web.dto.AuthenticationDto;
-import com.taskfy.core.web.dto.LoginResponseDto;
+import com.taskfy.core.application.dto.request.AuthenticationDto;
+import com.taskfy.core.application.dto.response.LoginResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

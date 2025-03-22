@@ -1,4 +1,4 @@
-package com.taskfy.core.web.dto;
+package com.taskfy.core.application.dto.request;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;

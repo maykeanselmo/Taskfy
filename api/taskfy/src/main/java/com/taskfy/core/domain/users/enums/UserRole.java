@@ -1,4 +1,4 @@
-package com.taskfy.core.domain.users.model;
+package com.taskfy.core.domain.users.enums;
 
 public enum UserRole {
     ADMIN("admin"),

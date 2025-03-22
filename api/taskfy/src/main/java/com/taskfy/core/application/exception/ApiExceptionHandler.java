@@ -1,4 +1,4 @@
-package com.taskfy.core.web.exception;
+package com.taskfy.core.application.exception;
 
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;

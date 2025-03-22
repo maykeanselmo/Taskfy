@@ -1,6 +1,6 @@
-package com.taskfy.core.web.dto;
+package com.taskfy.core.application.dto.response;
 
-import com.taskfy.core.domain.users.model.UserRole;
+import com.taskfy.core.domain.users.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,8 +1,8 @@
-package com.taskfy.core.web.dto.mapper;
+package com.taskfy.core.application.dto.mapper;
 
 import com.taskfy.core.domain.users.model.Users;
-import com.taskfy.core.web.dto.UserCreateDto;
-import com.taskfy.core.web.dto.UserResponseDto;
+import com.taskfy.core.application.dto.request.UserCreateDto;
+import com.taskfy.core.application.dto.response.UserResponseDto;
 import org.modelmapper.ModelMapper;
 
 public class UsersMapper {
