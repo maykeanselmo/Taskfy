@@ -2,6 +2,7 @@ package com.taskfy.core.application.controller;
 
 import com.taskfy.core.application.dto.mapper.TaskMapper;
 import com.taskfy.core.application.dto.request.TaskCreateDTO;
+import com.taskfy.core.application.dto.request.TaskStatusUpdateDTO;
 import com.taskfy.core.application.dto.response.TaskResponseDTO;
 import com.taskfy.core.domain.tasks.model.Tasks;
 import com.taskfy.core.domain.tasks.service.TaskService;
@@ -55,6 +56,15 @@ public class TaskController {
         List<TaskResponseDTO> tasks = taskService.getTasksByFolder(folderId);
         return ResponseEntity.ok(tasks);
     }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TaskResponseDTO> updateTaskStatus(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid TaskStatusUpdateDTO statusUpdateDTO) {
+
+        TaskResponseDTO updatedTask = taskService.updateTaskStatus(id, statusUpdateDTO.getStatus());
+        return ResponseEntity.ok(updatedTask);
+    }
+
 
 
 }

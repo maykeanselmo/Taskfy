@@ -3,6 +3,7 @@ package com.taskfy.core.domain.tasks.service;
 import com.taskfy.core.application.dto.mapper.TaskMapper;
 import com.taskfy.core.application.dto.request.TaskCreateDTO;
 import com.taskfy.core.application.dto.response.TaskResponseDTO;
+import com.taskfy.core.domain.tasks.enums.Status;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.model.Tasks;
@@ -81,5 +82,15 @@ public class TaskService {
         return tasks.stream()
                 .map(TaskMapper::toResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public TaskResponseDTO updateTaskStatus(Long id, Status newStatus) {
+        Tasks task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
+
+        task.setStatus(newStatus);
+        Tasks updatedTask = taskRepository.save(task);
+        return TaskMapper.toResponseDto(updatedTask);
     }
 }
