@@ -40,6 +40,9 @@ public class Folder {
     @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Folder> subFolders;
 
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tasks> tasks;
+
     @NotBlank(message = "Folder name cannot be empty")
     @Size(max = 255, message = "Folder name cannot be longer than 255 characters")
     @Column(name = "name", nullable = false)
