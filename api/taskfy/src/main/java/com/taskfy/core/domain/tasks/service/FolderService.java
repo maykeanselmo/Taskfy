@@ -1,10 +1,12 @@
 package com.taskfy.core.domain.tasks.service;
 
 import com.taskfy.core.application.dto.request.FolderCreateDTO;
+import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.repository.FolderRepository;
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.repository.UsersRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +40,19 @@ public class FolderService {
         return folderRepository.save(newFolder);
     }
 
+    @Transactional
+    public Folder getFolderByID (Long id){
+        return  folderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Nenhuma pasta foi encontrado com este id: " + id)
+        );
+    }
+
+    @Transactional
+    public void deleteFolder(Long id) {
+        if (!folderRepository.existsById(id)) {
+            throw new FolderNotFoundException("Pasta não encontrada com id: " + id);
+        }
+        folderRepository.deleteById(id);
+    }
 
 }
