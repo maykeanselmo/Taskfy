@@ -10,25 +10,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/v1")
+@RequestMapping("/v1/tasks")
 public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/tasks")
+    @PostMapping()
     public ResponseEntity<TaskResponseDTO> createTask(@Valid @RequestBody TaskCreateDTO dto){
         Tasks task = taskService.createTask(TaskMapper.toTask(dto));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(TaskMapper.toResponseDto(task));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> getTaskById(@PathVariable("id") Long id){
+        Tasks task = taskService.getTaskById(id);
+        return ResponseEntity.ok(TaskMapper.toResponseDto(task));
     }
 }
