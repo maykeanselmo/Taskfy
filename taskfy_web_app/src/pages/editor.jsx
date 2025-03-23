@@ -42,6 +42,7 @@ import {
   NoteAdd as NewTaskIcon
 } from '@mui/icons-material';
 
+<<<<<<< HEAD
 // Dummy data for folders and tasks
 const dummyFolders = [
   {
@@ -69,6 +70,14 @@ const dummyFolders = [
     ]
   }
 ];
+=======
+import HeaderBar from '../components/editor/headerbar';
+import TextInputField from '../components/editor/text_input_field';
+import Sidebar from '../components/editor/sidebar';
+
+// Importando o arquivo de estilos
+import './editor.css';
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
 
 const Editor = () => {
   const navigate = useNavigate();
@@ -87,6 +96,7 @@ const Editor = () => {
   const [dialogValue, setDialogValue] = useState('');
   const [expandedFolders, setExpandedFolders] = useState(['1', '2']);
 
+<<<<<<< HEAD
   // Handle file selection
   const handleFileClick = (file) => {
     if (file.type === 'folder') {
@@ -97,6 +107,12 @@ const Editor = () => {
       }
       return;
     }
+=======
+
+    const toggleEditMode = () => {
+        setIsEditingMode(!isEditingMode);
+    };
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
 
     setActiveFile(file);
     setFileContent(file.content);
