@@ -41,4 +41,9 @@ public class TaskService {
                 () -> new EntityNotFoundException("Nenhuma tarefa foi encontrado com este id: " + id)
         );
     }
+
+    @Transactional
+    public void deleteTask (Long id){
+        taskRepository.deleteById(id);
+    }
 }
