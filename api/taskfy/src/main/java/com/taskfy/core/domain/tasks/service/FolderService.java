@@ -3,6 +3,7 @@ package com.taskfy.core.domain.tasks.service;
 import com.taskfy.core.application.dto.mapper.FolderMapper;
 import com.taskfy.core.application.dto.request.FolderCreateDTO;
 import com.taskfy.core.application.dto.request.UpdateFolderDTO;
+import com.taskfy.core.domain.tasks.exception.AccessDeniedException;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.repository.FolderRepository;
@@ -54,7 +55,7 @@ public class FolderService {
         Folder folder = folderRepository.findFolderWithSubFoldersById(id);
 
         if (!folder.getUser().getId().equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         return folder;
@@ -66,7 +67,7 @@ public class FolderService {
                 .orElseThrow(() -> new FolderNotFoundException("Pasta não encontrada com id: " + id));
 
         if (!folder.getUser().getId().equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         folderRepository.deleteById(id);
@@ -75,7 +76,7 @@ public class FolderService {
     @Transactional
     public List<Folder> getFoldersByUserId(Long userId, Long authenticatedUserId) {
         if (!userId.equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         return folderRepository.findByUserId(userId);
@@ -84,7 +85,7 @@ public class FolderService {
     @Transactional
     public List<Folder> getRootFoldersByUserId(Long userId, Long authenticatedUserId) {
         if (!userId.equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         return folderRepository.findRootFoldersByUserId(userId);
@@ -96,7 +97,7 @@ public class FolderService {
                 .orElseThrow(() -> new FolderNotFoundException("Pasta não encontrada com id: " + folderId));
 
         if (!folder.getUser().getId().equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         return folder.getSubFolders();
@@ -108,7 +109,7 @@ public class FolderService {
                 .orElseThrow(() -> new IllegalArgumentException("Pasta não encontrada"));
 
         if (!folder.getUser().getId().equals(authenticatedUserId)) {
-            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+            throw new AccessDeniedException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
 
         folder.setName(updateFolderDTO.getName());

@@ -1,5 +1,6 @@
 package com.taskfy.core.application.exception;
 
+import com.taskfy.core.domain.tasks.exception.AccessDeniedException;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
@@ -50,8 +51,15 @@ public class ApiExceptionHandler {
     @ExceptionHandler(FolderNotFoundException.class)
     public ResponseEntity<ErrorMessage> folderNotFoundExceptionExcpetion(FolderNotFoundException ex) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> AccessDeniedExceptionExcpetion(AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.FORBIDDEN, ex.getMessage()));
     }
 }
