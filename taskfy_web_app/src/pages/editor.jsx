@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { addTask, getTasks, updateTask, deleteTask } from '../services/crud';  // As funções de IndexedDB
-
 import HeaderBar from '../components/editor/headerbar';
 import TextInputField from '../components/editor/text_input_field';
 import Sidebar from '../components/editor/sidebar';
@@ -13,6 +11,7 @@ const Editor = () => {
     const [taskContent, setTaskContent] = useState("");
     const [taskTitle, setTaskTitle] = useState("Untitled");
     const [isEditingMode, setIsEditingMode] = useState(true);
+
 
     const toggleEditMode = () => {
         setIsEditingMode(!isEditingMode);
