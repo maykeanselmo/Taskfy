@@ -52,7 +52,6 @@ public class ApiExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()));
+                .body(new ErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
-
 }
