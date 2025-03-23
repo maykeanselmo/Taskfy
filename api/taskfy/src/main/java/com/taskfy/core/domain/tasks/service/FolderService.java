@@ -1,6 +1,8 @@
 package com.taskfy.core.domain.tasks.service;
 
+import com.taskfy.core.application.dto.mapper.FolderMapper;
 import com.taskfy.core.application.dto.request.FolderCreateDTO;
+import com.taskfy.core.application.dto.request.UpdateFolderDTO;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.repository.FolderRepository;
@@ -74,8 +76,27 @@ public class FolderService {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new FolderNotFoundException("Pasta não encontrada com id: " + folderId));
 
-        return folder.getSubFolders(); // Retorna a lista de subpastas associadas à pasta
+        return folder.getSubFolders();
     }
+
+    @Transactional
+    public Folder updateFolder(UpdateFolderDTO updateFolderDTO, Long id) {
+
+        Folder folder = folderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pasta não encontrada"));
+
+        folder.setName(updateFolderDTO.getName());
+
+        if (updateFolderDTO.getParentFolderId() != null) {
+            Folder parentFolder = folderRepository.findById(updateFolderDTO.getParentFolderId())
+                    .orElseThrow(() -> new IllegalArgumentException("Pasta pai não encontrada"));
+            folder.setParentFolder(parentFolder);
+        } else {
+            folder.setParentFolder(null);
+        }
+        return folderRepository.save(folder);
+    }
+
 
 
 }
