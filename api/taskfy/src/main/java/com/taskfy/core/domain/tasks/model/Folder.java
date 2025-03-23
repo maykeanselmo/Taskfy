@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -35,6 +36,9 @@ public class Folder {
     @ManyToOne
     @JoinColumn(name = "parent_id", nullable = true)
     private Folder parentFolder;
+
+    @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Folder> subFolders;
 
     @NotBlank(message = "Folder name cannot be empty")
     @Size(max = 255, message = "Folder name cannot be longer than 255 characters")
