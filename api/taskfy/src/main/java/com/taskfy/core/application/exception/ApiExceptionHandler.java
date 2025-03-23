@@ -2,6 +2,7 @@ package com.taskfy.core.application.exception;
 
 import com.taskfy.core.domain.tasks.exception.AccessDeniedException;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
+import com.taskfy.core.domain.tasks.exception.TaskCreationException;
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,7 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.CONFLICT, ex.getMessage()));
     }
+
     @ExceptionHandler(IncorrectPasswordExcpetion.class)
     public ResponseEntity<ErrorMessage> handIncorrectPasswordExcpetion(IncorrectPasswordExcpetion ex) {
         return ResponseEntity
@@ -48,6 +50,7 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
+
     @ExceptionHandler(FolderNotFoundException.class)
     public ResponseEntity<ErrorMessage> folderNotFoundExceptionExcpetion(FolderNotFoundException ex) {
         return ResponseEntity
@@ -55,11 +58,20 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorMessage> AccessDeniedExceptionExcpetion(AccessDeniedException ex) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.FORBIDDEN, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TaskCreationException.class)
+    public ResponseEntity<ErrorMessage> taskCreationExceptionExcpetion(TaskCreationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()));
     }
 }
