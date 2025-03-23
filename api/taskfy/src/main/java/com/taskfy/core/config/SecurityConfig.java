@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/v1/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/v1/tasks").hasRole("ADMIN")
                                 .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
