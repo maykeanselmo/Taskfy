@@ -72,7 +72,7 @@ public class FolderController {
         if (!userId.equals(authenticatedUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Ou lançar uma exceção
         }
-        List<Folder> rootFolders = folderService.getRootFoldersByUserId(userId, authenticatedUser.getId());
+        List<Folder> rootFolders = folderService.getRootFoldersByUserId(authenticatedUser.getId(), userId);
         List<FolderResponseDTO> response = rootFolders.stream()
                 .map(FolderMapper::toDto)
                 .collect(Collectors.toList());
