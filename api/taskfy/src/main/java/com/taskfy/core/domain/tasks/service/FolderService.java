@@ -21,14 +21,15 @@ import java.util.List;
 @Service
 public class FolderService {
 
-    private final FolderRepository folderRepository;;
+    private final FolderRepository folderRepository;
     private final UsersRepository userRepository;
 
     @Transactional
-    public Folder createFolder(@Valid FolderCreateDTO folderCreateDTO) {
+    public Folder createFolder(@Valid FolderCreateDTO folderCreateDTO, Long authenticatedUserId) {
         log.info("Criando pasta: {}", folderCreateDTO.getName());
 
-        Users user = userRepository.findById(folderCreateDTO.getUser().getId())
+        // Verificar se o usuário corresponde ao usuário autenticado
+        Users user = userRepository.findById(authenticatedUserId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         // Se parentFolder estiver presente e tiver um ID, busca no banco; caso contrário, mantém como null (pasta root)
@@ -49,41 +50,66 @@ public class FolderService {
     }
 
     @Transactional
-    public Folder getFolderByID(Long id) {
-        return folderRepository.findFolderWithSubFoldersById(id);
+    public Folder getFolderByID(Long id, Long authenticatedUserId) {
+        Folder folder = folderRepository.findFolderWithSubFoldersById(id);
+
+        if (!folder.getUser().getId().equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+        }
+
+        return folder;
     }
 
     @Transactional
-    public void deleteFolder(Long id) {
-        if (!folderRepository.existsById(id)) {
-            throw new FolderNotFoundException("Pasta não encontrada com id: " + id);
+    public void deleteFolder(Long id, Long authenticatedUserId) {
+        Folder folder = folderRepository.findById(id)
+                .orElseThrow(() -> new FolderNotFoundException("Pasta não encontrada com id: " + id));
+
+        if (!folder.getUser().getId().equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
         }
+
         folderRepository.deleteById(id);
     }
 
     @Transactional
-    public List<Folder> getFoldersByUserId(Long userId) {
+    public List<Folder> getFoldersByUserId(Long userId, Long authenticatedUserId) {
+        if (!userId.equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+        }
+
         return folderRepository.findByUserId(userId);
     }
 
     @Transactional
-    public List<Folder> getRootFoldersByUserId(Long userId) {
+    public List<Folder> getRootFoldersByUserId(Long userId, Long authenticatedUserId) {
+        if (!userId.equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+        }
+
         return folderRepository.findRootFoldersByUserId(userId);
     }
 
     @Transactional
-    public List<Folder> getSubFoldersByFolderId(Long folderId) {
+    public List<Folder> getSubFoldersByFolderId(Long folderId, Long authenticatedUserId) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new FolderNotFoundException("Pasta não encontrada com id: " + folderId));
+
+        if (!folder.getUser().getId().equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+        }
 
         return folder.getSubFolders();
     }
 
     @Transactional
-    public Folder updateFolder(UpdateFolderDTO updateFolderDTO, Long id) {
-
+    public Folder updateFolder(UpdateFolderDTO updateFolderDTO, Long id, Long authenticatedUserId) {
         Folder folder = folderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pasta não encontrada"));
+
+        if (!folder.getUser().getId().equals(authenticatedUserId)) {
+            throw new IllegalArgumentException("Você não tem permissão para visualizar ou modificar esta pasta.");
+        }
 
         folder.setName(updateFolderDTO.getName());
 
@@ -94,9 +120,7 @@ public class FolderService {
         } else {
             folder.setParentFolder(null);
         }
+
         return folderRepository.save(folder);
     }
-
-
-
 }
