@@ -1,5 +1,6 @@
 package com.taskfy.core.domain.tasks.service;
 
+import com.taskfy.core.application.dto.request.TaskCreateDTO;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.model.Tasks;
@@ -45,5 +46,25 @@ public class TaskService {
     @Transactional
     public void deleteTask (Long id){
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Tasks updateTask(Long id, TaskCreateDTO dto) {
+
+        Tasks taskUpdated = getTaskById(id);
+
+        Folder folder = folderRepository.findById(dto.getFolder().getId())
+                .orElseThrow(() -> new FolderNotFoundException("Folder not found with id: " + dto.getFolder().getId()));
+
+        folder.getUser();
+
+        taskUpdated.setTitle(dto.getTitle());
+        taskUpdated.setContent(dto.getContent());
+        taskUpdated.setDueDate(dto.getDueDate());
+        taskUpdated.setPriority(dto.getPriority());
+        taskUpdated.setStatus(dto.getStatus());
+        taskUpdated.setFolder(folder);
+
+        return taskRepository.save(taskUpdated);
     }
 }
