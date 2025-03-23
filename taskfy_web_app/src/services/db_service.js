@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { getUserByUsername, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
+=======
+import { openDatabase, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
 import Folder from '../model/folder';
 import User from '../model/user';
 import Task from '../model/task';
@@ -30,19 +34,26 @@ class DatabaseService {
 
   // Métodos específicos para Users
   async createUser(userData) {
+<<<<<<< HEAD
     const user = new User(userData);
     console.log('Dados do usuário a serem salvos:', user);
     return this.save('users', user);
+=======
+    return this.save('users', new User(userData));
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
   }
 
   async getUser(id) {
     return this.get('users', id);
   }
 
+<<<<<<< HEAD
   async getUserByUsername(username) {
     return getUserByUsername(username);
   }
 
+=======
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
   async updateUser(id, newData) {
     return this.update('users', id, newData);
   }
@@ -96,7 +107,10 @@ class DatabaseService {
   async getAllTasks() {
     return this.getAll('tasks');
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
 }
 
 // Exportando uma instância única para ser usada globalmente
