@@ -29,15 +29,18 @@ public class FolderService {
     public Folder createFolder(@Valid FolderCreateDTO folderCreateDTO, Long authenticatedUserId) {
         log.info("Criando pasta: {}", folderCreateDTO.getName());
 
-        // Verificar se o usuário corresponde ao usuário autenticado
         Users user = userRepository.findById(authenticatedUserId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-        // Se parentFolder estiver presente e tiver um ID, busca no banco; caso contrário, mantém como null (pasta root)
-        Folder parentFolder = (folderCreateDTO.getParentFolder() != null && folderCreateDTO.getParentFolder().getId() != null)
-                ? folderRepository.findById(folderCreateDTO.getParentFolder().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Pasta não encontrada"))
-                : null;
+        Folder parentFolder = null;
+        if (folderCreateDTO.getParentFolder() != null && folderCreateDTO.getParentFolder().getId() != null) {
+            parentFolder = folderRepository.findById(folderCreateDTO.getParentFolder().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Pasta não encontrada"));
+
+            if (!parentFolder.getUser().getId().equals(authenticatedUserId)) {
+                throw new AccessDeniedException("Você não tem permissão para criar uma subpasta nesta pasta de outro usuário.");
+            }
+        }
 
         Folder newFolder = Folder.builder()
                 .user(user)
