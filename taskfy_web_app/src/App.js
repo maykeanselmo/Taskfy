@@ -19,6 +19,7 @@ import About from "./pages/about";
 import Editor from "./pages/editor";
 import Settings from "./pages/settings";
 import Notes from "./pages/notes";
+import Test from "./model/test";
 import { t } from "./utils/translations";
 
 export default function App() {
@@ -113,6 +114,14 @@ export default function App() {
                 <ListItemText primary={t("notes")} />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/test">
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("test")} />
+              </ListItemButton>
+            </ListItem>
           </List>
           <Divider />
         </Drawer>
@@ -126,6 +135,7 @@ export default function App() {
             <Route path="/editor" element={<Editor />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/notes" element={<Notes />} />
+            <Route path="/test" element={<Test />} />
           </Routes>
         </Box>
       </div>
