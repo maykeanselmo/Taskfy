@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -46,6 +48,12 @@ public class TaskController {
         Tasks taskUpdated = taskService.updateTask(id, dto);
         return  ResponseEntity.ok(TaskMapper.toResponseDto(taskUpdated));
 
+    }
+
+    @GetMapping("/folder/{folderId}")
+    public ResponseEntity<List<TaskResponseDTO>> getTasksByFolder(@PathVariable("folderId") Long folderId) {
+        List<TaskResponseDTO> tasks = taskService.getTasksByFolder(folderId);
+        return ResponseEntity.ok(tasks);
     }
 
 

@@ -1,6 +1,8 @@
 package com.taskfy.core.domain.tasks.service;
 
+import com.taskfy.core.application.dto.mapper.TaskMapper;
 import com.taskfy.core.application.dto.request.TaskCreateDTO;
+import com.taskfy.core.application.dto.response.TaskResponseDTO;
 import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.model.Tasks;
@@ -10,8 +12,12 @@ import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -66,5 +72,14 @@ public class TaskService {
         taskUpdated.setFolder(folder);
 
         return taskRepository.save(taskUpdated);
+    }
+
+    public List<TaskResponseDTO> getTasksByFolder(Long folderId) {
+
+        List<Tasks> tasks = taskRepository.findByFolderId(folderId);
+
+        return tasks.stream()
+                .map(TaskMapper::toResponseDto)
+                .collect(Collectors.toList());
     }
 }
