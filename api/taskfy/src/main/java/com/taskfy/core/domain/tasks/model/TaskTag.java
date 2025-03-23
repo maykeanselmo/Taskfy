@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
-import org.springframework.scheduling.config.Task;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +25,7 @@ public class TaskTag {
     @NotNull(message = "Task ID cannot be null")
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    private Tasks task;
 
     @NotNull(message = "Tag ID cannot be null")
     @ManyToOne
