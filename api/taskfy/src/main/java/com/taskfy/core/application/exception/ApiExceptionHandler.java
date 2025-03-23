@@ -1,5 +1,6 @@
 package com.taskfy.core.application.exception;
 
+import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,13 @@ public class ApiExceptionHandler {
     }
     @ExceptionHandler(IncorrectPasswordExcpetion.class)
     public ResponseEntity<ErrorMessage> handIncorrectPasswordExcpetion(IncorrectPasswordExcpetion ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+    @ExceptionHandler(FolderNotFoundException.class)
+    public ResponseEntity<ErrorMessage> folderNotFoundExceptionExcpetion(FolderNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
