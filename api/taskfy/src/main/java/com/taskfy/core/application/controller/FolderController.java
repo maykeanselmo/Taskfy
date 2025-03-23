@@ -2,6 +2,7 @@ package com.taskfy.core.application.controller;
 
 import com.taskfy.core.application.dto.mapper.FolderMapper;
 import com.taskfy.core.application.dto.request.FolderCreateDTO;
+import com.taskfy.core.application.dto.request.UpdateFolderDTO;
 import com.taskfy.core.application.dto.response.FolderResponseDTO;
 import com.taskfy.core.domain.tasks.model.Folder;
 import com.taskfy.core.domain.tasks.service.FolderService;
@@ -71,6 +72,15 @@ public class FolderController {
                 .map(FolderMapper::toDto)
                 .collect(Collectors.toList());
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FolderResponseDTO> updateFolder(@PathVariable Long id,
+                                               @Valid @RequestBody UpdateFolderDTO updateFolderDTO) {
+        // Lógica de atualização
+        Folder updatedFolder = folderService.updateFolder(updateFolderDTO, id);
+        FolderResponseDTO response = FolderMapper.toDto(updatedFolder);
         return ResponseEntity.ok(response);
     }
 
