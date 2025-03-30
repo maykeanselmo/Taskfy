@@ -1,8 +1,6 @@
 package com.taskfy.core.application.exception;
 
-import com.taskfy.core.domain.tasks.exception.AccessDeniedException;
-import com.taskfy.core.domain.tasks.exception.FolderNotFoundException;
-import com.taskfy.core.domain.tasks.exception.TaskCreationException;
+import com.taskfy.core.domain.tasks.exception.*;
 import com.taskfy.core.domain.users.exeption.UserAlreadyExistsException;
 import com.taskfy.core.domain.users.exeption.IncorrectPasswordExcpetion;
 import org.springframework.http.ResponseEntity;
@@ -73,5 +71,19 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()));
+    }
+    @ExceptionHandler(TaskTagNotFoundException.class)
+    public ResponseEntity<ErrorMessage> taskTagNotFoundException(TaskTagNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+    @ExceptionHandler(TagAlreadyAssignedException.class)
+    public ResponseEntity<ErrorMessage> tagAlreadyAssignedException(TagAlreadyAssignedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 }
