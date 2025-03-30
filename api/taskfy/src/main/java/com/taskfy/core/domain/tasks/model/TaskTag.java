@@ -23,15 +23,12 @@ public class TaskTag {
     private Long id;
 
     @NotNull(message = "Task ID cannot be null")
-    @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
-    private Tasks task;
+    @Column(name = "task_id", nullable = false)
+    private Long taskId;  // Agora guarda apenas o ID da Task
 
     @NotNull(message = "Tag ID cannot be null")
-    @ManyToOne
-    @JoinColumn(name = "tag_id", nullable = false)
-    private Tag tag;
-
+    @Column(name = "tag_id", nullable = false)
+    private Long tagId;  // Agora guarda apenas o ID da Tag
 
     @PastOrPresent(message = "Creation date must be in the past or present")
     @Column(name = "created_at", nullable = false)
@@ -40,7 +37,6 @@ public class TaskTag {
     @PastOrPresent(message = "Update date must be in the past or present")
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
 
     @PrePersist
     public void prePersist() {
@@ -54,5 +50,4 @@ public class TaskTag {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
 }
