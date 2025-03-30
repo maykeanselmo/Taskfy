@@ -10,15 +10,14 @@
 /* Estilo da seção de idioma */
 .language-section {
     margin-bottom: 30px;
-    
 }
 
 .language-buttons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
-    
 }
 
 .language-buttons button {
@@ -28,16 +27,23 @@
     cursor: pointer;
     background-color: #f0f0f0;
     color: black;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    outline: none;
 }
 
 .language-buttons button.active {
     background-color: #007bff;
     color: white;
+    font-weight: bold;
 }
 
 .language-buttons button:hover {
     background-color: #ddd;
+    transform: scale(1.05);
+}
+
+.language-buttons button:focus {
+    outline: 2px solid #007bff;
 }
 
 /* Estilo do seletor de cor */
@@ -48,19 +54,26 @@
 .color-picker {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 15px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .color-circle {
     width: 40px;
     height: 40px;
-    border-radius: 70%;
+    border-radius: 50%;
     cursor: pointer;
-    border: 7px solid transparent;
-    transition: border-color 0.3s;
+    border: 4px solid transparent;
+    transition: border-color 0.3s, transform 0.2s;
 }
 
 .color-circle:hover {
     border-color: #000;
+    transform: scale(1.1);
+}
+
+.color-circle.selected {
+    border-color: #000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
