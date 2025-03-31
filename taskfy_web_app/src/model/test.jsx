@@ -9,11 +9,9 @@ const TestComponent = () => {
 
   const saveUser = async () => {
     const newUser = {
-      id: Date.now(),
-      username: 'lucas',
+      username: 'lucas2Doido2',
       nickname: 'kyamel',
       email: 'lucascamelo03@gmail.com',
-      is_active: true,
     };
     try {
       await saveToIndexedDB('users', newUser);
