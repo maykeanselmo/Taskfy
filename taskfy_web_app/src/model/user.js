@@ -1,13 +1,13 @@
 class User {
     constructor({
-      id,
+      id = undefined,
       username,
       nickname,
       email,
       password,
       created_at = new Date().toISOString(),
-      updated_at,
-      is_active,
+      updated_at = created_at,
+      is_active = true,
     }) {
       this.id = id;
       this.username = username;
@@ -19,5 +19,5 @@ class User {
       this.is_active = is_active;
     }
   }
-  
+
   export default User;

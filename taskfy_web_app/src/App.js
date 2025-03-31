@@ -21,6 +21,7 @@ import Settings from "./pages/settings";
 import Notes from "./pages/notes";
 import Test from "./model/test";
 import { t } from "./utils/translations";
+import RegisterPage from "./pages/register";
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -72,6 +73,14 @@ export default function App() {
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("login")} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/register">
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("register")} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -131,6 +140,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/settings" element={<Settings />} />
