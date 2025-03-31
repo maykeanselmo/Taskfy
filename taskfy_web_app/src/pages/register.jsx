@@ -42,6 +42,10 @@ const RegisterPage = () => {
               console.log('Usuário salvo com ID:', savedUser.id);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+              navigate('/notes');
+>>>>>>> 93c4356 (feat: registerPage)
 =======
               navigate('/notes');
 >>>>>>> 93c4356 (feat: registerPage)
