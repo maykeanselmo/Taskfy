@@ -40,6 +40,10 @@ const RegisterPage = () => {
           await dbService.createUser(userData)
             .then((savedUser) => {
               console.log('Usuário salvo com ID:', savedUser.id);
+<<<<<<< HEAD
+=======
+              navigate('/notes');
+>>>>>>> 93c4356 (feat: registerPage)
             })
             .catch((err) => {
               setError(err.message); // Exibe o erro na UI
