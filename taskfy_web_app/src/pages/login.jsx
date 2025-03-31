@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, Typography, Link, Box, Container, CssBaseline } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Atualizado para useNavigate
+import { useNavigate } from 'react-router-dom';
+import { dbService } from '../services/db_service';
 
 const LoginPage = () => {
-  const navigate = useNavigate(); // useNavigate substitui useHistory
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleUsernameChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  // Função de validação de login com placeholder para backend
   const validateCredentials = async (email, password) => {
-    // Aqui você pode substituir por uma chamada real ao seu backend
-    // Para fins de demonstração, a função retorna um usuário válido.
-    const userDatabase = [
-      { email: 'test@example.com', password: 'password123' },
-    ];
+    const user = await dbService.getUser(email);
 
-    const user = userDatabase.find(user => user.email === email);
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
-
+    
     if (user.password !== password) {
       throw new Error('Senha incorreta');
     }
@@ -37,14 +32,16 @@ const LoginPage = () => {
     setError('');
 
     try {
-      await validateCredentials(email, password);
-      navigate('/dashboard');  // Redireciona após login bem-sucedido
+      const user = await validateCredentials(email, password);
+
+      navigate('/tasks'); // Redireciona após login bem-sucedido
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -62,11 +59,11 @@ const LoginPage = () => {
 
         {/* Login via email e senha */}
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
           fullWidth
           value={email}
-          onChange={handleEmailChange}
+          onChange={handleUsernameChange}
           sx={{ mt: 2 }}
         />
         <TextField

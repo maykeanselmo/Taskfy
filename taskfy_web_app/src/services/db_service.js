@@ -30,7 +30,9 @@ class DatabaseService {
 
   // Métodos específicos para Users
   async createUser(userData) {
-    return this.save('users', new User(userData));
+    const user = new User(userData);
+    console.log('Dados do usuário a serem salvos:', user);
+    return this.save('users', user);
   }
 
   async getUser(id) {

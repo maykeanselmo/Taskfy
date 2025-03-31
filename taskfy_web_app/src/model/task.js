@@ -1,6 +1,6 @@
 class Task {
     constructor({
-      id,
+      id = undefined,
       folder_id,
       title,
       description,
@@ -8,7 +8,7 @@ class Task {
       status,
       priority,
       created_at = new Date().toISOString(),
-      updated_at,
+      updated_at = created_at,
     }) {
       this.id = id;
       this.folder_id = folder_id;
