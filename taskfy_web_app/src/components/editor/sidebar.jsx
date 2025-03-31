@@ -1,8 +1,7 @@
 import { t, setLanguage } from '../../utils/translations';
 import CreateTaskButtom from '../create_task_buttom';
 
-const Sidebar = ({ onAddFolder, onAddTask, onDelete, onRename, onMove }) => {
-  // Exemplo de como os dados podem ser exibidos, você pode modificar conforme sua necessidade
+const Sidebar = ({ onAddFolder, onAddTask, onDelete, onRename, onMove, onSetTag }) => {
   return (
       <div className="Sidebar bg-gray-300 p-4">
           <button onClick={onAddFolder} className="w-full mb-4 px-4 py-2 bg-blue-500 text-white rounded">
