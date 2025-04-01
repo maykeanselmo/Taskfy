@@ -3,7 +3,6 @@ import { Button, TextField, Grid, Typography, Link, Box, Container, CssBaseline 
 import { useNavigate } from 'react-router-dom';
 import { dbService } from '../services/db_service';
 import { Link as RouterLink } from 'react-router-dom';
-import RegisterPage from './register';
 import { t } from '../utils/translations';
 
 const LoginPage = () => {
