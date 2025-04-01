@@ -20,11 +20,11 @@ const LoginPage = () => {
     const user = await dbService.getUserByUsername(username);
 
     if (!user) {
-      throw new Error(t('User not found'));
+      throw new Error(t('user_not_found'));
     }
 
     if (user.password !== password) {
-      throw new Error('Wrong password');
+      throw new Error(t('wrong_password'));
     }
 
     return user;
