@@ -21,7 +21,7 @@ const LoginPage = () => {
     if (!user) {
       throw new Error(t('user_not_found'));
     }
-    
+
     if (user.password !== password) {
       throw new Error(t('wrong_password'));
     }
