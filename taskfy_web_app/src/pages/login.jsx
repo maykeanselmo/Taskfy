@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Button, TextField, Grid, Typography, Link, Box, Container, CssBaseline } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { dbService } from '../services/db_service';
+import { Link as RouterLink } from 'react-router-dom';
+import RegisterPage from './register';
+import { t } from '../utils/translations';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -13,15 +16,15 @@ const LoginPage = () => {
   const handleUsernameChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  const validateCredentials = async (email, password) => {
-    const user = await dbService.getUser(email);
+  const validateCredentials = async (username, password) => {
+    const user = await dbService.getUserByUsername(username);
 
     if (!user) {
-      throw new Error('Usuário não encontrado');
+      throw new Error(t('User not found'));
     }
-    
+
     if (user.password !== password) {
-      throw new Error('Senha incorreta');
+      throw new Error('Wrong password');
     }
 
     return user;
@@ -32,9 +35,9 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const user = await validateCredentials(email, password);
+      const user = await validateCredentials(username, password);
 
-      navigate('/tasks'); // Redireciona após login bem-sucedido
+      navigate('/notes'); // Redireciona após login bem-sucedido
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,7 +65,7 @@ const LoginPage = () => {
           label="Username"
           variant="outlined"
           fullWidth
-          value={email}
+          value={username}
           onChange={handleUsernameChange}
           sx={{ mt: 2 }}
         />
@@ -86,19 +89,18 @@ const LoginPage = () => {
           {loading ? 'Carregando...' : 'Entrar'}
         </Button>
 
-        {/* Login via Google */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
-          <Grid item xs>
-            <Link href="#" variant="body2">
-              Esqueceu a senha?
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link href="#" variant="body2">
-              Não tem uma conta? Cadastre-se
-            </Link>
-          </Grid>
+        <Grid item xs>
+          <Link href="#" variant="body2">
+            Esqueceu a senha?
+          </Link>
         </Grid>
+        <Grid item>
+          <Link component={RouterLink} to="/register" variant="body2">
+            Não tem uma conta? Cadastre-se
+          </Link>
+        </Grid>
+      </Grid>
       </Box>
     </Container>
   );

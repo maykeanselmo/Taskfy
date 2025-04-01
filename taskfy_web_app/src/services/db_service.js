@@ -1,4 +1,4 @@
-import { openDatabase, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
+import { getUserByUsername, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
 import Folder from '../model/folder';
 import User from '../model/user';
 import Task from '../model/task';
@@ -37,6 +37,10 @@ class DatabaseService {
 
   async getUser(id) {
     return this.get('users', id);
+  }
+
+  async getUserByUsername(username) {
+    return getUserByUsername(username);
   }
 
   async updateUser(id, newData) {
@@ -92,6 +96,7 @@ class DatabaseService {
   async getAllTasks() {
     return this.getAll('tasks');
   }
+
 }
 
 // Exportando uma instância única para ser usada globalmente
