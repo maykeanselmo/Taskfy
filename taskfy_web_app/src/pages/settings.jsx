@@ -9,9 +9,10 @@ const Settings = () => {
     const [language, setLanguageState] = useRecoilState(languageState);
 
     const HandlechangeLanguage = (lang) => {
-        setLanguageState(setLanguage(lang)); // Altera o idioma e salva no localStorage
+        setLanguage(lang);  // Atualiza o idioma no localStorage
+        setLanguageState(lang);  // Atualiza o estado do Recoil
     };
-
+    
     // Cores disponíveis para o seletor de cor
     const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#33FFF5", "#F5FF33"];
 
