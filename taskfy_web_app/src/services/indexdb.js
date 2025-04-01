@@ -52,7 +52,6 @@ export const saveToIndexedDB = (storeName, data) => {
 };
 
 
-
 export const getFromIndexedDB = async (storeName, key) => {
   try {
     const db = await openDatabase();  // Espera o banco de dados ser aberto
@@ -64,6 +63,27 @@ export const getFromIndexedDB = async (storeName, key) => {
     return new Promise((resolve, reject) => {
       request.onsuccess = (event) => resolve(event.target.result);  // Resolve com o item encontrado
       request.onerror = (error) => reject(error);  // Rejeita caso ocorra um erro
+    });
+  } catch (error) {
+    throw new Error('Erro ao acessar o IndexedDB: ' + error.message);
+  }
+};
+
+export const getUserByUsername = async (username) => {
+  try {
+    const db = await openDatabase(); // Espera o banco de dados ser aberto
+    const transaction = db.transaction('users', 'readonly'); // Transação de leitura na store 'users'
+    const store = transaction.objectStore('users'); // Acessa o objectStore 'users'
+
+    // Acessa o índice pelo 'username'
+    const index = store.index('username');
+    
+    // Faz a busca no índice do 'username'
+    const request = index.get(username);
+
+    return new Promise((resolve, reject) => {
+      request.onsuccess = (event) => resolve(event.target.result); // Retorna o usuário encontrado
+      request.onerror = (error) => reject(error); // Lida com erro
     });
   } catch (error) {
     throw new Error('Erro ao acessar o IndexedDB: ' + error.message);
