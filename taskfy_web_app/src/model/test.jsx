@@ -97,28 +97,3 @@ const TestComponent = () => {
 };
 
 export default TestComponent;
-
-import { dbService } from '../services/db_service';
-
-// Criando um usuário
-dbService.createUser({
-  id: 'user123',
-  username: 'lucas',
-  nickname: 'kyamel',
-  email: 'lucascamelo03@gmail.com',
-  password: '123456',
-  is_active: true
-}).then(() => console.log('Usuário criado com sucesso'));
-
-// Buscando um usuário
-dbService.getUser('user123').then(user => console.log(user));
-
-// Atualizando um usuário
-dbService.updateUser('user123', { nickname: 'KyamelUpdated' })
-  .then(() => console.log('Usuário atualizado'));
-
-// Deletando um usuário
-dbService.deleteUser('user123').then(() => console.log('Usuário deletado'));
-
-// Buscando todas as tasks
-dbService.getAllTasks().then(tasks => console.log(tasks));
