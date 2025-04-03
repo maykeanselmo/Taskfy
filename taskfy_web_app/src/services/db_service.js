@@ -72,48 +72,7 @@ class DatabaseService {
         if (!responseData.token) {
             throw new Error("Token não recebido na resposta");
         }
-
-        // Armazena o token e retorna os dados completos
-        localStorage.setItem('authToken', responseData.token);
         return responseData;
-
-    } catch (error) {
-        console.error("Erro no login:", error.message);
-        throw error;
-    }
-  }
-
-  async login(email, password) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                // Adicione se necessário:
-                // 'Accept': 'application/json'
-            },
-            body: JSON.stringify({ 
-                email: email.trim(), 
-                password: password 
-            })
-        });
-
-        const responseText = await response.text();
-        let responseData;
-
-        try {
-            responseData = JSON.parse(responseText);
-        } catch {
-            responseData = { message: responseText };
-        }
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Erro ${response.status}: ${response.statusText}`);
-      }
-
-      const { token } = responseData;
-      localStorage.setItem('authToken', token); // Armazena o token
-      return token;
 
     } catch (error) {
         console.error("Erro no login:", error.message);
