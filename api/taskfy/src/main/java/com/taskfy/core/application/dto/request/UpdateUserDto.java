@@ -26,9 +26,10 @@ public class UpdateUserDto {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    public UpdateUserDto(String email, String newUsername, String newNickname) {
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+        this.email=email;
+        this.username = newUsername;
+        this.nickname = newNickname;
+    }
 }
