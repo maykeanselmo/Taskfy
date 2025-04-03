@@ -16,14 +16,20 @@ const LoginPage = () => {
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const validateCredentials = async (username, password) => {
-    const resp = await dbService.login(username, password);
-    if (!resp) {
-      throw new Error(t('user_not_found'));
+    try {
+        const resp = await dbService.login(username, password);
+
+        if (!resp || !resp.token) {
+            throw new Error(t('invalid credentials'));
+        }
+
+        // Salva o token no localStorage
+        localStorage.setItem('authToken', resp.token);
+
+        return resp;
+    } catch (error) {
+        throw new Error(t('login_failed'), error); 
     }
-    if (resp.password !== password) {
-      throw new Error(t('wrong_password'));
-    }
-    return resp;
   };
 
   const handleLogin = async () => {
@@ -33,7 +39,7 @@ const LoginPage = () => {
     try {
       const user = await validateCredentials(username, password);
 
-      navigate('/notes'); // Redireciona após login bem-sucedido
+      navigate('/tasks'); // Redireciona após login bem-sucedido
     } catch (err) {
       setError(err.message);
     } finally {
