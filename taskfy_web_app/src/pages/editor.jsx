@@ -42,37 +42,12 @@ import {
   NoteAdd as NewTaskIcon
 } from '@mui/icons-material';
 
-// Dummy data for folders and tasks
-const dummyFolders = [
-  {
-    id: '1',
-    name: 'Project',
-    type: 'folder',
-    children: [
-      { id: '1-1', name: 'index.js', type: 'file', content: 'console.log("Hello World");' },
-      { id: '1-2', name: 'styles.css', type: 'file', content: 'body { margin: 0; }' }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Tasks',
-    type: 'folder',
-    children: [
-      { 
-        id: '2-1', 
-        name: 'Urgent', 
-        type: 'folder',
-        children: [
-          { id: '2-1-1', name: 'Fix bug', type: 'task', content: 'Fix the login bug' }
-        ]
-      }
-    ]
-  }
-];
+import { dbService } from '../services/db_service';
 
 const Editor = () => {
+  const [parentFolderId, setParentFolderId] = useState(null);
   const navigate = useNavigate();
-  const [folders, setFolders] = useState(dummyFolders);
+  const [folders, setFolders] = useState([]);
   const [openFiles, setOpenFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
   const [fileContent, setFileContent] = useState('');
@@ -85,48 +60,235 @@ const Editor = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState('');
   const [dialogValue, setDialogValue] = useState('');
-  const [expandedFolders, setExpandedFolders] = useState(['1', '2']);
+  const [expandedFolders, setExpandedFolders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Handle file selection
-  const handleFileClick = (file) => {
-    if (file.type === 'folder') {
-      if (expandedFolders.includes(file.id)) {
-        setExpandedFolders(expandedFolders.filter(id => id !== file.id));
-      } else {
-        setExpandedFolders([...expandedFolders, file.id]);
+    // Carrega as pastas e tarefas ao iniciar
+    useEffect(() => {
+      const loadData = async () => {
+        try {
+          const token = localStorage.getItem('authToken');
+          if (!token) {
+            navigate('/login');
+            return;
+          }
+
+          // Carrega pastas raiz
+          const user = getUser(email, token);
+          const rootFolders = await dbService.getRootFoldersByUser(user.id,token);
+          
+          // Carrega tarefas
+          const tasks = await dbService.getAllTasks(token);
+          
+          // Mapeia para a estrutura esperada pelo componente
+          const mappedFolders = rootFolders.map(folder => ({
+            ...folder,
+            type: 'folder',
+            children: tasks
+              .filter(task => task.folderId === folder.id)
+              .map(task => ({
+                ...task,
+                type: 'task',
+                content: task.description || ''
+              }))
+          }));
+  
+          setFolders(mappedFolders);
+          setExpandedFolders(mappedFolders.map(f => f.id));
+        } catch (error) {
+          console.error('Error loading data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      loadData();
+    }, [navigate]);
+  
+    // Handle file selection
+    const handleFileClick = async (file) => {
+      if (file.type === 'folder') {
+        if (expandedFolders.includes(file.id)) {
+          setExpandedFolders(expandedFolders.filter(id => id !== file.id));
+        } else {
+          try {
+            const token = localStorage.getItem('authToken');
+            const subFolders = await dbService.getSubFolders(file.id, token);
+            const subTasks = await dbService.getTasksByFolder(file.id, token);
+
+            const updatedChildren = [
+              ...subFolders.map(f => ({ ...f, type: 'folder', children: [] })),
+              ...subTasks.map(t => ({ ...t, type: 'task', content: t.description || '' }))
+            ];
+  
+            setFolders(prev => updateFolderStructure(prev, file.id, updatedChildren));
+            setExpandedFolders([...expandedFolders, file.id]);
+          } catch (error) {
+            console.error('Error loading folder contents:', error);
+          }
+        }
+        return;
       }
-      return;
-    }
+  
+      setActiveFile(file);
+      setFileContent(file.content);
+      
+      if (!openFiles.some(f => f.id === file.id)) {
+        setOpenFiles([...openFiles, file]);
+      }
+    };
+  
+    // Atualiza a estrutura de pastas recursivamente
+    const updateFolderStructure = (folders, folderId, newChildren) => {
+      return folders.map(folder => {
+        if (folder.id === folderId) {
+          return { ...folder, children: newChildren };
+        }
+        if (folder.children) {
+          return { ...folder, children: updateFolderStructure(folder.children, folderId, newChildren) };
+        }
+        return folder;
+      });
+    };
+  
+    // Handle content change
+    const handleContentChange = (e) => {
+      const newContent = e.target.value;
+      setFileContent(newContent);
+      
+      // Atualiza na lista de arquivos abertos
+      setOpenFiles(openFiles.map(file => 
+        file.id === activeFile.id ? { ...file, content: newContent } : file
+      ));
+      
+      // Atualiza a posição do cursor
+      const lines = newContent.substr(0, e.target.selectionStart).split('\n');
+      setCursorPosition({
+        line: lines.length,
+        column: lines[lines.length - 1].length + 1
+      });
+    };
 
-    setActiveFile(file);
-    setFileContent(file.content);
-    
-    // Add to open files if not already there
-    if (!openFiles.some(f => f.id === file.id)) {
-      setOpenFiles([...openFiles, file]);
-    }
+    // Handle create new item
+    const handleDialogSubmit = async () => {
+      try {
+          const token = localStorage.getItem('authToken');
+          if (!token) {
+              navigate('/login');
+              return;
+          }
+
+          if (dialogType === 'newFolder') {
+            const folderData = {
+                user: { id: 1 }, // Defina dinamicamente se possível
+                parentFolder: parentFolderId ? { id: parentFolderId } : null,
+                name: dialogValue
+            };
+        
+            const newFolder = await dbService.createFolder(folderData, token);
+        
+            setFolders(prev => currentFolder
+                ? updateFolderStructure(prev, currentFolder.id, [
+                    ...(currentFolder.children || []),
+                    { 
+                        id: newFolder.id,
+                        name: newFolder.name,
+                        parentFolderId: newFolder.parentFolderId, 
+                        type: 'folder', 
+                        children: []
+                    }
+                ])
+                : [...prev, { 
+                    id: newFolder.id,
+                    name: newFolder.name,
+                    parentFolderId: newFolder.parentFolderId, 
+                    type: 'folder', 
+                    children: []
+                }]
+            );
+          } else if (dialogType === 'newTask') {
+              const taskData = {
+                  name: dialogValue,
+                  description: '',
+                  folderId: currentFolder?.id || null,
+                  status: 'PENDING'
+              };
+  
+              const newTask = await dbService.createTask(taskData, token);
+  
+              setFolders(prev => currentFolder
+                  ? updateFolderStructure(prev, currentFolder.id, [
+                      ...(currentFolder.children || []),
+                      { ...newTask, type: 'task', content: '' }
+                  ])
+                  : [...prev, { ...newTask, type: 'task', content: '' }]
+              );
+          } else if (dialogType === 'rename') {
+              if (currentFolder.type === 'folder') {
+                  await dbService.updateFolder(currentFolder.id, { name: dialogValue }, token);
+              } else if (currentFolder.type === 'task') {
+                  await dbService.updateTask(currentFolder.id, { name: dialogValue }, token);
+              }
+  
+              setFolders(prev => updateFolderStructure(prev, currentFolder.id, { ...currentFolder, name: dialogValue }));
+          }
+  
+          setOpenDialog(false);
+      } catch (error) {
+          console.error('Erro ao criar/atualizar item:', error.message);
+      }
   };
+
+
+    // Handle delete item
+    const handleDelete = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+  
+        if (currentFolder.type === 'folder') {
+          await dbService.deleteFolder(currentFolder.id, token);
+        } else if (currentFolder.type === 'task') {
+          await dbService.deleteTask(currentFolder.id, token);
+        }
+  
+        // Remove da estrutura de pastas
+        const removeFromFolders = (items) => {
+          return items.filter(item => item.id !== currentFolder.id).map(item => {
+            if (item.children) {
+              return { ...item, children: removeFromFolders(item.children) };
+            }
+            return item;
+          });
+        };
+        
+        setFolders(removeFromFolders(folders));
+        
+        // Remove dos arquivos abertos
+        setOpenFiles(openFiles.filter(file => file.id !== currentFolder.id));
+        
+        // Fecha se for o arquivo ativo
+        if (activeFile?.id === currentFolder.id) {
+          setActiveFile(openFiles.find(file => file.id !== currentFolder.id) || null);
+        }
+        
+        handleMenuClose();
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    };
+
+
+
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     const file = openFiles[newValue];
     setActiveFile(file);
     setFileContent(file.content);
-  };
-
-  // Handle content change
-  const handleContentChange = (e) => {
-    setFileContent(e.target.value);
-    // Update in openFiles
-    setOpenFiles(openFiles.map(file => 
-      file.id === activeFile.id ? { ...file, content: e.target.value } : file
-    ));
-    // Update cursor position
-    const lines = e.target.value.substr(0, e.target.selectionStart).split('\n');
-    setCursorPosition({
-      line: lines.length,
-      column: lines[lines.length - 1].length + 1
-    });
   };
 
   // Handle sidebar resize
@@ -180,118 +342,48 @@ const Editor = () => {
     setOpenDialog(false);
   };
 
-  const handleDialogSubmit = () => {
-    if (dialogType === 'newFolder') {
-      const newFolder = {
-        id: `new-${Date.now()}`,
-        name: dialogValue,
-        type: 'folder',
-        children: []
-      };
-      
-      if (currentFolder) {
-        // Add to current folder
-        setFolders(folders.map(folder => 
-          folder.id === currentFolder.id 
-            ? { ...folder, children: [...folder.children, newFolder] } 
-            : folder
-        ));
-      } else {
-        // Add to root
-        setFolders([...folders, newFolder]);
-      }
-    } else if (dialogType === 'newFile') {
-      const newFile = {
-        id: `new-${Date.now()}`,
-        name: dialogValue,
-        type: 'file',
-        content: ''
-      };
-      
-      if (currentFolder) {
-        // Add to current folder
-        setFolders(folders.map(folder => 
-          folder.id === currentFolder.id 
-            ? { ...folder, children: [...folder.children, newFile] } 
-            : folder
-        ));
-      } else {
-        // Add to root
-        setFolders([...folders, newFile]);
-      }
-    } else if (dialogType === 'newTask') {
-      const newTask = {
-        id: `new-${Date.now()}`,
-        name: dialogValue,
-        type: 'task',
-        content: ''
-      };
-      
-      if (currentFolder) {
-        // Add to current folder
-        setFolders(folders.map(folder => 
-          folder.id === currentFolder.id 
-            ? { ...folder, children: [...folder.children, newTask] } 
-            : folder
-        ));
-      } else {
-        // Add to root
-        setFolders([...folders, newTask]);
-      }
-    } else if (dialogType === 'rename') {
-      // Update in folders structure
-      const updateFolders = (items) => {
-        return items.map(item => {
-          if (item.id === currentFolder.id) {
-            return { ...item, name: dialogValue };
-          }
-          if (item.children) {
-            return { ...item, children: updateFolders(item.children) };
-          }
-          return item;
-        });
-      };
-      
-      const updatedFolders = updateFolders(folders);
-      setFolders(updatedFolders);
-      
-      // Update in openFiles if this file is open
-      setOpenFiles(openFiles.map(file => 
-        file.id === currentFolder.id ? { ...file, name: dialogValue } : file
-      ));
-      
-      // Update activeFile if this is the active file
-      if (activeFile?.id === currentFolder.id) {
-        setActiveFile({ ...activeFile, name: dialogValue });
-      }
-    }
-    setOpenDialog(false);
-  };
+  // Carrega as pastas e tarefas ao iniciar
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
 
-  const handleDelete = () => {
-    if (currentFolder) {
-      // Remove from folders structure
-      const removeFromFolders = (items) => {
-        return items.filter(item => item.id !== currentFolder.id).map(item => {
-          if (item.children) {
-            return { ...item, children: removeFromFolders(item.children) };
-          }
-          return item;
-        });
-      };
-      
-      setFolders(removeFromFolders(folders));
-      
-      // Remove from openFiles if open
-      setOpenFiles(openFiles.filter(file => file.id !== currentFolder.id));
-      
-      // Close if this is the active file
-      if (activeFile?.id === currentFolder.id) {
-        setActiveFile(openFiles.find(file => file.id !== currentFolder.id) || null);
+        // Carrega pastas raiz
+        const rootFolders = await dbService.getRootFoldersByUser(token);
+        
+        // Carrega tarefas
+        const tasks = await dbService.getAllTasks(token);
+        
+        // Mapeia para a estrutura esperada pelo componente
+        const mappedFolders = rootFolders.map(folder => ({
+          ...folder,
+          type: 'folder',
+          children: tasks
+            .filter(task => task.folderId === folder.id)
+            .map(task => ({
+              ...task,
+              type: 'task',
+              content: task.description || ''
+            }))
+        }));
+
+        setFolders(mappedFolders);
+        setExpandedFolders(mappedFolders.map(f => f.id));
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
       }
-    }
-    handleMenuClose();
-  };
+    };
+
+    loadData();
+  }, [navigate]);
+
+
 
   // Render folder tree recursively
   const renderFolder = (folder) => {
@@ -301,14 +393,14 @@ const Editor = () => {
       'file': <FileIcon fontSize="small" />,
       'task': <NewTaskIcon fontSize="small" />
     }[folder.type] || <FileIcon fontSize="small" />;
-    
+
     return (
       <React.Fragment key={folder.id}>
-        <ListItem 
+        <ListItem
           disablePadding 
           onContextMenu={(e) => handleContextMenu(e, folder)}
         >
-          <ListItemButton 
+          <ListItemButton
             onClick={() => handleFileClick(folder)}
             sx={{ pl: folder.type === 'folder' ? 2 : 4 }}
           >
@@ -333,10 +425,14 @@ const Editor = () => {
     );
   };
 
+  const saveFolder = () => {
+    activeFile
+  }
+
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />
-      
+
       {/* Left Sidebar */}
       <Paper 
         elevation={2} 
@@ -495,7 +591,7 @@ const Editor = () => {
               }}
             />
           ) : (
-            <Box sx={{ 
+            <Box sx={{
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 
@@ -509,7 +605,7 @@ const Editor = () => {
         
         {/* Status Bar */}
         <Box 
-          sx={{ 
+          sx={{
             p: 1,
             display: 'flex',
             justifyContent: 'space-between',

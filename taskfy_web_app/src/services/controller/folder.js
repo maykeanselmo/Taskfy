@@ -1,10 +1,11 @@
 // folderService.js
 
 import { API_BASE_URL } from './const';
+import { VER } from './const';
 
 export const createFolder = async (folderData, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL/v1/folder}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/folders`, { // Ajuste a rota se necessário
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -14,13 +15,18 @@ export const createFolder = async (folderData, token) => {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to create folder');
+            let errorMessage = `Erro ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.message || errorMessage;
+            } catch (e) {
+                // Se não puder converter para JSON, mantém a mensagem de erro padrão
+            }
+            throw new Error(errorMessage);
         }
-
         return await response.json();
     } catch (error) {
-        console.error('Error creating folder:', error);
+        console.error('Erro ao criar pasta:', error.message);
         throw error;
     }
 };
@@ -47,7 +53,7 @@ export const getFolderById = async (id, token) => {
 
 export const deleteFolder = async (id, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/folders/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -57,8 +63,7 @@ export const deleteFolder = async (id, token) => {
         if (!response.ok) {
             throw new Error('Failed to delete folder');
         }
-
-        return true; // Success
+        return true
     } catch (error) {
         console.error('Error deleting folder:', error);
         throw error;
@@ -107,7 +112,7 @@ export const getRootFoldersByUser = async (userId, token) => {
 
 export const getSubFolders = async (folderId, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${folderId}/subfolders`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/folders/${folderId}/subfolders`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
