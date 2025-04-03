@@ -16,17 +16,14 @@ const LoginPage = () => {
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const validateCredentials = async (username, password) => {
-    const user = await dbService.getUserByUsername(username);
-
-    if (!user) {
+    const resp = await dbService.login(username, password);
+    if (!resp) {
       throw new Error(t('user_not_found'));
     }
-
-    if (user.password !== password) {
+    if (resp.password !== password) {
       throw new Error(t('wrong_password'));
     }
-
-    return user;
+    return resp;
   };
 
   const handleLogin = async () => {

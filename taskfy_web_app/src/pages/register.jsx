@@ -42,12 +42,8 @@ const RegisterPage = () => {
             password: password
           };
           console.log('Dados do usuário a serem salvos:', userData);
-          user = await dbService.createUser(userData)
+          const user = await dbService.createUser(userData)
           console.log("New user: ", user)
-          .catch((err) => {
-            setError(err.message); // Exibe o erro na UI
-          });
-
         } catch (err) {
           setError(err.message);
         } finally {

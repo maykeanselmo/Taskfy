@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'http://localhost:8080/v1/folders';
+export const API_BASE_URL = 'http://localhost:8080';
