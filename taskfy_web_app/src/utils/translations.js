@@ -1,6 +1,3 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { languageState } from '../model/state';
-
 // Importando as traduções de arquivos JSON
 const translations = {
   en: require('../res/locales/en.json'),
@@ -20,18 +17,20 @@ const translations = {
   zh: require('../res/locales/zh.json')  // Chinês
 };
 
-// Função para obter a tradução com base na chave e no idioma atual
+// Estado global do idioma (fora do React)
+let currentLanguage = localStorage.getItem('language') || 'en';
+
+// Função para traduzir uma chave
 export const t = (key) => {
-  const language = useRecoilValue(languageState); // Usa o estado global do idioma
-  return translations[language]?.[key] || translations["en"]?.[key] || key;
+  return translations[currentLanguage]?.[key] || translations["en"]?.[key] || key;
 };
 
-// Função para mudar o idioma e salvar no localStorage
+// Função para mudar o idioma
 export const setLanguage = (newLanguage) => {
+  currentLanguage = newLanguage;
   localStorage.setItem('language', newLanguage);
-  return newLanguage;
 };
 
-
-
+// Função para obter o idioma atual
+export const getLanguage = () => currentLanguage;
 

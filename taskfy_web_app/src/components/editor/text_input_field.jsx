@@ -5,6 +5,7 @@ import FormatBold from '@mui/icons-material/FormatBold';
 import FormatItalic from '@mui/icons-material/FormatItalic';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Check from '@mui/icons-material/Check';
+import { dbService } from '../../services/db_service';
 
 const TextInputField = ({ value, onChange }) => {
   const [italic, setItalic] = useState(false);
@@ -44,6 +45,18 @@ const TextInputField = ({ value, onChange }) => {
       textAreaRef.current.focus();
     }
   };
+
+  const handleSave = async () => {
+    const updatedTask = {
+      ...task,  // Assuming the task object is available
+      content: taskContent, // Updated content
+      updated_at: new Date().toISOString(),
+    };
+
+    await dbService.updateTask(updatedTask);  // Save updated task to IndexedDB
+    alert("Tarefa salva com sucesso!");
+  };
+
 
   // UseEffect para ajustar o tamanho do textarea na primeira renderização
   useEffect(() => {
@@ -136,7 +149,12 @@ const TextInputField = ({ value, onChange }) => {
             {t("text_column")}: {cursorPosition - value.lastIndexOf('\n', cursorPosition - 1)}
           </div>
 
-          <Button sx={{ ml: 'auto' }}>Send</Button>
+          <Button
+            sx={{ ml: 'auto' }}
+            onClick={handleSave}
+          >
+            Save
+          </Button>
         </Box>
       </div>
     </FormControl>
