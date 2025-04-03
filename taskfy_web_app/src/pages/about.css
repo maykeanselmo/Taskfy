@@ -1,0 +1,92 @@
+/* Estilo Global */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8; /* Cor de fundo suave */
+  }
+  
+  /* Caixa Principal */
+  .about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f8;
+    padding: 20px;
+  }
+  
+  /* Estilizando o Card */
+  .MuiCard-root {
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    margin: 0 auto;
+  }
+  
+  /* Card Content */
+  .MuiCardContent-root {
+    padding: 24px;
+  }
+  
+  /* Títulos */
+  .MuiTypography-h5 {
+    text-align: center;
+    color: #1976d2;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  
+  .MuiTypography-h6 {
+    color: #1976d2;
+    font-size: 1.25rem;
+  }
+  
+  .MuiTypography-body1 {
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  /* Caixas de lista de funcionalidades */
+  .MuiBox-root {
+    margin-left: 20px;
+  }
+  
+  /* Rodapé */
+  footer {
+    background-color: #1976d2;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.875rem;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 600px) {
+    /* Ajuste para telas menores */
+    .MuiCard-root {
+      max-width: 100%;
+      margin: 10px;
+    }
+  
+    .MuiTypography-h5 {
+      font-size: 1.5rem;
+    }
+  
+    .MuiTypography-h6 {
+      font-size: 1rem;
+    }
+  
+    .MuiTypography-body1 {
+      font-size: 0.9rem;
+    }
+  }
+  

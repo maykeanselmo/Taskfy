@@ -21,63 +21,67 @@ import Settings from "./pages/settings";
 import Notes from "./pages/notes";
 import Test from "./model/test";
 import { t } from "./utils/translations";
+import RegisterPage from "./pages/register";
+
+import {
+  Login as LoginIcon,
+  HowToReg as RegisterIcon,
+  Home as HomeIcon,
+  Info as AboutIcon,
+  Code as EditorIcon,
+  Settings as SettingsIcon,
+  Notes as NotesIcon,
+  BugReport as TestIcon
+} from '@mui/icons-material';
 
 export default function App() {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(true);
 
-  const toggleDrawer = (open) => {
-    setDrawerOpen(open);
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
   return (
     <Router>
-      <div className="App">
-        {/* Botão de menu que desaparece quando o Drawer está aberto */}
-        {!drawerOpen && (
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => toggleDrawer(true)}
-            sx={{
-              position: "absolute",
-              left: 10,
-              top: 10,
-              zIndex: 1300, // Garante que o botão fique acima de outros elementos
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
-
-        {/* Drawer Temporário */}
+      <Box sx={{ display: 'flex', width: '100%' }}>
+        {/* Drawer com largura em porcentagem */}
         <Drawer
           sx={{
-            width: 240,
+            width: drawerOpen ? '15%' : 0,
             flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: 240,
-              boxSizing: "border-box",
+            '& .MuiDrawer-paper': {
+              width: '15%',
+              boxSizing: 'border-box',
+              position: 'fixed',
+              height: '100%',
+              transition: 'transform 0.3s ease',
+              transform: drawerOpen ? 'translateX(0)' : 'translateX(-100%)',
             },
           }}
-          variant="temporary"
-          anchor="left"
+          variant="persistent"
           open={drawerOpen}
-          onClose={() => toggleDrawer(false)} // Fecha apenas quando clicar fora
         >
           <List>
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/login">
                 <ListItemIcon>
-                  <InboxIcon />
+                  <LoginIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("login")} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
+              <ListItemButton component={Link} to="/register">
+                <ListItemIcon>
+                  <RegisterIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("register")} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
               <ListItemButton component={Link} to="/">
                 <ListItemIcon>
-                  <InboxIcon />
+                  <HomeIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("home")} />
               </ListItemButton>
@@ -85,7 +89,7 @@ export default function App() {
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/about">
                 <ListItemIcon>
-                  <MailIcon />
+                  <AboutIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("about")} />
               </ListItemButton>
@@ -93,7 +97,7 @@ export default function App() {
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/editor">
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditorIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("editor")} />
               </ListItemButton>
@@ -101,7 +105,7 @@ export default function App() {
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/settings">
                 <ListItemIcon>
-                  <MailIcon />
+                  <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("settings")} />
               </ListItemButton>
@@ -109,7 +113,7 @@ export default function App() {
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/notes">
                 <ListItemIcon>
-                  <InboxIcon />
+                  <NotesIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("notes")} />
               </ListItemButton>
@@ -117,7 +121,7 @@ export default function App() {
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/test">
                 <ListItemIcon>
-                  <InboxIcon />
+                  <TestIcon />
                 </ListItemIcon>
                 <ListItemText primary={t("test")} />
               </ListItemButton>
@@ -126,11 +130,49 @@ export default function App() {
           <Divider />
         </Drawer>
 
-        {/* Conteúdo da aplicação */}
-        <Box sx={{ padding: 2 }}>
+        {/* Conteúdo principal */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: '100%',
+            ml: drawerOpen ? '0%' : '0',
+            transition: 'margin-left 0.3s ease',
+            position: 'relative'
+          }}
+        >
+          {/* Único botão de toggle */}
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer}
+            sx={{
+              position: "fixed",
+              left: drawerOpen ? '240px' : '16px', // Remove o cálculo anterior
+              top: 16,
+              zIndex: 1300,
+              transition: 'left 0.3s ease',
+              backgroundColor: 'background.paper',
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: '0 4px 4px 0', // Arredonda apenas o lado direito
+              width: 32,
+              height: 32,
+              transform: drawerOpen ? 'translateX(-50%)' : 'translateX(0)',
+              '&:hover': {
+                backgroundColor: 'action.hover'
+              }
+            }}
+          >
+            <MenuIcon fontSize="small" />
+          </IconButton>
+          
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/settings" element={<Settings />} />
@@ -138,7 +180,7 @@ export default function App() {
             <Route path="/test" element={<Test />} />
           </Routes>
         </Box>
-      </div>
+      </Box>
     </Router>
   );
 }
