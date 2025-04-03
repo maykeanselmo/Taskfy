@@ -7,17 +7,18 @@ import { t } from '../utils/translations';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [username, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleUsernameChange = (e) => setEmail(e.target.value);
+  const handleEemailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  const validateCredentials = async (username, password) => {
+  const validateCredentials = async (email, password) => {
+    console.log(email, password)
     try {
-        const resp = await dbService.login(username, password);
+        const resp = await dbService.login(email, password);
 
         if (!resp || !resp.token) {
             throw new Error(t('invalid credentials'));
@@ -28,16 +29,18 @@ const LoginPage = () => {
 
         return resp;
     } catch (error) {
-        throw new Error(t('login_failed'), error); 
+        console.error('Erro ao validar credenciais:', error.message);
+        throw new Error(t('login_failed'));
     }
   };
+
 
   const handleLogin = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const user = await validateCredentials(username, password);
+      const user = await validateCredentials(email, password);
 
       navigate('/tasks'); // Redireciona após login bem-sucedido
     } catch (err) {
@@ -64,11 +67,11 @@ const LoginPage = () => {
 
         {/* Login via email e senha */}
         <TextField
-          label="Username"
+          label="Email"
           variant="outlined"
           fullWidth
-          value={username}
-          onChange={handleUsernameChange}
+          value={email}
+          onChange={handleEemailChange}
           sx={{ mt: 2 }}
         />
         <TextField
