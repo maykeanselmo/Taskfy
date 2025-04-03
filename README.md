@@ -2,14 +2,15 @@
 Gerenciador de tarefas moderno e personalizável, com Java Spring Boot no back-end e React no front-end. Organize, priorize e conclua suas atividades com eficiência.
 
 ## Índice
-1. [Objetivo do Projeto](#objetivo-do-projeto)
-2. [Funcionalidades Básicas](#funcionalidades-básicas)
-3. [Funcionalidades Avançadas (Opcional)](#funcionalidades-avançadas-opcional)
-4. [Requisitos não funcionais](#requisitos-não-funcionais)
-5. [Back-End: Java Spring Boot](#back-end-java-spring-boot)
-6. [Banco de Dados: PostgreSQL](#banco-de-dados-postgresql)
-7. [Front-End: React](#front-end-react)
-8. [Roadmap do Projeto Taskfy](#roadmap-do-projeto-taskfy)
+1. [Diagramas e Portfólio](#diagramas-e-portfólio)
+2. [Objetivo do Projeto](#objetivo-do-projeto)
+3. [Funcionalidades Básicas](#funcionalidades-básicas)
+4. [Funcionalidades Avançadas (Opcional)](#funcionalidades-avançadas-opcional)
+5. [Requisitos não funcionais](#requisitos-não-funcionais)
+6. [Back-End: Java Spring Boot](#back-end-java-spring-boot)
+7. [Banco de Dados: PostgreSQL](#banco-de-dados-postgresql)
+8. [Front-End: React](#front-end-react)
+9. [Roadmap do Projeto Taskfy](#roadmap-do-projeto-taskfy)
    - [Fase 1: Configuração do Ambiente](#fase-1-configuração-do-ambiente)
    - [Fase 2: Configuração do Banco de Dados](#fase-2-configuração-do-banco-de-dados)
    - [Fase 3: Desenvolvimento do Back-End](#fase-3-desenvolvimento-do-back-end)
@@ -17,7 +18,18 @@ Gerenciador de tarefas moderno e personalizável, com Java Spring Boot no back-e
    - [Fase 5: Testes](#fase-5-testes)
    - [Fase 6: Deploy](#fase-6-deploy)
    - [Fase 7: Manutenção](#fase-7-manutenção)
-9. [Backlog do Produto](#backlog-do-produto)
+10. [Backlog do Produto](#backlog-do-produto)
+
+## Diagramas e Portfólio
+
+Nesta seção, você encontrará uma coleção de diagramas e exemplos que ilustram o desenvolvimento e a arquitetura do projeto. Esses diagramas ajudam a visualizar os principais fluxos de dados, processos e a estrutura geral da aplicação, eles podem ser vistos na pasta abaixo:
+
+- [Diagramas](diagrams/)
+
+Além disso, apresento um portfólio com as implementações e recursos desenvolvidos ao longo do projeto, proporcionando uma visão mais detalhada das funcionalidades e da evolução do sistema, o portfólio pode ser visto acessando o link:
+
+- [Portfólio](https://www.figma.com/proto/2dJVSNOqTT36K9vJ1kB9qB/Engenharia-de-Software?node-id=2102-163&t=rgcBKS7cS1CJ76ib-1&starting-point-node-id=2102%3A163&show-proto-sidebar=1)
+
 
 ## Objetivo do Projeto
 Criar uma aplicação que permita aos usuários organizarem suas tarefas e projetos,
