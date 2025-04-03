@@ -16,12 +16,12 @@ import {
   Tab,
   AppBar,
   Toolbar,
-  Button,
   Menu,
   MenuItem,
   Dialog,
   DialogTitle,
   DialogContent,
+  Button,
   DialogActions,
   Paper,
   CssBaseline
@@ -42,10 +42,6 @@ import {
   NoteAdd as NewTaskIcon
 } from '@mui/icons-material';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 // Dummy data for folders and tasks
 const dummyFolders = [
   {
@@ -73,17 +69,6 @@ const dummyFolders = [
     ]
   }
 ];
-<<<<<<< HEAD
-=======
-import HeaderBar from '../components/editor/headerbar';
-import TextInputField from '../components/editor/text_input_field';
-import Sidebar from '../components/editor/sidebar';
-
-// Importando o arquivo de estilos
-import './editor.css';
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 
 const Editor = () => {
   const navigate = useNavigate();
@@ -101,26 +86,6 @@ const Editor = () => {
   const [dialogType, setDialogType] = useState('');
   const [dialogValue, setDialogValue] = useState('');
   const [expandedFolders, setExpandedFolders] = useState(['1', '2']);
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-  // Handle file selection
-  const handleFileClick = (file) => {
-    if (file.type === 'folder') {
-      if (expandedFolders.includes(file.id)) {
-        setExpandedFolders(expandedFolders.filter(id => id !== file.id));
-      } else {
-        setExpandedFolders([...expandedFolders, file.id]);
-      }
-      return;
-    }
-=======
-
-    const toggleEditMode = () => {
-        setIsEditingMode(!isEditingMode);
-    };
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
 
   // Handle file selection
   const handleFileClick = (file) => {
@@ -132,7 +97,6 @@ const Editor = () => {
       }
       return;
     }
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 
     setActiveFile(file);
     setFileContent(file.content);

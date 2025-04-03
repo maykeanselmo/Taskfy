@@ -1,22 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
-import { getUserByUsername, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
-=======
-import { openDatabase, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
-import { openDatabase, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-<<<<<<< HEAD
-=======
-import { openDatabase, saveToIndexedDB, getFromIndexedDB, deleteFromIndexedDB, updateIndexedDB, getAllFromIndexedDB } from './indexdb';
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
+
 import Folder from '../model/folder';
 import User from '../model/user';
 import Task from '../model/task';
@@ -48,52 +30,23 @@ class DatabaseService {
 
   // Métodos específicos para Users
   async createUser(userData) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
+
     const user = new User(userData);
     console.log('Dados do usuário a serem salvos:', user);
     return this.save('users', user);
-=======
-    return this.save('users', new User(userData));
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
-    return this.save('users', new User(userData));
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-<<<<<<< HEAD
-=======
-    return this.save('users', new User(userData));
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
+
   }
 
   async getUser(id) {
     return this.get('users', id);
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
+
   async getUserByUsername(username) {
     return getUserByUsername(username);
   }
 
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-<<<<<<< HEAD
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
+
   async updateUser(id, newData) {
     return this.update('users', id, newData);
   }
@@ -147,22 +100,7 @@ class DatabaseService {
   async getAllTasks() {
     return this.getAll('tasks');
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-<<<<<<< HEAD
-=======
->>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
-=======
->>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 }
 
 // Exportando uma instância única para ser usada globalmente
