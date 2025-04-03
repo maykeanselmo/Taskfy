@@ -38,4 +38,9 @@ public class UserCreateDto {
     private boolean active;
     private UserRole role;
 
+    public UserCreateDto(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

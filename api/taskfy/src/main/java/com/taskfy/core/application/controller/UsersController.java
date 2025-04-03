@@ -42,9 +42,9 @@ public class UsersController {
         UserResponseDto userResponseDto = UsersMapper.toDto(user);
         return ResponseEntity.ok(userResponseDto);
     }
-    @GetMapping("/users/email")
-    public ResponseEntity<UserResponseDto> getUserByEmail(@Valid @RequestBody UserEmailDTO dto) {
-            Users user = usersService.getUserByEmail(dto.getEmail());
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("email")String email) {
+            Users user = usersService.getUserByEmail(email);
             return ResponseEntity.ok(UsersMapper.toDto(user));
 
     }
