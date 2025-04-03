@@ -221,6 +221,7 @@ class DatabaseService {
         console.error('Error creating user:', error);
         throw error;
     }
+  }
   async deleteFolder(id, token){
     try {
       const resp = await deleteFolder(id, token)
@@ -284,6 +285,7 @@ class DatabaseService {
           console.error('Error updating user:', error);
           throw error;
       }
+  }
   async getUserByEmail(email, token) {
       try {
           const apiUser = await getUserByEmail(email, token);
@@ -312,21 +314,9 @@ class DatabaseService {
       } catch (error) {
           console.error('Error fetching users:', error);
       }
-  async getAllUsers(token, page, size, sortBy, direction) {
-      try {
-          return await getAllUsers(token, page, size, sortBy, direction);
-      } catch (error) {
-          console.error('Error fetching users:', error);
-      }
   }
 
-  async updatePassword(id, passwordData, token) {
-      try {
-          return await updatePassword(id, passwordData, token);
-      } catch (error) {
-          console.error('Error updating password:', error);
-          throw error;
-      }
+
   async updatePassword(id, passwordData, token) {
       try {
           return await updatePassword(id, passwordData, token);
@@ -368,6 +358,7 @@ class DatabaseService {
     } catch (apiError) {
         console.warn('Falling back to local storage for task:', id);
     }
+  }
   async deleteUser(id, token) {
       try {
           await deleteUser(id, token);
@@ -410,24 +401,9 @@ class DatabaseService {
         console.error('Error deleting task:', error);
         throw error;
     }
-  async deleteTask(id, token) {
-    try {
-        await deleteTask(id, token);
-        return true;
-    } catch (error) {
-        console.error('Error deleting task:', error);
-        throw error;
-    }
   }
 
-  async updateTask(id, taskData, token) {
-    try {
-        const apiTask = await updateTask(id, taskData, token);
-        return apiTask;
-    } catch (error) {
-        console.error('Error updating task:', error);
-        throw error;
-    }
+
   async updateTask(id, taskData, token) {
     try {
         const apiTask = await updateTask(id, taskData, token);
@@ -438,16 +414,6 @@ class DatabaseService {
     }
   }
 
-  async getTasksByFolder(folderId, token) {
-    try {
-        console.log('Tasks for folder', folderId, ':', token);
-        const resp  = await getTasksByFolder(folderId, token);
-        console.log(resp)
-        return resp
-
-    } catch (error) {
-        console.error('Error fetching tasks by folder:', error);
-    }
   async getTasksByFolder(folderId, token) {
     try {
         console.log('Tasks for folder', folderId, ':', token);
