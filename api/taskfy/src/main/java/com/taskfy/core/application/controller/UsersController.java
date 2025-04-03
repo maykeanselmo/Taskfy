@@ -1,5 +1,6 @@
 package com.taskfy.core.application.controller;
 
+import com.taskfy.core.application.dto.request.UserEmailDTO;
 import com.taskfy.core.domain.users.model.Users;
 import com.taskfy.core.domain.users.service.UsersService;
 import com.taskfy.core.application.dto.mapper.UsersMapper;
@@ -8,6 +9,7 @@ import com.taskfy.core.application.dto.request.UpdateUserDto;
 import com.taskfy.core.application.dto.request.UserCreateDto;
 import com.taskfy.core.application.dto.response.UpdatePasswordResponse;
 import com.taskfy.core.application.dto.response.UserResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,12 @@ public class UsersController {
 
         UserResponseDto userResponseDto = UsersMapper.toDto(user);
         return ResponseEntity.ok(userResponseDto);
+    }
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("email")String email) {
+            Users user = usersService.getUserByEmail(email);
+            return ResponseEntity.ok(UsersMapper.toDto(user));
+
     }
 
     @PutMapping("/users/{id}")
