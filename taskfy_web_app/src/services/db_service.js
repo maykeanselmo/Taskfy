@@ -83,6 +83,38 @@ class DatabaseService {
     }
   }
 
+  async login(email, password) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      // Clonar a resposta para evitar o erro de "Body already consumed"
+      const responseClone = response.clone();
+  
+      let responseData;
+      try {
+        responseData = await response.json();
+      } catch {
+        responseData = { message: await responseClone.text() }; // Usa o clone para ler como texto
+      }
+
+      if (!response.ok) {
+        throw new Error(responseData.message || `Erro ${response.status}: ${response.statusText}`);
+      }
+
+      const { token } = responseData;
+      localStorage.setItem('authToken', token); // Armazena o token
+      return token;
+
+    } catch (error) {
+      console.error('Erro no login:', error.message);
+      throw error;
+    }
+  }
+
 ////////////////////////////// FOLDER //////////////////////////////
   async createFolder(folderData, token) {
     try {
