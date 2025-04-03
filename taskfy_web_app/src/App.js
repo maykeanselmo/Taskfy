@@ -18,7 +18,7 @@ import Home from "./pages/home";
 import About from "./pages/about";
 import Editor from "./pages/editor";
 import Settings from "./pages/settings";
-import Notes from "./pages/notes";
+import TasksViewer from "./pages/tasks";
 import Test from "./model/test";
 import { t } from "./utils/translations";
 import RegisterPage from "./pages/register";
@@ -111,11 +111,11 @@ export default function App() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to="/notes">
+              <ListItemButton component={Link} to="/tasks">
                 <ListItemIcon>
                   <NotesIcon />
                 </ListItemIcon>
-                <ListItemText primary={t("notes")} />
+                <ListItemText primary={t("tasks")} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -176,7 +176,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/notes" element={<Notes />} />
+            <Route path="/tasks" element={<TasksViewer />} />
             <Route path="/test" element={<Test />} />
           </Routes>
         </Box>

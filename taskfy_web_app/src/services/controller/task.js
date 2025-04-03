@@ -132,20 +132,21 @@ export const updateTaskStatus = async (id, statusUpdate, token) => {
 
 export const getAllTasks = async (token) => {
     try {
-        const response = await fetch(API_BASE_URL, {
+        const response = await fetch(`${API_BASE_URL}/tasks`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch all tasks');
+            throw new Error(`Erro ${response.status}`);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error fetching all tasks:', error);
+        console.error('Error fething all tasks:', error.message);
         throw error;
     }
 };

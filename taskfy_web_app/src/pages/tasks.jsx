@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Card,
@@ -31,6 +31,8 @@ import {
   Create as CreateIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { dbService } from "../services/db_service";
+
 
 // Dummy data
 const initialNotes = [
@@ -41,8 +43,9 @@ const initialNotes = [
 
 const dummyFolders = ["Work", "Personal", "Ideas", "Projects"];
 
-function NotesViewer() {
-  const [notes, setNotes] = useState(initialNotes);
+function TasksViewer() {
+  const token = localStorage.getItem("authToken");
+  const [tasks, setTasks] = useState(initialNotes);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentNote, setCurrentNote] = useState(null);
   const [openMoveDialog, setOpenMoveDialog] = useState(false);
@@ -50,6 +53,19 @@ function NotesViewer() {
   const [newName, setNewName] = useState("");
   const [newFolderName, setNewFolderName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const tasksData = await dbService.getAllTasks(token);
+        setTasks(tasksData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTasks();
+  }, []); // O array vazio garante que só roda ao montar o componente
 
   // Menu handlers
   const handleMenuOpen = (event, note) => {
@@ -72,7 +88,7 @@ function NotesViewer() {
   const handleDelete = (noteId) => {
     // Dummy API call simulation
     console.log("Deleting note:", noteId);
-    setNotes(notes.filter(note => note.id !== noteId));
+    setTasks(tasks.filter(note => note.id !== noteId));
     handleMenuClose();
   };
 
@@ -90,7 +106,7 @@ function NotesViewer() {
   const confirmRename = () => {
     // Dummy API call simulation
     console.log("Renaming note:", currentNote.id, "to", newName);
-    setNotes(notes.map(note => 
+    setTasks(tasks.map(note => 
       note.id === currentNote.id ? { ...note, title: newName } : note
     ));
     setOpenRenameDialog(false);
@@ -99,7 +115,7 @@ function NotesViewer() {
   const confirmMove = (folder) => {
     // Dummy API call simulation
     console.log("Moving note:", currentNote.id, "to folder:", folder);
-    setNotes(notes.map(note => 
+    setTasks(tasks.map(note => 
       note.id === currentNote.id ? { ...note, folder } : note
     ));
     setOpenMoveDialog(false);
@@ -133,7 +149,7 @@ function NotesViewer() {
       </Box>
 
       <Grid container spacing={3}>
-        {notes.map((note) => (
+        {tasks.map((note) => (
           <Grid item xs={12} sm={6} md={4} key={note.id}>
             <Card sx={{ 
               height: '100%', 
@@ -269,4 +285,4 @@ function NotesViewer() {
   );
 }
 
-export default NotesViewer;
+export default TasksViewer;
