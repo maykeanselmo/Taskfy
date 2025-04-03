@@ -4,7 +4,7 @@ import { API_BASE_URL } from './const';
 
 export const createFolder = async (folderData, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}`, {
+        const response = await fetch(`${API_BASE_URL/v1/folder}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
