@@ -90,7 +90,7 @@ export const updateTask = async (id, taskData, token) => {
 
 export const getTasksByFolder = async (folderId, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}${VER}/tasks/${folderId}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks/folder/${folderId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -98,7 +98,15 @@ export const getTasksByFolder = async (folderId, token) => {
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
             throw new Error('Failed to fetch tasks by folder');
+        }
+
+        // Check if response body is empty
+        if (response.status === 204) {
+            console.log('No tasks found for this folder');
+            return []; // Return empty array if no content is returned
         }
 
         return await response.json();
@@ -107,6 +115,7 @@ export const getTasksByFolder = async (folderId, token) => {
         throw error;
     }
 };
+
 
 export const updateTaskStatus = async (id, statusUpdate, token) => {
     try {
@@ -128,44 +137,5 @@ export const updateTaskStatus = async (id, statusUpdate, token) => {
     } catch (error) {
         console.error('Error updating task status:', error);
         throw error;
-    }
-};
-
-export const getAllTasks = async (token) => {
-    try {
-        if (!token) {
-            throw new Error("Token de autenticação não encontrado");
-        }
-
-        const response = await fetch(`${API_BASE_URL}${VER}/tasks`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        // Tratamento avançado da resposta
-        const responseText = await response.text();
-        let responseData;
-        
-        try {
-            responseData = responseText ? JSON.parse(responseText) : {};
-        } catch (e) {
-            console.warn("Resposta não-JSON recebida:", responseText);
-            responseData = { message: responseText || "Resposta inválida do servidor" };
-        }
-
-        if (!response.ok) {
-            const errorMsg = responseData.message || 
-                          `Erro ${response.status}: ${response.statusText}`;
-            throw new Error(errorMsg);
-        }
-
-        return responseData;
-
-    } catch (error) {
-        console.error('Error fetching tasks:', error.message);
-        throw new Error(error.message || "Falha na comunicação com o servidor");
     }
 };

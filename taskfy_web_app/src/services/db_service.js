@@ -20,7 +20,8 @@ import {
   updateUser,
   getAllUsers,
   updatePassword,
-  deleteUser
+  deleteUser,
+  getUserByEmail
 } from './controller//user';
 
 import { 
@@ -30,7 +31,6 @@ import {
   updateTask,
   getTasksByFolder,
   updateTaskStatus,
-  getAllTasks
 } from './controller/task';
 
 class DatabaseService {
@@ -167,9 +167,9 @@ class DatabaseService {
     }
   }
 
-  async getRootFoldersByUser(id, token) {
+  async getRootFoldersByUser(userid, token) {
     try {
-      const resp = await getRootFoldersByUser(id, token)
+      const resp = await getRootFoldersByUser(userid, token)
       return resp
     } catch (error) {
       console.warn(error)
@@ -192,12 +192,13 @@ class DatabaseService {
     }
   }
 
-  async getUser(id, token) {
+  async getUserByEmail(email, token) {
       try {
-          const apiUser = await getUserById(id, token);
+          const apiUser = await getUserByEmail(email, token);
+          console.log(apiUser)
           return apiUser;
       } catch (apiError) {
-          console.warn('Falling back to local storage for user:', id);
+          console.warn(apiError);
 
       }
   }
@@ -286,7 +287,11 @@ class DatabaseService {
 
   async getTasksByFolder(folderId, token) {
     try {
-        return await getTasksByFolder(folderId, token);
+        console.log('Tasks for folder', folderId, ':', token);
+        const resp  = await getTasksByFolder(folderId, token);
+        console.log(resp)
+        return resp
+
     } catch (error) {
         console.error('Error fetching tasks by folder:', error);
     }
@@ -301,15 +306,6 @@ class DatabaseService {
         throw error;
     }
   }
-  async getAllTasks(token) {
-    try {
-        return await getAllTasks(token);
-    } catch (error) {
-        console.error(error);
-        return []; // Retorna um array vazio para evitar falhas no frontend
-    }
-  }
-
 }
 
 // Exportando uma instância única para ser usada globalmente

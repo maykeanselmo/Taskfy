@@ -1,5 +1,6 @@
 // userService.js
 import { API_BASE_URL } from "./const";
+import { VER } from "./const";
 
 export const createUser = async (userData) => {
     try {
@@ -36,6 +37,26 @@ export const createUser = async (userData) => {
 export const getUserById = async (id, token) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;
+    }
+};
+
+export const getUserByEmail = async (email, token) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}${VER}/users/email/${email}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
