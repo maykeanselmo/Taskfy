@@ -3,22 +3,32 @@ import { API_BASE_URL } from "./const";
 
 export const createUser = async (userData) => {
     try {
-        const response = await fetch(`${API_BASE_URL}`, {
+        if (!userData || !userData.name || !userData.email || !userData.username || !userData.password) {
+            throw new Error('Missing required user fields');
+        }
+        const response = await fetch(`${API_BASE_URL}/v1/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify(userData) // Pode enviar o objeto diretamente
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to create user');
+            let errorMessage = 'Failed to create user';
+            try {
+                const errorResponse = await response.json(); // Tenta pegar erro em JSON
+                errorMessage = errorResponse.message || errorMessage;
+            } catch (_) {
+                const textError = await response.text();
+                if (textError) errorMessage = textError;
+            }
+            throw new Error(errorMessage);
         }
 
         return await response.json();
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error creating user:', error.message);
         throw error;
     }
 };
