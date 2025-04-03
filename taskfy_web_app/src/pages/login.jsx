@@ -7,36 +7,43 @@ import { t } from '../utils/translations';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [username, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleUsernameChange = (e) => setEmail(e.target.value);
+  const handleEemailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  const validateCredentials = async (username, password) => {
-    const user = await dbService.getUserByUsername(username);
+  const validateCredentials = async (email, password) => {
+    console.log(email, password)
+    try {
+        const resp = await dbService.login(email, password);
 
-    if (!user) {
-      throw new Error(t('user_not_found'));
+        if (!resp || !resp.token) {
+            throw new Error(t('invalid credentials'));
+        }
+
+        // Salva o token no localStorage
+        localStorage.setItem('authToken', resp.token);
+        localStorage.setItem('email', email);
+
+        return resp;
+    } catch (error) {
+        console.error('Erro ao validar credenciais:', error.message);
+        throw new Error(t('login_failed'));
     }
-
-    if (user.password !== password) {
-      throw new Error(t('wrong_password'));
-    }
-
-    return user;
   };
+
 
   const handleLogin = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const user = await validateCredentials(username, password);
+      const user = await validateCredentials(email, password);
 
-      navigate('/notes'); // Redireciona após login bem-sucedido
+      navigate('/tasks'); // Redireciona após login bem-sucedido
     } catch (err) {
       setError(err.message);
     } finally {
@@ -61,11 +68,11 @@ const LoginPage = () => {
 
         {/* Login via email e senha */}
         <TextField
-          label="Username"
+          label="Email"
           variant="outlined"
           fullWidth
-          value={username}
-          onChange={handleUsernameChange}
+          value={email}
+          onChange={handleEemailChange}
           sx={{ mt: 2 }}
         />
         <TextField

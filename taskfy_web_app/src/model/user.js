@@ -2,7 +2,7 @@ class User {
     constructor({
       id = undefined,
       username,
-      nickname,
+      name,
       email,
       password,
       created_at = new Date().toISOString(),
@@ -11,7 +11,7 @@ class User {
     }) {
       this.id = id;
       this.username = username;
-      this.nickname = nickname;
+      this.name = name;
       this.email = email;
       this.password = password;
       this.created_at = created_at; // Se 'created_at' não for fornecido, usa o valor padrão
