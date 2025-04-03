@@ -87,20 +87,24 @@ class DatabaseService {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            headers: { 
+                'Content-Type': 'application/json',
+                // Adicione se necessário:
+                // 'Accept': 'application/json'
+            },
+            body: JSON.stringify({ 
+                email: email.trim(), 
+                password: password 
+            })
         });
 
-        // 1. Lê a resposta como TEXTO primeiro
         const responseText = await response.text();
-
         let responseData;
+
         try {
-            // 2. Tenta converter para JSON (se possível)
             responseData = JSON.parse(responseText);
         } catch {
-            // 3. Se não for JSON, usa o texto puro como mensagem de erro
-            responseData = { message: responseText || "Erro desconhecido" };
+            responseData = { message: responseText };
         }
 
       if (!response.ok) {
@@ -113,7 +117,7 @@ class DatabaseService {
 
     } catch (error) {
         console.error("Erro no login:", error.message);
-        throw error; // Reenvia o erro para quem chamou a função
+        throw error;
     }
   }
 
