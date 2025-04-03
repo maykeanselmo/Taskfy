@@ -1,7 +1,35 @@
-
 import Folder from '../model/folder';
 import User from '../model/user';
 import Task from '../model/task';
+
+import { 
+  createFolder,
+  getFolderById,
+  deleteFolder,
+  getFoldersByUser,
+  getRootFoldersByUser,
+  getSubFolders,
+  updateFolder
+} from './controller/folder';
+
+import { 
+  createUser,
+  getUserById,
+  updateUser,
+  getAllUsers,
+  updatePassword,
+  deleteUser
+} from './controller//user';
+
+import { 
+  createTask,
+  getTaskById,
+  deleteTask,
+  updateTask,
+  getTasksByFolder,
+  updateTaskStatus,
+  getAllTasks
+} from './controller/task';
 
 class DatabaseService {
   constructor() {
@@ -28,77 +56,186 @@ class DatabaseService {
     return getAllFromIndexedDB(storeName);
   }
 
-  // Métodos específicos para Users
+////////////////////////////// FOLDER //////////////////////////////
+  async createFolder(folderData, token) {
+    try {
+        // Primeiro tenta criar na API
+        const apiFolder = await createFolder(folderData, token);
+
+        // Se sucesso, salva localmente
+        const localFolder = new Folder({
+            ...apiFolder,
+            id: apiFolder.id
+        });
+
+        await this.save('folders', localFolder);
+        return localFolder;
+    } catch (error) {
+        console.error('Error creating folder:', error);
+        throw error;
+    }
+  }
+
+  async getFolder(id, token) {
+      try {
+          // Tenta buscar da API primeiro
+          const apiFolder = await getFolderById(id, token);
+
+          // Atualiza cache local
+          await this.save('folders', apiFolder);
+          return apiFolder;
+      } catch (apiError) {
+          console.warn('Falling back to local storage for folder:', id);
+          return this.get('folders', id); // Fallback para IndexedDB
+      }
+  }
+
+////////////////////////////// USER //////////////////////////////
   async createUser(userData) {
+    try {
+        const apiUser = await createUser(userData);
+        const localUser = new User({
+            ...apiUser,
+            id: apiUser.id
+        });
 
-    const user = new User(userData);
-    console.log('Dados do usuário a serem salvos:', user);
-    return this.save('users', user);
-
+        await this.save('users', localUser);
+        return localUser;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        throw error;
+    }
   }
 
-  async getUser(id) {
-    return this.get('users', id);
+  async getUser(id, token) {
+      try {
+          const apiUser = await getUserById(id, token);
+          await this.save('users', apiUser);
+          return apiUser;
+      } catch (apiError) {
+          console.warn('Falling back to local storage for user:', id);
+          return this.get('users', id);
+      }
   }
 
-
-  async getUserByUsername(username) {
-    return getUserByUsername(username);
+  async updateUser(id, userData, token) {
+      try {
+          const apiUser = await updateUser(id, userData, token);
+          await this.save('users', apiUser);
+          return apiUser;
+      } catch (error) {
+          console.error('Error updating user:', error);
+          throw error;
+      }
   }
 
-
-  async updateUser(id, newData) {
-    return this.update('users', id, newData);
+  async getAllUsers(token, page, size, sortBy, direction) {
+      try {
+          return await getAllUsers(token, page, size, sortBy, direction);
+      } catch (error) {
+          console.error('Error fetching users:', error);
+          return this.getAll('users'); // Fallback local
+      }
   }
 
-  async deleteUser(id) {
-    return this.delete('users', id);
+  async updatePassword(id, passwordData, token) {
+      try {
+          return await updatePassword(id, passwordData, token);
+      } catch (error) {
+          console.error('Error updating password:', error);
+          throw error;
+      }
   }
 
-  async getAllUsers() {
-    return this.getAll('users');
+  async deleteUser(id, token) {
+      try {
+          await deleteUser(id, token);
+          await this.delete('users', id); // Remove localmente também
+          return true;
+      } catch (error) {
+          console.error('Error deleting user:', error);
+          throw error;
+      }
   }
 
-  // Métodos específicos para Folders
-  async createFolder(folderData) {
-    return this.save('folders', new Folder(folderData));
+////////////////////////////// TASK //////////////////////////////
+  async createTask(taskData, token) {
+    try {
+        const apiTask = await createTask(taskData, token);
+        const localTask = new Task({
+            ...apiTask,
+            id: apiTask.id
+        });
+        await this.save('tasks', localTask);
+        return localTask;
+    } catch (error) {
+        console.error('Error creating task:', error);
+        throw error;
+    }
   }
 
-  async getFolder(id) {
-    return this.get('folders', id);
+  async getTask(id, token) {
+    try {
+        const apiTask = await getTaskById(id, token);
+        await this.save('tasks', apiTask);
+        return apiTask;
+    } catch (apiError) {
+        console.warn('Falling back to local storage for task:', id);
+        return this.get('tasks', id);
+    }
   }
 
-  async updateFolder(id, newData) {
-    return this.update('folders', id, newData);
+  async deleteTask(id, token) {
+    try {
+        await deleteTask(id, token);
+        await this.delete('tasks', id);
+        return true;
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        throw error;
+    }
   }
 
-  async deleteFolder(id) {
-    return this.delete('folders', id);
+  async updateTask(id, taskData, token) {
+    try {
+        const apiTask = await updateTask(id, taskData, token);
+        await this.save('tasks', apiTask);
+        return apiTask;
+    } catch (error) {
+        console.error('Error updating task:', error);
+        throw error;
+    }
   }
 
-  async getAllFolders() {
-    return this.getAll('folders');
+  async getTasksByFolder(folderId, token) {
+    try {
+        return await getTasksByFolder(folderId, token);
+    } catch (error) {
+        console.error('Error fetching tasks by folder:', error);
+        // Fallback: Get all local tasks and filter by folderId
+        const allTasks = await this.getAll('tasks');
+        return allTasks.filter(task => task.folderId === folderId);
+    }
   }
 
-  // Métodos específicos para Tasks
-  async createTask(taskData) {
-    return this.save('tasks', new Task(taskData));
+  async updateTaskStatus(id, statusUpdate, token) {
+    try {
+        const apiTask = await updateTaskStatus(id, statusUpdate, token);
+        await this.save('tasks', apiTask);
+        return apiTask;
+    } catch (error) {
+        console.error('Error updating task status:', error);
+        throw error;
+    }
   }
 
-  async getTask(id) {
-    return this.get('tasks', id);
-  }
-
-  async updateTask(id, newData) {
-    return this.update('tasks', id, newData);
-  }
-
-  async deleteTask(id) {
-    return this.delete('tasks', id);
-  }
-
-  async getAllTasks() {
-    return this.getAll('tasks');
+  async getAllTasks(token) {
+    try {
+        return await getAllTasks(token);
+    } catch (error) {
+        console.error('Error fetching all tasks:', error);
+        return this.getAll('tasks'); // Fallback to local storage
+    }
   }
 
 }
