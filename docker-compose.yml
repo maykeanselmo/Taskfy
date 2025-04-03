@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:latest
@@ -34,8 +35,6 @@ services:
     container_name: node_frontend
     build:
       context: ./taskfy_web_app
-      args:
-        BUILD_FRONTEND: ${BUILD_FRONTEND}  # Pass the environment variable
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskfy
       SPRING_DATASOURCE_USERNAME: taskfy
