@@ -26,6 +26,7 @@ const LoginPage = () => {
 
         // Salva o token no localStorage
         localStorage.setItem('authToken', resp.token);
+        localStorage.setItem('email', email);
 
         return resp;
     } catch (error) {

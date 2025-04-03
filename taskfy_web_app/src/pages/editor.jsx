@@ -62,49 +62,64 @@ const Editor = () => {
   const [dialogValue, setDialogValue] = useState('');
   const [expandedFolders, setExpandedFolders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const email = localStorage.getItem('email');
+  const [allTasks, setAllTasks] = useState([]);
 
-    // Carrega as pastas e tarefas ao iniciar
-    useEffect(() => {
-      const loadData = async () => {
-        try {
-          const token = localStorage.getItem('authToken');
-          if (!token) {
-            navigate('/login');
-            return;
-          }
-
-          // Carrega pastas raiz
-          const user = getUser(email, token);
-          const rootFolders = await dbService.getRootFoldersByUser(user.id,token);
-          
-          // Carrega tarefas
-          const tasks = await dbService.getAllTasks(token);
-          
-          // Mapeia para a estrutura esperada pelo componente
-          const mappedFolders = rootFolders.map(folder => ({
-            ...folder,
-            type: 'folder',
-            children: tasks
-              .filter(task => task.folderId === folder.id)
-              .map(task => ({
-                ...task,
-                type: 'task',
-                content: task.description || ''
-              }))
-          }));
-  
-          setFolders(mappedFolders);
-          setExpandedFolders(mappedFolders.map(f => f.id));
-        } catch (error) {
-          console.error('Error loading data:', error);
-        } finally {
-          setLoading(false);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          navigate('/login');
+          return;
         }
-      };
   
-      loadData();
-    }, [navigate]);
+        // Carrega as pastas raiz
+        const user = await dbService.getUserByEmail(email, token);
+        console.log('User:', user);
+        const rootFolders = await dbService.getRootFoldersByUser(user.id, token);
+        console.log('Root Folders:', rootFolders);
   
+        let allTasks = []; // Declare allTasks to hold tasks from all folders
+  
+        for (const folder of rootFolders) {
+          try {
+            // Obtem as tarefas para o rootFolder atual
+            const tasks = await dbService.getTasksByFolder(folder.id, token);
+            console.log('Tasks for folder', folder.id, ':', tasks);
+  
+            // Adiciona as tarefas ao array de todas as tarefas
+            allTasks.push(...tasks); // Add tasks to allTasks
+          } catch (error) {
+            console.error(`Erro ao buscar tarefas para a pasta ${folder.id}:`, error);
+          }
+        }
+  
+        const mappedFolders = rootFolders.map(folder => ({
+          ...folder,
+          type: 'folder',
+          name: folder.name || 'Unnamed', // Garanta que o nome está sendo mapeado
+          children: allTasks
+            .filter(task => task.folderId === folder.id)
+            .map(task => ({
+              ...task,
+              type: 'task',
+              content: task.description || ''
+            }))
+        }));
+
+        setFolders(mappedFolders); // Update the state with mapped folders
+        setExpandedFolders(mappedFolders.map(f => f.id)); // Expand the folders by default
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [navigate, email]);
+
     // Handle file selection
     const handleFileClick = async (file) => {
       if (file.type === 'folder') {
@@ -169,75 +184,37 @@ const Editor = () => {
       });
     };
 
-    // Handle create new item
     const handleDialogSubmit = async () => {
       try {
-          const token = localStorage.getItem('authToken');
-          if (!token) {
-              navigate('/login');
-              return;
-          }
-
-          if (dialogType === 'newFolder') {
-            const folderData = {
-                user: { id: 1 }, // Defina dinamicamente se possível
-                parentFolder: parentFolderId ? { id: parentFolderId } : null,
-                name: dialogValue
-            };
+        // ... código existente
         
-            const newFolder = await dbService.createFolder(folderData, token);
-        
-            setFolders(prev => currentFolder
-                ? updateFolderStructure(prev, currentFolder.id, [
-                    ...(currentFolder.children || []),
-                    { 
-                        id: newFolder.id,
-                        name: newFolder.name,
-                        parentFolderId: newFolder.parentFolderId, 
-                        type: 'folder', 
-                        children: []
-                    }
-                ])
-                : [...prev, { 
-                    id: newFolder.id,
-                    name: newFolder.name,
-                    parentFolderId: newFolder.parentFolderId, 
-                    type: 'folder', 
-                    children: []
-                }]
-            );
-          } else if (dialogType === 'newTask') {
-              const taskData = {
-                  name: dialogValue,
-                  description: '',
-                  folderId: currentFolder?.id || null,
-                  status: 'PENDING'
-              };
-  
-              const newTask = await dbService.createTask(taskData, token);
-  
-              setFolders(prev => currentFolder
-                  ? updateFolderStructure(prev, currentFolder.id, [
-                      ...(currentFolder.children || []),
-                      { ...newTask, type: 'task', content: '' }
-                  ])
-                  : [...prev, { ...newTask, type: 'task', content: '' }]
-              );
-          } else if (dialogType === 'rename') {
-              if (currentFolder.type === 'folder') {
-                  await dbService.updateFolder(currentFolder.id, { name: dialogValue }, token);
-              } else if (currentFolder.type === 'task') {
-                  await dbService.updateTask(currentFolder.id, { name: dialogValue }, token);
-              }
-  
-              setFolders(prev => updateFolderStructure(prev, currentFolder.id, { ...currentFolder, name: dialogValue }));
-          }
-  
-          setOpenDialog(false);
+        if (dialogType === 'newFolder') {
+          const newFolder = await dbService.createFolder(folderData, token);
+          console.log('Folder created:', newFolder); // Log da resposta
+          
+          setFolders(prev => currentFolder 
+            ? updateFolderStructure(prev, currentFolder.id, [
+                ...(currentFolder.children || []),
+                { 
+                  ...newFolder,
+                  type: 'folder',
+                  name: newFolder.name, // Garanta que o nome está incluído
+                  children: []
+                }
+              ])
+            : [...prev, {
+                ...newFolder,
+                type: 'folder',
+                name: newFolder.name, // Garanta que o nome está incluído
+                children: []
+              }]
+          );
+        }
+        // ... resto do código
       } catch (error) {
-          console.error('Erro ao criar/atualizar item:', error.message);
+        console.error('Error:', error);
       }
-  };
+    };
 
 
     // Handle delete item
@@ -280,9 +257,6 @@ const Editor = () => {
         console.error('Error deleting item:', error);
       }
     };
-
-
-
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -342,58 +316,14 @@ const Editor = () => {
     setOpenDialog(false);
   };
 
-  // Carrega as pastas e tarefas ao iniciar
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          navigate('/login');
-          return;
-        }
-
-        // Carrega pastas raiz
-        const rootFolders = await dbService.getRootFoldersByUser(token);
-        
-        // Carrega tarefas
-        const tasks = await dbService.getAllTasks(token);
-        
-        // Mapeia para a estrutura esperada pelo componente
-        const mappedFolders = rootFolders.map(folder => ({
-          ...folder,
-          type: 'folder',
-          children: tasks
-            .filter(task => task.folderId === folder.id)
-            .map(task => ({
-              ...task,
-              type: 'task',
-              content: task.description || ''
-            }))
-        }));
-
-        setFolders(mappedFolders);
-        setExpandedFolders(mappedFolders.map(f => f.id));
-      } catch (error) {
-        console.error('Error loading data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, [navigate]);
-
-
-
   // Render folder tree recursively
   const renderFolder = (folder) => {
     const isExpanded = expandedFolders.includes(folder.id);
     const icon = {
       'folder': <FolderIcon fontSize="small" />,
-      'file': <FileIcon fontSize="small" />,
       'task': <NewTaskIcon fontSize="small" />
     }[folder.type] || <FileIcon fontSize="small" />;
-
+  
     return (
       <React.Fragment key={folder.id}>
         <ListItem
@@ -412,7 +342,13 @@ const Editor = () => {
             <ListItemIcon sx={{ minWidth: 30 }}>
               {icon}
             </ListItemIcon>
-            <ListItemText primary={folder.name} />
+            <ListItemText 
+              primary={folder.name || 'Unnamed Folder'} // Fallback para nome vazio
+              primaryTypographyProps={{
+                noWrap: true,
+                title: folder.name // Tooltip com nome completo
+              }}
+            />
           </ListItemButton>
         </ListItem>
         

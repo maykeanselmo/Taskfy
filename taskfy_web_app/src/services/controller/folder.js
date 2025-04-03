@@ -92,7 +92,7 @@ export const getFoldersByUser = async (userId, token) => {
 
 export const getRootFoldersByUser = async (userId, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/user/${userId}/root`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/folders/user/${userId}/root`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

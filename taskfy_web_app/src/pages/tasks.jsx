@@ -5,7 +5,6 @@ import {
   CardContent,
   Typography,
   Button,
-  TextField,
   Grid,
   IconButton,
   Menu,
@@ -20,7 +19,10 @@ import {
   Divider,
   Paper,
   Tooltip,
-  Box
+  Box,
+  CircularProgress,
+  Alert,
+  TextField
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -33,124 +35,159 @@ import {
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../services/db_service";
 
-
-// Dummy data
-const initialNotes = [
-  { id: 1, title: "Meeting Notes", content: "Discuss project timeline with team", folder: "Work" },
-  { id: 2, title: "Shopping List", content: "Milk, eggs, bread, fruits", folder: "Personal" },
-  { id: 3, title: "Ideas for Blog", content: "1. React hooks\n2. Material UI tips\n3. State management", folder: "Ideas" },
-];
-
-const dummyFolders = ["Work", "Personal", "Ideas", "Projects"];
-
 function TasksViewer() {
-  const token = localStorage.getItem("authToken");
-  const [tasks, setTasks] = useState(initialNotes);
+  const navigate = useNavigate();
+  const [tasks, setTasks] = useState([]);
+  const [folders, setFolders] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentNote, setCurrentNote] = useState(null);
+  const [currentTask, setCurrentTask] = useState(null);
   const [openMoveDialog, setOpenMoveDialog] = useState(false);
   const [openRenameDialog, setOpenRenameDialog] = useState(false);
   const [newName, setNewName] = useState("");
-  const [newFolderName, setNewFolderName] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchData = async () => {
       try {
-        const tasksData = await dbService.getAllTasks(token);
-        setTasks(tasksData);
-      } catch (error) {
-        console.error(error);
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+              navigate('/login');
+              return;
+          }
+          const email = localStorage.getItem('email');
+          const user = await dbService.getUserByEmail(email, token);
+  
+          // Log the user and folders
+          console.log('User:', user);
+
+          const userFolders = await dbService.getRootFoldersByUser(user.id, token);
+          console.log(userFolders);
+  
+          setFolders(userFolders);
+  
+          // Fetch tasks by folder
+          const allTasks = [];
+          for (const folder of userFolders) {
+              const folderTasks = await dbService.getTasksByFolder(folder.id, token);
+              console.log(`Tasks for folder ${folder.id}:`, folderTasks);
+              allTasks.push(...folderTasks.map(task => ({
+                  ...task,
+                  folderId: folder.id,
+                  folderName: folder.name
+              })));
+          }
+  
+          setTasks(allTasks);
+      } catch (err) {
+          console.error('Error fetching data:', err);
+          setError(err.message);
+      } finally {
+          setLoading(false);
       }
-    };
+  };
 
-    fetchTasks();
-  }, []); // O array vazio garante que só roda ao montar o componente
 
-  // Menu handlers
-  const handleMenuOpen = (event, note) => {
+    fetchData();
+  }, [navigate]);
+
+  const handleMenuOpen = (event, task) => {
     setAnchorEl(event.currentTarget);
-    setCurrentNote(note);
+    setCurrentTask(task);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setCurrentNote(null);
+    setCurrentTask(null);
   };
 
-  // Note operations
-  const handleEdit = (note) => {
-    // Dummy API call simulation
-    console.log("Editing note:", note.id);
-    navigate('/editor', { state: { note } });
+  const handleEdit = (task) => {
+    navigate('/editor', { state: { task } });
   };
 
-  const handleDelete = (noteId) => {
-    // Dummy API call simulation
-    console.log("Deleting note:", noteId);
-    setTasks(tasks.filter(note => note.id !== noteId));
-    handleMenuClose();
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await dbService.deleteTask(currentTask.id, token);
+      setTasks(tasks.filter(task => task.id !== currentTask.id));
+      handleMenuClose();
+    } catch (err) {
+      console.error('Error deleting task:', err);
+      setError(err.message);
+    }
   };
 
-  const handleMove = () => {
-    setOpenMoveDialog(true);
-    handleMenuClose();
+  const handleMove = async (folderId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await dbService.updateTask(currentTask.id, { folderId }, token);
+      setTasks(tasks.map(task => 
+        task.id === currentTask.id ? { ...task, folderId } : task
+      ));
+      setOpenMoveDialog(false);
+      handleMenuClose();
+    } catch (err) {
+      console.error('Error moving task:', err);
+      setError(err.message);
+    }
   };
 
-  const handleRename = () => {
-    setNewName(currentNote.title);
-    setOpenRenameDialog(true);
-    handleMenuClose();
+  const handleRename = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await dbService.updateTask(currentTask.id, { name: newName }, token);
+      setTasks(tasks.map(task => 
+        task.id === currentTask.id ? { ...task, name: newName } : task
+      ));
+      setOpenRenameDialog(false);
+      handleMenuClose();
+    } catch (err) {
+      console.error('Error renaming task:', err);
+      setError(err.message);
+    }
   };
 
-  const confirmRename = () => {
-    // Dummy API call simulation
-    console.log("Renaming note:", currentNote.id, "to", newName);
-    setTasks(tasks.map(note => 
-      note.id === currentNote.id ? { ...note, title: newName } : note
-    ));
-    setOpenRenameDialog(false);
-  };
-
-  const confirmMove = (folder) => {
-    // Dummy API call simulation
-    console.log("Moving note:", currentNote.id, "to folder:", folder);
-    setTasks(tasks.map(note => 
-      note.id === currentNote.id ? { ...note, folder } : note
-    ));
-    setOpenMoveDialog(false);
-  };
-
-  const createNewFolder = () => {
-    // Dummy API call simulation
-    console.log("Creating new folder:", newFolderName);
-    dummyFolders.push(newFolderName);
-    setNewFolderName("");
-  };
-
-  const createNewNote = () => {
+  const createNewTask = () => {
     navigate('/editor', { state: { isNew: true } });
   };
+
+  if (loading) {
+    return (
+      <Container maxWidth="md" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="md" sx={{ my: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="md" sx={{ my: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
-          My Notes
+          My Tasks
         </Typography>
         <Button 
           variant="contained" 
           color="primary" 
           startIcon={<AddIcon />}
-          onClick={createNewNote}
+          onClick={createNewTask}
         >
-          New Note
+          New Task
         </Button>
       </Box>
 
+      {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+
       <Grid container spacing={3}>
-        {tasks.map((note) => (
-          <Grid item xs={12} sm={6} md={4} key={note.id}>
+        {tasks.map((task) => (
+          <Grid item xs={12} sm={6} md={4} key={task.id}>
             <Card sx={{ 
               height: '100%', 
               display: 'flex', 
@@ -164,19 +201,19 @@ function TasksViewer() {
               <CardContent sx={{ flexGrow: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
-                    {note.title}
+                    {task.name}
                   </Typography>
                   <IconButton
                     aria-label="more"
-                    aria-controls="note-menu"
+                    aria-controls="task-menu"
                     aria-haspopup="true"
-                    onClick={(e) => handleMenuOpen(e, note)}
+                    onClick={(e) => handleMenuOpen(e, task)}
                   >
                     <MoreIcon />
                   </IconButton>
                 </Box>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                  Folder: {note.folder}
+                  Folder: {task.folderName || 'No folder'}
                 </Typography>
                 <Divider sx={{ my: 1 }} />
                 <Typography variant="body1" sx={{ 
@@ -186,7 +223,7 @@ function TasksViewer() {
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden'
                 }}>
-                  {note.content}
+                  {task.description || 'No description'}
                 </Typography>
               </CardContent>
             </Card>
@@ -194,30 +231,33 @@ function TasksViewer() {
         ))}
       </Grid>
 
-      {/* Note Actions Menu */}
+      {/* Task Actions Menu */}
       <Menu
-        id="note-menu"
+        id="task-menu"
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={() => handleEdit(currentNote)}>
+        <MenuItem onClick={() => handleEdit(currentTask)}>
           <EditIcon sx={{ mr: 1 }} /> Edit
         </MenuItem>
-        <MenuItem onClick={handleRename}>
+        <MenuItem onClick={() => {
+          setNewName(currentTask.name);
+          setOpenRenameDialog(true);
+        }}>
           <CreateIcon sx={{ mr: 1 }} /> Rename
         </MenuItem>
-        <MenuItem onClick={handleMove}>
+        <MenuItem onClick={() => setOpenMoveDialog(true)}>
           <MoveIcon sx={{ mr: 1 }} /> Move
         </MenuItem>
-        <MenuItem onClick={() => handleDelete(currentNote.id)} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <DeleteIcon sx={{ mr: 1 }} /> Delete
         </MenuItem>
       </Menu>
 
       {/* Rename Dialog */}
       <Dialog open={openRenameDialog} onClose={() => setOpenRenameDialog(false)}>
-        <DialogTitle>Rename Note</DialogTitle>
+        <DialogTitle>Rename Task</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -231,51 +271,30 @@ function TasksViewer() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenRenameDialog(false)}>Cancel</Button>
-          <Button onClick={confirmRename}>Save</Button>
+          <Button onClick={handleRename}>Save</Button>
         </DialogActions>
       </Dialog>
 
       {/* Move Dialog */}
       <Dialog open={openMoveDialog} onClose={() => setOpenMoveDialog(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Move Note</DialogTitle>
+        <DialogTitle>Move Task</DialogTitle>
         <DialogContent>
           <Typography variant="subtitle1" sx={{ mb: 2 }}>
             Select destination folder:
           </Typography>
           
           <List sx={{ maxHeight: 300, overflow: 'auto' }}>
-            {dummyFolders.map((folder) => (
+            {folders.map((folder) => (
               <ListItem 
                 button 
-                key={folder}
-                onClick={() => confirmMove(folder)}
-                selected={currentNote?.folder === folder}
+                key={folder.id}
+                onClick={() => handleMove(folder.id)}
+                selected={currentTask?.folderId === folder.id}
               >
-                <ListItemText primary={folder} />
+                <ListItemText primary={folder.name} />
               </ListItem>
             ))}
           </List>
-          
-          <Divider sx={{ my: 2 }} />
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <TextField
-              size="small"
-              label="New folder"
-              fullWidth
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-            />
-            <Tooltip title="Create folder">
-              <IconButton 
-                color="primary" 
-                onClick={createNewFolder}
-                disabled={!newFolderName.trim()}
-              >
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenMoveDialog(false)}>Cancel</Button>
