@@ -2,6 +2,9 @@ import { useState } from 'react';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 import { dbService }  from '../services/db_service';
 =======
 import dbService from '../services/db_service';
@@ -9,9 +12,12 @@ import dbService from '../services/db_service';
 =======
 import dbService from '../services/db_service';
 >>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
+<<<<<<< HEAD
 =======
 import dbService from '../services/db_service';
 >>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
+=======
+>>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 function CreateTaskButton() {
   const addTask = useCreateTask();
   const [loading, setLoading] = useState(false);

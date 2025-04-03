@@ -43,9 +43,12 @@ const RegisterPage = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
               navigate('/notes');
 >>>>>>> 93c4356 (feat: registerPage)
+=======
+>>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 =======
               navigate('/notes');
 >>>>>>> 93c4356 (feat: registerPage)

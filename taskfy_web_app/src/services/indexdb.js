@@ -2,6 +2,9 @@ const openDatabase = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('taskfy', 1);
 
@@ -231,6 +234,7 @@ export const getFromIndexedDB = async (storeName, key) => {
     });
   };
 >>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
+<<<<<<< HEAD
 =======
     return new Promise((resolve, reject) => {
       const request = indexedDB.open('taskfy', 1);
@@ -300,6 +304,8 @@ export const getFromIndexedDB = async (storeName, key) => {
     });
   };
 >>>>>>> 1a21ff2 (fix: Bugs ao criar classe para abstrair o indexd)
+=======
+>>>>>>> 0feb1d9ecdb5f268850916863d8e65ee2b987c0d
 
 export const deleteFromIndexedDB = (storeName, key) => {
     return new Promise(async (resolve, reject) => {
