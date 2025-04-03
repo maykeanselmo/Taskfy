@@ -1,5 +1,6 @@
 // taskService.js
 import { API_BASE_URL } from "./const";
+import { VER } from "./const";
 
 export const createTask = async (taskData, token) => {
     try {
@@ -89,7 +90,7 @@ export const updateTask = async (id, taskData, token) => {
 
 export const getTasksByFolder = async (folderId, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/folder/${folderId}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks/${folderId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -132,21 +133,39 @@ export const updateTaskStatus = async (id, statusUpdate, token) => {
 
 export const getAllTasks = async (token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/tasks`, {
+        if (!token) {
+            throw new Error("Token de autenticação não encontrado");
+        }
+
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
 
-        if (!response.ok) {
-            throw new Error(`Erro ${response.status}`);
+        // Tratamento avançado da resposta
+        const responseText = await response.text();
+        let responseData;
+        
+        try {
+            responseData = responseText ? JSON.parse(responseText) : {};
+        } catch (e) {
+            console.warn("Resposta não-JSON recebida:", responseText);
+            responseData = { message: responseText || "Resposta inválida do servidor" };
         }
 
-        return await response.json();
+        if (!response.ok) {
+            const errorMsg = responseData.message || 
+                          `Erro ${response.status}: ${response.statusText}`;
+            throw new Error(errorMsg);
+        }
+
+        return responseData;
+
     } catch (error) {
-        console.error('Error fething all tasks:', error.message);
-        throw error;
+        console.error('Error fetching tasks:', error.message);
+        throw new Error(error.message || "Falha na comunicação com o servidor");
     }
 };

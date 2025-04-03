@@ -38,65 +38,48 @@ class DatabaseService {
     this.dbName = 'taskfy';
   }
 
-  async save(storeName, data) {
-    return saveToIndexedDB(storeName, data);
-  }
-
-  async get(storeName, key) {
-    return getFromIndexedDB(storeName, key);
-  }
-
-  async delete(storeName, key) {
-    return deleteFromIndexedDB(storeName, key);
-  }
-
-  async update(storeName, key, newData) {
-    return updateIndexedDB(storeName, key, newData);
-  }
-
-  async getAll(storeName) {
-    return getAllFromIndexedDB(storeName);
-  }
-
   async login(email, password) {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            headers: { 
+                'Content-Type': 'application/json',
+                // Adicione se necessário:
+                // 'Accept': 'application/json'
+            },
+            body: JSON.stringify({ 
+                email: email.trim(), 
+                password: password 
+            })
         });
 
-        // 1. Lê a resposta como TEXTO primeiro
         const responseText = await response.text();
-
         let responseData;
+
         try {
-            // 2. Tenta converter para JSON (se possível)
             responseData = JSON.parse(responseText);
         } catch {
-            // 3. Se não for JSON, usa o texto puro como mensagem de erro
-            responseData = { message: responseText || "Erro desconhecido" };
+            responseData = { message: responseText };
         }
 
         if (!response.ok) {
-            // Se o status for 401, mostra uma mensagem mais clara
             if (response.status === 401) {
-                throw new Error("Email ou senha incorretos");
+                throw new Error("Credenciais inválidas");
             }
             throw new Error(responseData.message || `Erro ${response.status}`);
         }
 
-        // Verifica se o token existe
         if (!responseData.token) {
-            throw new Error("Token não recebido");
+            throw new Error("Token não recebido na resposta");
         }
 
+        // Armazena o token e retorna os dados completos
         localStorage.setItem('authToken', responseData.token);
-        return responseData
+        return responseData;
 
     } catch (error) {
         console.error("Erro no login:", error.message);
-        throw error; // Reenvia o erro para quem chamou a função
+        throw error;
     }
   }
 
@@ -111,8 +94,6 @@ class DatabaseService {
             ...apiFolder,
             id: apiFolder.id
         });
-
-        await this.save('folders', localFolder);
         return localFolder;
     } catch (error) {
         console.error('Error creating folder:', error);
@@ -122,16 +103,39 @@ class DatabaseService {
 
   async getFolder(id, token) {
       try {
-          // Tenta buscar da API primeiro
           const apiFolder = await getFolderById(id, token);
-
-          // Atualiza cache local
-          await this.save('folders', apiFolder);
           return apiFolder;
       } catch (apiError) {
           console.warn('Falling back to local storage for folder:', id);
-          return this.get('folders', id); // Fallback para IndexedDB
+
       }
+  }
+
+  async deleteFolder(id, token){
+    try {
+      const resp = await deleteFolder(id, token)
+      return resp
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  async getSubFolders(id, token) {
+    try {
+      const resp = await getSubFolders(id, token)
+      return resp
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  async getRootFoldersByUser(id, token) {
+    try {
+      const resp = await getRootFoldersByUser(id, token)
+      return resp
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
 ////////////////////////////// USER //////////////////////////////
@@ -156,14 +160,14 @@ class DatabaseService {
           return apiUser;
       } catch (apiError) {
           console.warn('Falling back to local storage for user:', id);
-          return this.get('users', id);
+
       }
   }
 
   async updateUser(id, userData, token) {
       try {
           const apiUser = await updateUser(id, userData, token);
-          await this.save('users', apiUser);
+
           return apiUser;
       } catch (error) {
           console.error('Error updating user:', error);
@@ -176,7 +180,6 @@ class DatabaseService {
           return await getAllUsers(token, page, size, sortBy, direction);
       } catch (error) {
           console.error('Error fetching users:', error);
-          return this.getAll('users'); // Fallback local
       }
   }
 
@@ -192,7 +195,6 @@ class DatabaseService {
   async deleteUser(id, token) {
       try {
           await deleteUser(id, token);
-          await this.delete('users', id); // Remove localmente também
           return true;
       } catch (error) {
           console.error('Error deleting user:', error);
@@ -208,7 +210,6 @@ class DatabaseService {
             ...apiTask,
             id: apiTask.id
         });
-        await this.save('tasks', localTask);
         return localTask;
     } catch (error) {
         console.error('Error creating task:', error);
@@ -219,18 +220,15 @@ class DatabaseService {
   async getTask(id, token) {
     try {
         const apiTask = await getTaskById(id, token);
-        await this.save('tasks', apiTask);
         return apiTask;
     } catch (apiError) {
         console.warn('Falling back to local storage for task:', id);
-        return this.get('tasks', id);
     }
   }
 
   async deleteTask(id, token) {
     try {
         await deleteTask(id, token);
-        await this.delete('tasks', id);
         return true;
     } catch (error) {
         console.error('Error deleting task:', error);
@@ -241,7 +239,6 @@ class DatabaseService {
   async updateTask(id, taskData, token) {
     try {
         const apiTask = await updateTask(id, taskData, token);
-        await this.save('tasks', apiTask);
         return apiTask;
     } catch (error) {
         console.error('Error updating task:', error);
@@ -254,16 +251,12 @@ class DatabaseService {
         return await getTasksByFolder(folderId, token);
     } catch (error) {
         console.error('Error fetching tasks by folder:', error);
-        // Fallback: Get all local tasks and filter by folderId
-        const allTasks = await this.getAll('tasks');
-        return allTasks.filter(task => task.folderId === folderId);
     }
   }
 
   async updateTaskStatus(id, statusUpdate, token) {
     try {
         const apiTask = await updateTaskStatus(id, statusUpdate, token);
-        await this.save('tasks', apiTask);
         return apiTask;
     } catch (error) {
         console.error('Error updating task status:', error);
