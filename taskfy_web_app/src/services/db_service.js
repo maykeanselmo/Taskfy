@@ -60,33 +60,43 @@ class DatabaseService {
 
   async login(email, password) {
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-      // Clonar a resposta para evitar o erro de "Body already consumed"
-      const responseClone = response.clone();
-  
-      let responseData;
-      try {
-        responseData = await response.json();
-      } catch {
-        responseData = { message: await responseClone.text() }; // Usa o clone para ler como texto
-      }
+        // 1. Lê a resposta como TEXTO primeiro
+        const responseText = await response.text();
 
-      if (!response.ok) {
-        throw new Error(responseData.message || `Erro ${response.status}: ${response.statusText}`);
-      }
-  
-      const { token } = responseData;
-      localStorage.setItem('authToken', token); // Armazena o token
-      return token;
+        let responseData;
+        try {
+            // 2. Tenta converter para JSON (se possível)
+            responseData = JSON.parse(responseText);
+        } catch {
+            // 3. Se não for JSON, usa o texto puro como mensagem de erro
+            responseData = { message: responseText || "Erro desconhecido" };
+        }
+
+        if (!response.ok) {
+            // Se o status for 401, mostra uma mensagem mais clara
+            if (response.status === 401) {
+                throw new Error("Email ou senha incorretos");
+            }
+            throw new Error(responseData.message || `Erro ${response.status}`);
+        }
+
+        // Verifica se o token existe
+        if (!responseData.token) {
+            throw new Error("Token não recebido");
+        }
+
+        localStorage.setItem('authToken', responseData.token);
+        return responseData
 
     } catch (error) {
-      console.error('Erro no login:', error.message);
-      throw error;
+        console.error("Erro no login:", error.message);
+        throw error; // Reenvia o erro para quem chamou a função
     }
   }
 
@@ -260,13 +270,12 @@ class DatabaseService {
         throw error;
     }
   }
-
   async getAllTasks(token) {
     try {
         return await getAllTasks(token);
     } catch (error) {
-        console.error('Error fetching all tasks:', error);
-        return this.getAll('tasks'); // Fallback to local storage
+        console.error(error);
+        return []; // Retorna um array vazio para evitar falhas no frontend
     }
   }
 
