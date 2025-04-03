@@ -85,21 +85,23 @@ class DatabaseService {
 
   async login(email, password) {
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-      // Clonar a resposta para evitar o erro de "Body already consumed"
-      const responseClone = response.clone();
-  
-      let responseData;
-      try {
-        responseData = await response.json();
-      } catch {
-        responseData = { message: await responseClone.text() }; // Usa o clone para ler como texto
-      }
+        // 1. Lê a resposta como TEXTO primeiro
+        const responseText = await response.text();
+
+        let responseData;
+        try {
+            // 2. Tenta converter para JSON (se possível)
+            responseData = JSON.parse(responseText);
+        } catch {
+            // 3. Se não for JSON, usa o texto puro como mensagem de erro
+            responseData = { message: responseText || "Erro desconhecido" };
+        }
 
       if (!response.ok) {
         throw new Error(responseData.message || `Erro ${response.status}: ${response.statusText}`);
@@ -110,8 +112,8 @@ class DatabaseService {
       return token;
 
     } catch (error) {
-      console.error('Erro no login:', error.message);
-      throw error;
+        console.error("Erro no login:", error.message);
+        throw error; // Reenvia o erro para quem chamou a função
     }
   }
 
