@@ -189,38 +189,73 @@ const Editor = () => {
       });
     };
 
-    const handleDialogSubmit = async () => {
-      try {
-        // ... código existente
-        
-        if (dialogType === 'newFolder') {
-          const newFolder = await dbService.createFolder(folderData, token);
-          console.log('Folder created:', newFolder); // Log da resposta
-          
-          setFolders(prev => currentFolder 
-            ? updateFolderStructure(prev, currentFolder.id, [
-                ...(currentFolder.children || []),
-                { 
-                  ...newFolder,
-                  type: 'folder',
-                  name: newFolder.name, // Garanta que o nome está incluído
-                  children: []
-                }
-              ])
-            : [...prev, {
-                ...newFolder,
-                type: 'folder',
-                name: newFolder.name, // Garanta que o nome está incluído
-                children: []
-              }]
-          );
-        }
-        // ... resto do código
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+      // Handle create new item
+      const handleDialogSubmit = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
 
+            if (dialogType === 'newFolder') {
+              const user = await dbService.getUserByEmail(email, token);
+              console.log('User:', user);
+              const folderData = {
+                name: dialogValue,
+                parentId: currentFolder?.id || null,
+                user: user
+              }
+              const newFolder = await dbService.createFolder(folderData, token);
+              console.log('Folder created:', newFolder); // Log da resposta
+
+              setFolders(prev => currentFolder
+                ? updateFolderStructure(prev, currentFolder.id, [
+                    ...(currentFolder.children || []),
+                    {
+                      ...newFolder,
+                      type: 'folder',
+                      name: newFolder.name, // Garanta que o nome está incluído
+                      children: []
+                    }
+                  ])
+                : [...prev, {
+                    ...newFolder,
+                    type: 'folder',
+                    name: newFolder.name, // Garanta que o nome está incluído
+                    children: []
+                  }]
+              );
+            } else if (dialogType === 'newTask') {
+                const taskData = {
+                    name: dialogValue,
+                    description: '',
+                    folderId: currentFolder?.id || null,
+                    status: 'PENDING'
+                };
+                const newTask = await dbService.createTask(taskData, token);
+                setFolders(prev => currentFolder
+                    ? updateFolderStructure(prev, currentFolder.id, [
+                        ...(currentFolder.children || []),
+                        { ...newTask, type: 'task', content: '' }
+                    ])
+                    : [...prev, { ...newTask, type: 'task', content: '' }]
+                );
+            } else if (dialogType === 'rename') {
+                if (currentFolder.type === 'folder') {
+                    await dbService.updateFolder(currentFolder.id, { name: dialogValue }, token);
+                } else if (currentFolder.type === 'task') {
+                    await dbService.updateTask(currentFolder.id, { name: dialogValue }, token);
+                }
+    
+                setFolders(prev => updateFolderStructure(prev, currentFolder.id, { ...currentFolder, name: dialogValue }));
+            }
+
+            setOpenDialog(false);
+        } catch (error) {
+            console.error('Erro ao criar/atualizar item:', error.message);
+        }
+    };
 
     // Handle delete item
     const handleDelete = async () => {
