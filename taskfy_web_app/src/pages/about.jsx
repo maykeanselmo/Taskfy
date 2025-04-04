@@ -47,12 +47,13 @@ function About() {
                 Com o Taskfy, você pode:
               </Typography>
               <Box sx={{ paddingLeft: 2 }}>
-                <Typography variant="body1">- Organizar tarefas por categorias</Typography>
-                <Typography variant="body1">- Definir prazos e prioridades</Typography>
-                <Typography variant="body1">- Receber notificações de prazos e alertas</Typography>
-                <Typography variant="body1">- Colaborar em equipe em projetos e tarefas</Typography>
-                <Typography variant="body1">- Obter relatórios de produtividade</Typography>
+                <Typography variant="body1">• Organizar tarefas por categorias</Typography>
+                <Typography variant="body1">• Definir prazos e prioridades</Typography>
+                <Typography variant="body1">• Receber notificações de prazos e alertas</Typography>
+                <Typography variant="body1">• Colaborar em equipe em projetos e tarefas</Typography>
+                <Typography variant="body1">• Obter relatórios de produtividade</Typography>
               </Box>
+
               
               {/* Conclusão */}
               <Typography variant="body1" paragraph>
