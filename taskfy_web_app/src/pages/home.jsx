@@ -8,26 +8,29 @@ import {
   Paper,
   Stack,
   Fade,
+  useTheme,
 } from '@mui/material';
 
 const Home = () => {
   const navigate = useNavigate();
+  const theme = useTheme(); // AQUI PEGA O TEMA
 
   const handleLoginRedirect = () => {
     navigate('/login');
   };
 
-  return (
+  const isDark = theme.palette.mode === 'dark';
 
+  return (
     <Fade in timeout={800}>
       <Box
         sx={{
           minHeight: '100vh',
           bgcolor: 'background.default',
           display: 'flex',
-          alignItems: 'flex-start', // empurra pra cima
+          alignItems: 'flex-start',
           justifyContent: 'center',
-          pt: 10, // padding top pra empurrar mais ainda
+          pt: 10,
           p: 2,
         }}
       >
@@ -35,12 +38,16 @@ const Home = () => {
           elevation={6}
           sx={{
             p: 4,
-            maxWidth: 800, // ficou mais largo
+            maxWidth: 800,
             width: '100%',
             textAlign: 'center',
             borderRadius: 4,
-            background: 'linear-gradient(145deg, #f0f0f0, #ffffff)',
-            boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
+            background: isDark
+              ? 'linear-gradient(145deg, #1e1e1e, #2a2a2a)'
+              : 'linear-gradient(145deg, #f0f0f0, #ffffff)',
+            boxShadow: isDark
+              ? '0px 10px 20px rgba(0, 0, 0, 0.5)'
+              : '0px 10px 20px rgba(0, 0, 0, 0.1)',
           }}
         >
           <Stack spacing={4}>

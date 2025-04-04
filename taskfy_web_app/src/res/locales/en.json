@@ -39,7 +39,10 @@
     "rename_task": "Rename Task",
     "move_task": "Move Task",
 
-    "go_to_login": "Go to Login"
+    "go_to_login": "Go to Login",
+    "login_welcome": "Welcome to Taskfy!",
+    "login_message": "Please log in to your account",
+    "theme_mode": "Theme Mode"
   }
   
 

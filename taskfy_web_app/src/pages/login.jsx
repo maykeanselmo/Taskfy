@@ -58,7 +58,8 @@ const LoginPage = () => {
       <Box sx={{
         display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8
       }}>
-        <Typography variant="h5">Entrar na sua conta</Typography>
+        <Typography variant="h5">{t('login_welcome')}</Typography>
+        <Typography variant="h5">{t('login_message')}</Typography>
 
         {error && (
           <Typography color="error" variant="body2" sx={{ mt: 1 }}>
