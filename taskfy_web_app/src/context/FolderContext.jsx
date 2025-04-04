@@ -55,8 +55,36 @@ export const FolderProvider = ({ children }) => {
     });
   };
 
+  // Deleta uma pasta
+  const deleteFolder = (folderId) => {
+    setFolders(prevFolders => {
+      return prevFolders.filter(folder => folder.id !== folderId).map(folder => ({
+        ...folder,
+        subfolders: deleteSubfolder(folder.subfolders, folderId),
+      }));
+    });
+  };
+
+  // Deleta uma tarefa de uma pasta
+  const deleteTask = (folderId, taskName) => {
+    setFolders(prevFolders => {
+      return updateFolderTree(prevFolders, folderId, folder => ({
+        ...folder,
+        tasks: folder.tasks.filter(task => task !== taskName),
+      }));
+    });
+  };
+
+  // Função auxiliar para deletar subpastas
+  const deleteSubfolder = (subfolders, folderId) => {
+    return subfolders.filter(subfolder => subfolder.id !== folderId).map(subfolder => ({
+      ...subfolder,
+      subfolders: deleteSubfolder(subfolder.subfolders, folderId),
+    }));
+  };
+
   return (
-    <FolderContext.Provider value={{ folders, addFolder, addTask }}>
+    <FolderContext.Provider value={{ folders, addFolder, addTask, deleteFolder, deleteTask }}>
       {children}
     </FolderContext.Provider>
   );
