@@ -168,8 +168,8 @@ const TaskInterface = () => {
     try {
       const newTaskData = {
         folder: rootFolder,
-        title: 'Nova tarefa',
-        content: 'New',
+        title: t('new_task'),
+        content: t('new_description'),
         dueDate: due_date,
         status: 'REGISTERED',
         priority: "LOW",
@@ -179,7 +179,7 @@ const TaskInterface = () => {
       
       const safeNewTask = {
         id: newTask.id,
-        title: newTask.title || 'Nova tarefa',
+        title: newTask.title || t('new_task'),
         content: newTask.content || '',
         status: newTask.status || 'REGISTERED',
         priority: newTask.priority || 'LOW',
@@ -265,7 +265,7 @@ const TaskInterface = () => {
                       secondary={
                         task.content
                           ? task.content.substring(0, 30) + '...'
-                          : 'Sem descrição'
+                          : t('no_description')
                       }
                     />
                     <Chip
