@@ -21,6 +21,7 @@ import {
 import { dbService } from '../services/db_service';
 import Task from '../model/task';
 import { useLanguage } from '../utils/translations';
+import { create } from '@mui/material/styles/createTransitions';
 
 const TaskInterface = () => {
   const { t } = useLanguage();
@@ -141,18 +142,29 @@ const TaskInterface = () => {
         status: selectedTask.status,
         priority: selectedTask.priority,
         dueDate: selectedTask.dueDate,
-        folder: selectedTask.folder
+        folder: selectedTask.folder,
+        createdAt: selectedTask.createdAt,
+        updatedAt: new Date().toISOString().split('T')[0]
       };
-
+  
       const updatedTask = await dbService.updateTask(selectedTask.id, taskToUpdate, token);
-
-      setTasks(tasks.map(task =>
-        task.id === updatedTask.id ? updatedTask : task
+      console.log('Tarefa atualizada:', updatedTask);
+      
+      // Garantir que as datas sejam formatadas corretamente
+      const safeUpdatedTask = {
+        ...updatedTask,
+        createdAt: updatedTask.createdAt || selectedTask.createdAt,
+        updatedAt: updatedTask.updatedAt || new Date().toISOString()
+      };
+  
+      setTasks(tasks.map(task => 
+        task.id === safeUpdatedTask.id ? safeUpdatedTask : task
       ));
-      setSelectedTask(updatedTask);
+      setSelectedTask(safeUpdatedTask);
       setError('');
     } catch (error) {
       setError('Erro ao salvar tarefa');
+      console.error('Erro ao salvar tarefa:', error);
     }
   };
 
@@ -161,37 +173,37 @@ const TaskInterface = () => {
       setError('Root folder não encontrada');
       return;
     }
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const due_date = tomorrow.toISOString().split('T')[0];
-    
+  
     try {
       const newTaskData = {
         folder: rootFolder,
         title: t('new_task'),
         content: t('new_description'),
-        dueDate: due_date,
+        dueDate: new Date().toISOString().split('T')[0], // Data atual como dueDate
         status: 'REGISTERED',
         priority: "LOW",
       };
-
+  
       const newTask = await dbService.createTask(newTaskData, token);
       
+      // Formatar as datas corretamente
       const safeNewTask = {
         id: newTask.id,
         title: newTask.title || t('new_task'),
         content: newTask.content || '',
         status: newTask.status || 'REGISTERED',
         priority: newTask.priority || 'LOW',
-        dueDate: newTask.dueDate || due_date,
+        dueDate: newTask.dueDate || new Date().toISOString().split('T')[0],
         folder: newTask.folder || rootFolder,
-        createdAt: newTask.createdAt || new Date().toISOString()
+        createdAt: newTask.createdAt ? new Date(newTask.createdAt).toISOString() : new Date().toISOString(),
+        updatedAt: newTask.updatedAt ? new Date(newTask.updatedAt).toISOString() : null
       };
-
+  
       setTasks([...tasks, safeNewTask]);
       setSelectedTask(safeNewTask);
     } catch (error) {
       setError('Erro ao criar nova tarefa');
+      console.error('Erro ao criar tarefa:', error);
     }
   };
 
@@ -351,6 +363,13 @@ const TaskInterface = () => {
                   ? new Date(selectedTask.createdAt).toLocaleDateString()
                   : 'Data desconhecida'}
               </Typography>
+            {/*
+              <Typography variant="body2" color="text.secondary">
+                {t('updated_at')}: {selectedTask.updatedAt
+                  ? new Date(selectedTask.updatedAt).toLocaleDateString()
+                  : 'Nunca atualizado'}
+              </Typography>
+            */}
             </>
           ) : (
             <Box sx={{

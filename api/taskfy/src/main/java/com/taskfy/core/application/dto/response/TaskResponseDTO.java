@@ -22,4 +22,6 @@ public class TaskResponseDTO {
     private Status status;
     private Priority priority;
     private FolderResponseDTO folder;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 }
