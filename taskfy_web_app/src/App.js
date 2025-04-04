@@ -11,11 +11,14 @@ import Test from "./model/test";
 import RegisterPage from "./pages/register";
 import {LanguageProvider} from "./utils/translations";
 import AppDrawerWrapper from "./components/AppDrawerWrapper";
-
+import ThemeProvider from "./components/ThemeProvider";
+import { RecoilRoot } from 'recoil';
 
 export default function App() {
   return (
     <Router>
+      <RecoilRoot>
+      <ThemeProvider>
       <LanguageProvider>
       <Routes>
         {/* Rotas com layout principal */}
@@ -31,6 +34,8 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
       </Routes>
       </LanguageProvider>
+      </ThemeProvider>
+      </RecoilRoot>
     </Router>
   );
 }

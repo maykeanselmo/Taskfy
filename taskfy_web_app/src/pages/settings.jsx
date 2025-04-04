@@ -1,94 +1,88 @@
-import React from "react";
-import './settings.css';
-import { t, setLanguage } from "../utils/translations";
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { languageState } from '../model/state';
+import { settingsState, languageState } from '../model/state';
+import { Box, Typography, ToggleButton, ToggleButtonGroup, Button, Grid, Paper } from '@mui/material';
+import { t, setLanguage } from '../utils/translations';
 
 const Settings = () => {
-    // Recoil hook para acessar o estado de idioma
-    const [language, setLanguageState] = useRecoilState(languageState);
+  const [settings, setSettings] = useRecoilState(settingsState);
+  const [language, setLanguageState] = useRecoilState(languageState);
 
-    const HandlechangeLanguage = (lang) => {
-        setLanguage(lang);  // Atualiza o idioma no localStorage
-        setLanguageState(lang);  // Atualiza o estado do Recoil
-    };
-    
-    // Cores disponíveis para o seletor de cor
-    const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#33FFF5", "#F5FF33"];
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+    setLanguageState(lang);
+  };
 
-    return (
-        <div className="settings-page">
-            {/* Título da página */}
-            <h1>{t("settings_title")}</h1>
+  const handleDarkModeChange = (event, value) => {
+    if (value !== null) {
+      localStorage.setItem('darkMode', value);
+      setSettings(prev => ({ ...prev, darkMode: value }));
+    }
+  };
 
-            {/* Seção de mudança de idioma */}
-            <div className="language-section">
-                <h2>{t("change_language")}</h2>
-                <div className="language-buttons">
-                    <button onClick={() => HandlechangeLanguage("en")} className={language === "en" ? "active" : ""}>
-                        English
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("pt")} className={language === "pt" ? "active" : ""}>
-                        Português
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("ar")} className={language === "ar" ? "active" : ""}>
-                        العربية
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("de")} className={language === "de" ? "active" : ""}>
-                        Deutsch
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("es")} className={language === "es" ? "active" : ""}>
-                        Español
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("fr")} className={language === "fr" ? "active" : ""}>
-                        Français
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("id")} className={language === "id" ? "active" : ""}>
-                        Bahasa Indonesia
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("hi")} className={language === "hi" ? "active" : ""}>
-                        हिंदी
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("it")} className={language === "it" ? "active" : ""}>
-                        Italiano
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("ja")} className={language === "ja" ? "active" : ""}>
-                        日本語
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("ko")} className={language === "ko" ? "active" : ""}>
-                        한국어
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("ru")} className={language === "ru" ? "active" : ""}>
-                        Русский
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("th")} className={language === "th" ? "active" : ""}>
-                        ไทย
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("tr")} className={language === "tr" ? "active" : ""}>
-                        Türkçe
-                    </button>
-                    <button onClick={() => HandlechangeLanguage("zh")} className={language === "zh" ? "active" : ""}>
-                        中文
-                    </button>
-                </div>
-            </div>
+  const handleColorChange = (color) => {
+    localStorage.setItem('seed', color);
+    setSettings(prev => ({ ...prev, colorScheme: color }));
+  };
 
-            {/* Seletor de cor */}
-            <div className="color-picker-section">
-                <h2>{t("select_color")}</h2>
-                <div className="color-picker">
-                    {colors.map((color, index) => (
-                        <div
-                            key={index}
-                            className="color-circle"
-                            style={{ backgroundColor: color }}
-                            onClick={() => console.log("Cor selecionada:", color)} // Placeholder
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
+  const languages = ["en", "pt", "es", "fr", "de", "it", "ru", "zh", "ja", "ko"];
+  const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#33FFF5", "#F5FF33", "#9c27b0"];
+
+  return (
+    <Box p={3} maxWidth="800px" margin="auto">
+      <Typography variant="h4" gutterBottom>{t("settings_title")}</Typography>
+
+      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" gutterBottom>{t("change_language")}</Typography>
+        <ToggleButtonGroup
+          value={language}
+          exclusive
+          onChange={(e, val) => val && handleLanguageChange(val)}
+          aria-label="language"
+          sx={{ flexWrap: 'wrap', gap: 1 }}
+        >
+          {languages.map((lang) => (
+            <ToggleButton key={lang} value={lang}>{lang.toUpperCase()}</ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Paper>
+
+      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" gutterBottom>{t("theme_mode")}</Typography>
+        <ToggleButtonGroup
+          value={settings.darkMode}
+          exclusive
+          onChange={handleDarkModeChange}
+          aria-label="theme-mode"
+        >
+          <ToggleButton value="true">{t("dark_mode")}</ToggleButton>
+          <ToggleButton value="false">{t("light_mode")}</ToggleButton>
+        </ToggleButtonGroup>
+      </Paper>
+
+      <Paper elevation={3} sx={{ p: 3 }}>
+        <Typography variant="h6" gutterBottom>{t("select_color")}</Typography>
+        <Grid container spacing={2}>
+          {colors.map((color) => (
+            <Grid item key={color}>
+              <Box
+                onClick={() => handleColorChange(color)}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  backgroundColor: color,
+                  border: color === settings.colorScheme ? '3px solid black' : '2px solid white',
+                  cursor: 'pointer'
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Paper>
+    </Box>
+  );
 };
 
 export default Settings;
