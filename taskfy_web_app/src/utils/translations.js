@@ -4,18 +4,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const translations = {
   en: require('../res/locales/en.json'),
   pt: require('../res/locales/pt.json'),
-  ar: require('../res/locales/ar.json'),
   de: require('../res/locales/de.json'),
   es: require('../res/locales/es.json'),
   fr: require('../res/locales/fr.json'),
-  id: require('../res/locales/id.json'),
-  hi: require('../res/locales/hi.json'),
   it: require('../res/locales/it.json'),
   ja: require('../res/locales/ja.json'),
   ko: require('../res/locales/ko.json'),
   ru: require('../res/locales/ru.json'),
-  th: require('../res/locales/th.json'),
-  tr: require('../res/locales/tr.json'),
   zh: require('../res/locales/zh.json'),
 };
 
