@@ -48,9 +48,13 @@ const TaskInterface = () => {
       return null;
     }
   });
-
   const email = localStorage.getItem('email');
   const token = localStorage.getItem('authToken');
+
+  // Adicione no início do componente
+  const [skipDeleteConfirmation, setSkipDeleteConfirmation] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [dontAskAgain, setDontAskAgain] = useState(false);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -60,7 +64,7 @@ const TaskInterface = () => {
   
         const user = await dbService.getUserByEmail(email, token);
         if (!user) throw new Error(t("user_not_found"));
-  
+
         let root = await dbService.getRootFoldersByUser(user.id, token);
         if (!root || root.length === 0) {
           const folderData = {
@@ -228,6 +232,15 @@ const TaskInterface = () => {
     }
   };
 
+  const handleDeleteClick = () => {
+    if (skipDeleteConfirmation) {
+      handleDelete();
+    } else {
+      setDeleteDialogOpen(true);
+    }
+  };
+
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'REGISTERED': return 'warning';
@@ -293,6 +306,55 @@ const TaskInterface = () => {
           </List>
         </Box>
       </Grid>
+      {deleteDialogOpen && (
+  <Box sx={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999
+  }}>
+    <Paper sx={{ p: 3, minWidth: 300 }}>
+      <Typography variant="h6" gutterBottom>
+        {t('confirm_delete')}
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        {t('confirm_delete_task_message')}
+      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+        <input
+          type="checkbox"
+          id="dontAskAgain"
+          checked={dontAskAgain}
+          onChange={(e) => setDontAskAgain(e.target.checked)}
+          style={{ marginRight: '8px' }}
+        />
+        <label htmlFor="dontAskAgain">{t('do_not_ask_again')}</label>
+      </Box>
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
+        <Button onClick={() => setDeleteDialogOpen(false)}>
+          {t('cancel')}
+        </Button>
+        <Button 
+          variant="contained" 
+          color="error"
+          onClick={() => {
+            setSkipDeleteConfirmation(dontAskAgain);
+            setDeleteDialogOpen(false);
+            handleDelete();
+          }}
+        >
+          {t('delete')}
+        </Button>
+      </Stack>
+    </Paper>
+  </Box>
+)}
 
       {/* Editor de Tarefa */}
       <Grid item xs={12} md={8}>
@@ -302,9 +364,13 @@ const TaskInterface = () => {
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h5">{t('task_editor')}</Typography>
                 <Stack direction="row" spacing={1}>
-                  <Button variant="outlined" color="error" onClick={handleDelete}>
-                    {t('delete')}
-                  </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDeleteClick}
+                >
+                  {t('delete')}
+                </Button>
                   <Button
                     variant="contained"
                     onClick={handleSave}

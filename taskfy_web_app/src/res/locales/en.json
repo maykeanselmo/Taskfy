@@ -79,7 +79,11 @@
     "due_date": "Due Date",
     "no_description": "No description",
     "new_task": "New Task",
-    "new_description": "New Description"
+    "new_description": "New Description",
+
+    "confirm_delete_task_message": "Are you sure you want to delete this task?",
+    "confirm_delete": "Confirm Deletion",
+    "do_not_ask_again": "Don't ask again"
   }
 
     

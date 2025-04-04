@@ -80,6 +80,8 @@
     "new_description": "Nova descrição",
     "new_task": "Nova tarefa",
     "no_description": "Sem descrição",
-    "task_editor": "Editor de Tarefas"
-    
+    "task_editor": "Editor de Tarefas",
+    "confirm_delete_task_message": "Tem certeza de que deseja excluir essa tarefa?",
+    "confirm_delete": "Confirmação de Exclusão",
+    "do_not_ask_again": "Nao perguntar novamente"
 }
