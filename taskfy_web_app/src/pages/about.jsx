@@ -18,24 +18,28 @@ function About() {
               <Typography
                 variant="h5"
                 gutterBottom
-                sx={{ textAlign: 'center', color: theme.palette.primary.main }}
+                sx={{ textAlign: 'center', color: theme.palette.primary.main, mb: 3 }}
               >
                 {t("about_us")}
               </Typography>
               
               {/* Subtítulo */}
-              <Typography variant="h6" sx={{ color: theme.palette.primary.main }} paragraph>
+              <Typography 
+                variant="h6" 
+                sx={{ textAlign: 'center', color: theme.palette.primary.main, mb: 3 }} 
+                paragraph
+              >
                 Taskfy: Gerenciador de tarefas moderno e personalizável
               </Typography>
               
               {/* Descrição */}
-              <Typography variant="body1" paragraph>
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
                 O Taskfy é um gerenciador de tarefas intuitivo e eficiente que visa melhorar a organização pessoal e profissional. 
                 Desenvolvido para ajudar você a manter o controle sobre suas atividades diárias, o Taskfy permite a criação, 
                 organização e priorização de tarefas de maneira prática e eficaz.
               </Typography>
               
-              <Typography variant="body1" paragraph>
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
                 Nossa plataforma oferece um ambiente simples de usar, mas com recursos avançados que facilitam o gerenciamento de 
                 tarefas, como a possibilidade de configurar prazos, categorias e prioridades para suas atividades. 
                 Além disso, o Taskfy oferece integração com outros serviços de produtividade, como calendários e armazenamento em 
@@ -43,20 +47,19 @@ function About() {
               </Typography>
               
               {/* Funcionalidades */}
-              <Typography variant="body1" paragraph>
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
                 Com o Taskfy, você pode:
               </Typography>
               <Box sx={{ paddingLeft: 2 }}>
-                <Typography variant="body1">• Organizar tarefas por categorias</Typography>
-                <Typography variant="body1">• Definir prazos e prioridades</Typography>
-                <Typography variant="body1">• Receber notificações de prazos e alertas</Typography>
-                <Typography variant="body1">• Colaborar em equipe em projetos e tarefas</Typography>
-                <Typography variant="body1">• Obter relatórios de produtividade</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• Organizar tarefas por categorias</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• Definir prazos e prioridades</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• Receber notificações de prazos e alertas</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• Colaborar em equipe em projetos e tarefas</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• Obter relatórios de produtividade</Typography>
               </Box>
 
-              
               {/* Conclusão */}
-              <Typography variant="body1" paragraph>
+              <Typography variant="body1" sx={{ mb: 6 }} paragraph>
                 O Taskfy é projetado para atender tanto usuários individuais quanto equipes, oferecendo uma solução flexível 
                 para o gerenciamento de tarefas e projetos.
               </Typography>
