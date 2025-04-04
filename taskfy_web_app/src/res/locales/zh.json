@@ -61,6 +61,23 @@
     "about_p3.4": "与团队合作项目和任务",
     "about_p3.5": "生成生产力报告",
     "about_p4": "Taskfy旨在满足个人用户和团队的需求，为任务和项目管理提供灵活的解决方案。",
-    "about_foot": "© 2025 Taskfy. 保留所有权利。"
+    "about_foot": "© 2025 Taskfy. 保留所有权利。",
+
+    "task_list": "任务列表",
+    "task_editor": "任务编辑器",
+    "new": "新建",
+    "edit_task": "编辑任务",
+    "delete": "删除",
+    "save": "保存",
+    "title": "标题",
+    "description": "描述",
+    "in_progress": "进行中",
+    "completed": "已完成",
+    "registered": "已登记",
+    "created_at": "创建于",
+    "select_task_to_edit": "选择一个任务进行编辑",
+    "due_date": "截止日期",
+    "no_description": "无描述",
+    "new_task": "新任务"
   
 }
