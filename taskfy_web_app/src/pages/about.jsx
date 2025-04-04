@@ -11,7 +11,7 @@ function About() {
       {/* Cabeçalho */}
       <Container component="main" sx={{ flex: 1, py: 8, maxWidth: 'lg' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-          <Card sx={{ width: '100%', maxWidth: 900, boxShadow: 3 }}>
+          <Card sx={{ width: '100%', maxWidth: 900, boxShadow: 3, borderRadius: '16px' }}>
             
             {/* Título Principal */}
             <CardContent>
