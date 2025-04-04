@@ -65,7 +65,7 @@ function About() {
       {/* Rodapé */}
       <Box sx={{ bgcolor: theme.palette.primary.main, py: 2 }}>
         <Typography variant="body2" color="white" align="center">
-          © 2025 Taskfy. {t("about_foot")}
+          {t("about_foot")}
         </Typography>
       </Box>
     </Box>
