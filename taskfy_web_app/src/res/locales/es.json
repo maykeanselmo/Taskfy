@@ -37,5 +37,20 @@
   "add_folder": "Añadir carpeta",
   "delete_task": "Eliminar tarea",
   "rename_task": "Renombrar tarea",
-  "move_task": "Mover tarea"
+  "move_task": "Mover tarea",
+
+    "about_title": "Taskfy: Administrador de tareas moderno y personalizable",
+    "about_p1": "Taskfy es un administrador de tareas intuitivo y eficiente diseñado para mejorar la organización personal y profesional. Desarrollado para ayudarte a mantener el control de tus actividades diarias, Taskfy permite la creación, organización y priorización de tareas de manera práctica y eficaz.",
+    "about_p2": "Nuestra plataforma ofrece un entorno fácil de usar, pero con características avanzadas que facilitan la gestión de tareas, como configurar plazos, categorías y prioridades para tus actividades. Además, Taskfy ofrece integración con otros servicios de productividad, como calendarios y almacenamiento en la nube, proporcionando una experiencia completa y optimizada para el usuario.",
+    "about_p3": "Con Taskfy, puedes:",
+    "about_p3.1": "Organizar tareas por categorías",
+    "about_p3.2": "Establecer plazos y prioridades",
+    "about_p3.3": "Recibir recordatorios de plazos y alertas",
+    "about_p3.4": "Colaborar en equipo en proyectos y tareas",
+    "about_p3.5": "Generar informes de productividad",
+    "about_p4": "Taskfy está diseñado para satisfacer las necesidades de usuarios individuales y equipos, ofreciendo una solución flexible para la gestión de tareas y proyectos.",
+    "about_foot": "© 2025 Taskfy. Todos los derechos reservados."
+  
+
+  
 }
