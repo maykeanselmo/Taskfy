@@ -61,6 +61,22 @@
     "about_p3.4": "Colaborar em equipe em projetos e tarefas",
     "about_p3.5": "Obter relatórios de produtividade",
     "about_p4": "O Taskfy é projetado para atender tanto usuários individuais quanto equipes, oferecendo uma solução flexível para o gerenciamento de tarefas e projetos.",
-    "about_foot": "© 2025 Taskfy. Todos os direitos reservados."
+    "about_foot": "© 2025 Taskfy. Todos os direitos reservados.",
+
+    
+    "task_list": "Lista de Tarefas",
+    "new": "Nova",
+    "edit_task": "Editar Tarefa",
+    "delete": "Deletar",
+    "save": "Salvar",
+    "title": "Título",
+    "description": "Descrição",
+    "in_progress": "Em Progresso",
+    "completed": "Concluída",
+    "registered": "Registrada",
+    "created_at": "Criado em",
+    "select_task_to_edit": "Selecione uma tarefa para editar",
+    "due_date": "Data de Vencimento"
+    
   
 }
