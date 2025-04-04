@@ -42,43 +42,40 @@ class DatabaseService {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
-                // Adicione se necessário:
-                // 'Accept': 'application/json'
+                // 'Accept': 'application/json' // Descomente se necessário
             },
-            body: JSON.stringify({ 
-                email: email.trim(), 
-                password: password 
+            body: JSON.stringify({
+                email: email.trim(),
+                password: password
             })
         });
 
         const responseText = await response.text();
+        
         let responseData;
-
+        
         try {
-            responseData = JSON.parse(responseText);
-        } catch {
-            responseData = { message: responseText };
+            responseData = JSON.parse(responseText);  // Tenta converter a resposta em JSON
+        } catch (e) {
+            responseData = { message: responseText };  // Caso a conversão falhe, retorna o texto da resposta
         }
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                throw new Error("Credenciais inválidas");
-            }
-            throw new Error(responseData.message || `Erro ${response.status}`);
+        // Verifique a resposta para garantir que o login foi bem-sucedido
+        if (response.ok) {
+            // Sucesso no login, você pode armazenar o token ou fazer algo com a resposta
+            return responseData; // Aqui você pode retornar os dados do usuário ou o token, dependendo da API
+        } else {
+            // Se a resposta não for OK, lance um erro com a mensagem da API
+            throw new Error(responseData.message || 'Login falhou');
         }
-
-        if (!responseData.token) {
-            throw new Error("Token não recebido na resposta");
-        }
-        return responseData;
 
     } catch (error) {
         console.error("Erro no login:", error.message);
-        throw error;
+        throw error; // Reenvia o erro para quem chamou a função
     }
-  }
+  };
 
 ////////////////////////////// FOLDER //////////////////////////////
   async createFolder(folderData, token) {
@@ -377,6 +374,8 @@ class DatabaseService {
         const apiTask = await updateTaskStatus(id, statusUpdate, token);
         return apiTask;
     } catch (error) {
+        console.error(error);
+        return []; // Retorna um array vazio para evitar falhas no frontend
         console.error('Error updating task status:', error);
         throw error;
     }
