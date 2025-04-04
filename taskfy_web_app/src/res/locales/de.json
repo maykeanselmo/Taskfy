@@ -44,6 +44,9 @@
   "login_message": "Bitte geben Sie Ihre Anmeldedaten ein",
   "theme_mode": "Themenmodus",
 
+  "dark_mode": "Dunkelmodus",
+  "light_mode": "Hellmodus",
+
     "about_title": "Taskfy: Moderner und anpassbarer Aufgabenmanager",
     "about_p1": "Taskfy ist ein intuitiver und effizienter Aufgabenmanager, der entwickelt wurde, um die persönliche und berufliche Organisation zu verbessern. Taskfy ermöglicht die Erstellung, Organisation und Priorisierung von Aufgaben auf praktische und effektive Weise, damit du deine täglichen Aktivitäten im Griff hast.",
     "about_p2": "Unsere Plattform bietet eine benutzerfreundliche Umgebung mit erweiterten Funktionen, die das Aufgabenmanagement erleichtern, wie das Festlegen von Fristen, Kategorien und Prioritäten. Außerdem bietet Taskfy eine Integration mit anderen Produktivitätsdiensten wie Kalendern und Cloud-Speicher, um eine vollständige und optimierte Benutzererfahrung zu gewährleisten.",

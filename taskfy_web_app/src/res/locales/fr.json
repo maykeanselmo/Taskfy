@@ -43,6 +43,9 @@
   "login_welcome": "Bienvenue sur Taskfy !",
   "login_message": "Veuillez entrer vos identifiants",
   "theme_mode": "Mode du thème",
+
+  "dark_mode": "Mode Sombre",
+  "light_mode": "Mode Clair",
   
     "about_title": "Taskfy: Gestionnaire de tâches moderne et personnalisable",
     "about_p1": "Taskfy est un gestionnaire de tâches intuitif et efficace conçu pour améliorer l'organisation personnelle et professionnelle. Développé pour vous aider à garder le contrôle de vos activités quotidiennes, Taskfy permet la création, l'organisation et la priorisation des tâches de manière pratique et efficace.",
