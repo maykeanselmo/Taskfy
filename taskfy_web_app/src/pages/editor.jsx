@@ -20,16 +20,17 @@ import {
 } from '@mui/material';
 import { dbService } from '../services/db_service';
 import Task from '../model/task';
-import {t} from '../utils/translations';
+import { useLanguage } from '../utils/translations';
 
 const TaskInterface = () => {
+  const { t } = useLanguage();
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState({
     id: null,
     title: '',
     content: '',
     dueDate: '',
-    status: 'PENDING',
+    status: 'REGISTERED',
     priority: 'LOW',
     folder: null,
     createdAt: ''
@@ -91,7 +92,7 @@ const TaskInterface = () => {
           id: task.id,
           title: task.title || 'Sem título',
           content: task.content || '',
-          status: task.status || 'PENDING',
+          status: task.status || 'REGISTERED',
           priority: task.priority || 'LOW',
           dueDate: task.dueDate || '',
           folder: task.folder || rootFolderObj,
@@ -115,7 +116,7 @@ const TaskInterface = () => {
       id: task.id,
       title: task.title || '',
       content: task.content || '',
-      status: task.status || 'PENDING',
+      status: task.status || 'REGISTERED',
       priority: task.priority || 'LOW',
       dueDate: task.dueDate || '',
       folder: task.folder || null,
@@ -205,7 +206,7 @@ const TaskInterface = () => {
         title: '',
         content: '',
         dueDate: '',
-        status: 'PENDING',
+        status: 'REGISTERED',
         priority: 'LOW',
         folder: null,
         createdAt: ''
@@ -217,7 +218,7 @@ const TaskInterface = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'PENDING': return 'warning';
+      case 'REGISTERED': return 'warning';
       case 'IN_PROGRESS': return 'info';
       case 'COMPLETED': return 'success';
       default: return 'default';
@@ -247,8 +248,8 @@ const TaskInterface = () => {
       <Grid item xs={12} md={4} sx={{ borderRight: '1px solid #ddd', height: '100%' }}>
         <Box sx={{ p: 2 }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h6">Lista de Tarefas</Typography>
-            <Button variant="contained" onClick={handleCreate}>Nova</Button>
+            <Typography variant="h6">{t('task_list')}</Typography>
+            <Button variant="contained" onClick={handleCreate}>{t('new')}</Button>
           </Stack>
 
           <List dense>
@@ -268,7 +269,7 @@ const TaskInterface = () => {
                       }
                     />
                     <Chip
-                      label={task.status}
+                      label={t(task.status.toLowerCase())} // Alterar para usar a tradução
                       color={getStatusColor(task.status)}
                       size="small"
                       sx={{ ml: 2 }}
@@ -287,23 +288,23 @@ const TaskInterface = () => {
           {selectedTask.id ? (
             <>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-                <Typography variant="h5">Editar Tarefa</Typography>
+                <Typography variant="h5">{t('task_editor')}</Typography>
                 <Stack direction="row" spacing={1}>
                   <Button variant="outlined" color="error" onClick={handleDelete}>
-                    Deletar
+                    {t('delete')}
                   </Button>
                   <Button
                     variant="contained"
                     onClick={handleSave}
                     disabled={!selectedTask.title.trim()}
                   >
-                    Salvar
+                    {t('save')}
                   </Button>
                 </Stack>
               </Stack>
 
               <TextField
-                label="Título"
+                label={t('title')}
                 fullWidth
                 value={selectedTask.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
@@ -311,7 +312,7 @@ const TaskInterface = () => {
               />
 
               <TextField
-                label="Descrição"
+                label={t('description')}
                 fullWidth
                 multiline
                 rows={4}
@@ -326,13 +327,13 @@ const TaskInterface = () => {
                 fullWidth
                 sx={{ mb: 3 }}
               >
-                <MenuItem value="PENDING">Pendente</MenuItem>
-                <MenuItem value="IN_PROGRESS">Em Progresso</MenuItem>
-                <MenuItem value="COMPLETED">Concluída</MenuItem>
+              <MenuItem value="REGISTERED">{t('registered')}</MenuItem>
+              <MenuItem value="IN_PROGRESS">{t('in_progress')}</MenuItem>
+              <MenuItem value="COMPLETED">{t('completed')}</MenuItem>
               </Select>
 
               <TextField
-                label="Data de Vencimento"
+                label= {t('due_date')}
                 type="date"
                 fullWidth
                 value={selectedTask.dueDate}
@@ -346,7 +347,7 @@ const TaskInterface = () => {
               <Divider sx={{ my: 3 }} />
 
               <Typography variant="body2" color="text.secondary">
-                Criado em: {selectedTask.createdAt
+                {t('created_at')}: {selectedTask.createdAt
                   ? new Date(selectedTask.createdAt).toLocaleDateString()
                   : 'Data desconhecida'}
               </Typography>
@@ -359,7 +360,7 @@ const TaskInterface = () => {
               justifyContent: 'center'
             }}>
               <Typography variant="h6" color="text.secondary">
-                Selecione uma tarefa para editar
+                {t('select_task_to_edit')}
               </Typography>
             </Box>
           )}
