@@ -136,11 +136,7 @@ class DatabaseService {
   async createUser(userData) {
     try {
         const apiUser = await createUser(userData);
-        const localUser = new User({
-            ...apiUser,
-            id: apiUser.id
-        });
-        console.log(localUser)
+        console.log(apiUser)
         return localUser;
     } catch (error) {
         console.error('Error creating user:', error);

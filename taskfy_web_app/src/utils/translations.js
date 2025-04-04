@@ -1,36 +1,71 @@
-// Importando as traduções de arquivos JSON
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+// Traduções
 const translations = {
   en: require('../res/locales/en.json'),
   pt: require('../res/locales/pt.json'),
-  ar: require('../res/locales/ar.json'), // Árabe
-  de: require('../res/locales/de.json'), // Alemão
-  es: require('../res/locales/es.json'), // Espanhol
-  fr: require('../res/locales/fr.json'), // Francês
-  id: require('../res/locales/id.json'), // Indonésio
-  hi: require('../res/locales/hi.json'), // Hindi
-  it: require('../res/locales/it.json'), // Italiano
-  ja: require('../res/locales/ja.json'), // Japonês
-  ko: require('../res/locales/ko.json'), // Coreano
-  ru: require('../res/locales/ru.json'), // Russo
-  th: require('../res/locales/th.json'), // Tailandês
-  tr: require('../res/locales/tr.json'), // Turco
-  zh: require('../res/locales/zh.json')  // Chinês
+  ar: require('../res/locales/ar.json'),
+  de: require('../res/locales/de.json'),
+  es: require('../res/locales/es.json'),
+  fr: require('../res/locales/fr.json'),
+  id: require('../res/locales/id.json'),
+  hi: require('../res/locales/hi.json'),
+  it: require('../res/locales/it.json'),
+  ja: require('../res/locales/ja.json'),
+  ko: require('../res/locales/ko.json'),
+  ru: require('../res/locales/ru.json'),
+  th: require('../res/locales/th.json'),
+  tr: require('../res/locales/tr.json'),
+  zh: require('../res/locales/zh.json'),
 };
 
-// Estado global do idioma (fora do React)
+// Fallback global
 let currentLanguage = localStorage.getItem('language') || 'en';
 
-// Função para traduzir uma chave
+// Global translator (fora do React)
 export const t = (key) => {
   return translations[currentLanguage]?.[key] || translations["en"]?.[key] || key;
 };
 
-// Função para mudar o idioma
+// Atualiza idioma globalmente
 export const setLanguage = (newLanguage) => {
   currentLanguage = newLanguage;
   localStorage.setItem('language', newLanguage);
+  _triggerReactUpdate?.(newLanguage); // dispara atualização no contexto, se estiver disponível
 };
 
-// Função para obter o idioma atual
+// Retorna idioma atual
 export const getLanguage = () => currentLanguage;
 
+// Contexto React
+const LanguageContext = createContext();
+
+// Referência global para notificar o React do update
+let _triggerReactUpdate = null;
+
+// React Provider
+export const LanguageProvider = ({ children }) => {
+  const [language, setLangState] = useState(currentLanguage);
+
+  // Referência pra forçar atualização externa
+  useEffect(() => {
+    _triggerReactUpdate = (lang) => setLangState(lang);
+    return () => { _triggerReactUpdate = null; };
+  }, []);
+
+  const value = {
+    language,
+    setLanguage,
+    getLanguage,
+    t
+  };
+
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+// Hook para uso no React
+export const useLanguage = () => useContext(LanguageContext);

@@ -37,5 +37,10 @@
   "add_folder": "Adicionar pasta",
   "delete_task": "Excluir tarefa",
   "rename_task": "Renomear tarefa",
-  "move_task": "Mover tarefa"
+  "move_task": "Mover tarefa",
+
+  "go_to_login": "Ir para login",
+  "login_welcome": "Bem vindo ao Taskfy!",
+  "login_message": "Por favor, entre com suas credenciais",
+  "theme_mode": "Modo do tema"
 }

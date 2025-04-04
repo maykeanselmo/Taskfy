@@ -4,9 +4,6 @@ import { VER } from "./const";
 
 export const createUser = async (userData) => {
     try {
-        if (!userData || !userData.name || !userData.email || !userData.username || !userData.password) {
-            throw new Error('Missing required user fields');
-        }
         const response = await fetch(`${API_BASE_URL}/v1/users`, {
             method: 'POST',
             headers: {
