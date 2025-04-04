@@ -327,11 +327,13 @@ const TaskInterface = () => {
                 label={t('description')}
                 fullWidth
                 multiline
-                rows={4}
+                minRows={6}
+                maxRows={24} // opcional — limite máximo de expansão
                 value={selectedTask.content}
                 onChange={(e) => handleInputChange('content', e.target.value)}
                 sx={{ mb: 3 }}
               />
+
 
               <Select
                 value={selectedTask.status}
