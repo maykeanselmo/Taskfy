@@ -37,6 +37,19 @@
   "add_folder": "Ajouter un dossier",
   "delete_task": "Supprimer la tâche",
   "rename_task": "Renommer la tâche",
-  "move_task": "Déplacer la tâche"
+  "move_task": "Déplacer la tâche",
+
+    "about_title": "Taskfy: Gestionnaire de tâches moderne et personnalisable",
+    "about_p1": "Taskfy est un gestionnaire de tâches intuitif et efficace conçu pour améliorer l'organisation personnelle et professionnelle. Développé pour vous aider à garder le contrôle de vos activités quotidiennes, Taskfy permet la création, l'organisation et la priorisation des tâches de manière pratique et efficace.",
+    "about_p2": "Notre plateforme offre un environnement simple à utiliser, mais avec des fonctionnalités avancées qui facilitent la gestion des tâches, comme la définition de délais, de catégories et de priorités pour vos activités. De plus, Taskfy propose une intégration avec d'autres services de productivité, tels que des calendriers et le stockage en cloud, offrant une expérience utilisateur complète et optimisée.",
+    "about_p3": "Avec Taskfy, vous pouvez :",
+    "about_p3.1": "Organiser les tâches par catégories",
+    "about_p3.2": "Définir des délais et des priorités",
+    "about_p3.3": "Recevoir des rappels et des alertes de délais",
+    "about_p3.4": "Collaborer en équipe sur des projets et tâches",
+    "about_p3.5": "Générer des rapports de productivité",
+    "about_p4": "Taskfy est conçu pour répondre aux besoins des utilisateurs individuels et des équipes, offrant une solution flexible pour la gestion des tâches et projets.",
+    "about_foot": "© 2025 Taskfy. Tous droits réservés."
+  
 }
 

@@ -1,55 +1,71 @@
 import React from 'react';
-import { Box, Card, CardContent, Container, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Typography, useTheme } from '@mui/material';
 import { t } from '../utils/translations';
 
 function About() {
+  const theme = useTheme(); // Hook para acessar o tema atual
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* Conteúdo Principal */}
+      
+      {/* Cabeçalho */}
       <Container component="main" sx={{ flex: 1, py: 8, maxWidth: 'lg' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-          <Card sx={{ width: '100%', maxWidth: 900, boxShadow: 3 }}>
+          <Card sx={{ width: '100%', maxWidth: 900, boxShadow: 3, borderRadius: '16px' }}>
+            
+            {/* Título Principal */}
             <CardContent>
-              <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', color: '#1976d2' }}>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{ textAlign: 'center', color: theme.palette.primary.main, mb: 3 }}
+              >
                 {t("about_us")}
               </Typography>
-              <Typography variant="h6" sx={{ color: '#1976d2' }} paragraph>
-                Taskfy: Gerenciador de tarefas moderno e personalizável
+              
+              {/* Subtítulo */}
+              <Typography 
+                variant="h6" 
+                sx={{ textAlign: 'center', color: theme.palette.primary.main, mb: 3 }} 
+                paragraph
+              >
+                {t("about_title")}
               </Typography>
-              <Typography variant="body1" paragraph>
-                O Taskfy é um gerenciador de tarefas intuitivo e eficiente que visa melhorar a organização pessoal e profissional. 
-                Desenvolvido para ajudar você a manter o controle sobre suas atividades diárias, o Taskfy permite a criação, 
-                organização e priorização de tarefas de maneira prática e eficaz.
+              
+              {/* Descrição */}
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
+                {t("about_p1")}
               </Typography>
-              <Typography variant="body1" paragraph>
-                Nossa plataforma oferece um ambiente simples de usar, mas com recursos avançados que facilitam o gerenciamento de 
-                tarefas, como a possibilidade de configurar prazos, categorias e prioridades para suas atividades. 
-                Além disso, o Taskfy oferece integração com outros serviços de produtividade, como calendários e armazenamento em 
-                nuvem, proporcionando uma experiência completa e otimizada para o usuário.
+              
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
+                {t("about_p2")}
               </Typography>
-              <Typography variant="body1" paragraph>
-                Com o Taskfy, você pode:
+              
+              {/* Funcionalidades */}
+              <Typography variant="body1" sx={{ mb: 3 }} paragraph>
+                {t("about_p3")}
               </Typography>
               <Box sx={{ paddingLeft: 2 }}>
-                <Typography variant="body1">- Organizar tarefas por categorias</Typography>
-                <Typography variant="body1">- Definir prazos e prioridades</Typography>
-                <Typography variant="body1">- Receber notificações de prazos e alertas</Typography>
-                <Typography variant="body1">- Colaborar em equipe em projetos e tarefas</Typography>
-                <Typography variant="body1">- Obter relatórios de produtividade</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• {t("about_p3.1")}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• {t("about_p3.2")}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• {t("about_p3.3")}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• {t("about_p3.4")}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>• {t("about_p3.5")}</Typography>
               </Box>
-              <Typography variant="body1" paragraph>
-                O Taskfy é projetado para atender tanto usuários individuais quanto equipes, oferecendo uma solução flexível 
-                para o gerenciamento de tarefas e projetos.
+
+              {/* Conclusão */}
+              <Typography variant="body1" sx={{ mb: 6 }} paragraph>
+                {t("about_p4")}
               </Typography>
             </CardContent>
           </Card>
         </Box>
       </Container>
-
+      
       {/* Rodapé */}
-      <Box sx={{ bgcolor: '#1976d2', py: 2 }}>
+      <Box sx={{ bgcolor: theme.palette.primary.main, py: 2 }}>
         <Typography variant="body2" color="white" align="center">
-          © 2025 Taskfy. Todos os direitos reservados.
+          {t("about_foot")}
         </Typography>
       </Box>
     </Box>

@@ -42,5 +42,18 @@
   "go_to_login": "Ir para login",
   "login_welcome": "Bem vindo ao Taskfy!",
   "login_message": "Por favor, entre com suas credenciais",
-  "theme_mode": "Modo do tema"
+  "theme_mode": "Modo do tema",
+
+    "about_title": "Taskfy: Gerenciador de tarefas moderno e personalizável",
+    "about_p1": "O Taskfy é um gerenciador de tarefas intuitivo e eficiente que visa melhorar a organização pessoal e profissional. Desenvolvido para ajudar você a manter o controle sobre suas atividades diárias, o Taskfy permite a criação, organização e priorização de tarefas de maneira prática e eficaz.",
+    "about_p2": "Nossa plataforma oferece um ambiente simples de usar, mas com recursos avançados que facilitam o gerenciamento de tarefas, como a possibilidade de configurar prazos, categorias e prioridades para suas atividades. Além disso, o Taskfy oferece integração com outros serviços de produtividade, como calendários e armazenamento em nuvem, proporcionando uma experiência completa e otimizada para o usuário.",
+    "about_p3": "Com o Taskfy, você pode:",
+    "about_p3.1": "Organizar tarefas por categorias",
+    "about_p3.2": "Definir prazos e prioridades",
+    "about_p3.3": "Receber notificações de prazos e alertas",
+    "about_p3.4": "Colaborar em equipe em projetos e tarefas",
+    "about_p3.5": "Obter relatórios de produtividade",
+    "about_p4": "O Taskfy é projetado para atender tanto usuários individuais quanto equipes, oferecendo uma solução flexível para o gerenciamento de tarefas e projetos.",
+    "about_foot": "© 2025 Taskfy. Todos os direitos reservados."
+  
 }
