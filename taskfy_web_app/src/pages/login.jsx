@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, Grid, Typography, Link, Box, Container, CssBaseline } from '@mui/material';
+import { Button, TextField, Fade, Grid, Typography, Link, Box, Container, CssBaseline } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { dbService } from '../services/db_service';
 import { Link as RouterLink } from 'react-router-dom';
@@ -53,63 +53,60 @@ const LoginPage = () => {
 
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box sx={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8
-      }}>
-        <Typography variant="h5">{t('login_welcome')}</Typography>
-        <Typography variant="h5">{t('login_message')}</Typography>
+    <Fade in timeout={800}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box sx={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8
+        }}>
+          <Typography variant="h5">{t('login_welcome')}</Typography>
+          <Typography variant="h5" sx={{ textAlign: 'center' }}>{t('login_message')}</Typography>
 
-        {error && (
-          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
+          {error && (
+            <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
 
-        {/* Login via email e senha */}
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          value={email}
-          onChange={handleEemailChange}
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="Senha"
-          variant="outlined"
-          type="password"
-          fullWidth
-          value={password}
-          onChange={handlePasswordChange}
-          sx={{ mt: 2 }}
-        />
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          sx={{ mt: 3 }}
-          onClick={handleLogin}
-          disabled={loading}
-        >
-          {loading ? 'Carregando...' : 'Entrar'}
-        </Button>
+          {/* Login via email e senha */}
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            value={email}
+            onChange={handleEemailChange}
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            label="Senha"
+            variant="outlined"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={handlePasswordChange}
+            sx={{ mt: 2 }}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? 'Carregando...' : 'Entrar'}
+          </Button>
 
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs>
-          <Link href="#" variant="body2">
-            Esqueceu a senha?
-          </Link>
-        </Grid>
-        <Grid item>
-          <Link component={RouterLink} to="/register" variant="body2">
-            Não tem uma conta? Cadastre-se
-          </Link>
-        </Grid>
-      </Grid>
-      </Box>
-    </Container>
+          <Grid container spacing={2} sx={{ mt: 2 }}>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Link component={RouterLink} to="/register" variant="body2">
+              {t("sign_up")}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+      </Fade>
   );
 };
 
