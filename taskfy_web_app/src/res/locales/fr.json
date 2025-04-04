@@ -61,7 +61,24 @@
     "about_p3.4": "Collaborer en équipe sur des projets et tâches",
     "about_p3.5": "Générer des rapports de productivité",
     "about_p4": "Taskfy est conçu pour répondre aux besoins des utilisateurs individuels et des équipes, offrant une solution flexible pour la gestion des tâches et projets.",
-    "about_foot": "© 2025 Taskfy. Tous droits réservés."
+    "about_foot": "© 2025 Taskfy. Tous droits réservés.",
+
+    "task_list": "Liste des Tâches",
+    "task_editor": "Éditeur de Tâches",
+    "new": "Nouvelle",
+    "edit_task": "Modifier la Tâche",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "title": "Titre",
+    "description": "Description",
+    "in_progress": "En Cours",
+    "completed": "Terminée",
+    "registered": "Enregistrée",
+    "created_at": "Créée le",
+    "select_task_to_edit": "Sélectionnez une tâche à modifier",
+    "due_date": "Date d'Échéance",
+    "no_description": "Aucune description",
+    "new_task": "Nouvelle Tâche"
   
 }
 
