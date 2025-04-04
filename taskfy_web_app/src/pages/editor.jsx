@@ -240,6 +240,7 @@ const TaskInterface = () => {
   }
 
   return (
+
     <Grid container sx={{ height: '100vh' }}>
       {/* Lista de Tarefas */}
       <Grid item xs={12} md={4} sx={{ borderRight: '1px solid #ddd', height: '100%' }}>

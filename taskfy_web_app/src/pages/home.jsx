@@ -18,14 +18,16 @@ const Home = () => {
   };
 
   return (
+
     <Fade in timeout={800}>
       <Box
         sx={{
-          height: '100vh',
+          minHeight: '100vh',
           bgcolor: 'background.default',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start', // empurra pra cima
           justifyContent: 'center',
+          pt: 10, // padding top pra empurrar mais ainda
           p: 2,
         }}
       >
@@ -33,19 +35,20 @@ const Home = () => {
           elevation={6}
           sx={{
             p: 4,
-            maxWidth: 500,
+            maxWidth: 800, // ficou mais largo
+            width: '100%',
             textAlign: 'center',
             borderRadius: 4,
             background: 'linear-gradient(145deg, #f0f0f0, #ffffff)',
             boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
           }}
         >
-          <Stack spacing={3}>
+          <Stack spacing={4}>
             <Typography variant="h3" color="primary" fontWeight="bold">
               {t('initial_page')}
             </Typography>
 
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="h6" color="text.secondary">
               {t('welcome_message')}
             </Typography>
 
