@@ -61,8 +61,23 @@
     "about_p3.4": "Im Team an Projekten und Aufgaben zusammenarbeiten",
     "about_p3.5": "Produktivitätsberichte erstellen",
     "about_p4": "Taskfy wurde entwickelt, um die Bedürfnisse einzelner Benutzer und Teams zu erfüllen und bietet eine flexible Lösung für das Aufgaben- und Projektmanagement.",
-    "about_foot": "© 2025 Taskfy. Alle Rechte vorbehalten."
+    "about_foot": "© 2025 Taskfy. Alle Rechte vorbehalten.",
 
+
+    "task_list": "Aufgabenliste",
+    "task_editor": "Aufgabeneditor",
+    "new": "Neu",
+    "edit_task": "Aufgabe bearbeiten",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "in_progress": "In Bearbeitung",
+    "completed": "Abgeschlossen",
+    "registered": "Registriert",
+    "created_at": "Erstellt am",
+    "select_task_to_edit": "Wählen Sie eine Aufgabe zum Bearbeiten aus",
+    "due_date": "Fälligkeitsdatum"
   
 }
 
