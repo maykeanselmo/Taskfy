@@ -1,11 +1,11 @@
 {
   "about": "Informazioni",
-  "editor": "Editor",
+  "editor": "Editore",
   "settings": "Impostazioni",
-  "home": "Home",
+  "home": "inizio",
   "login": "Accedi",
   
-  "initial_page": "Home",
+  "initial_page": "inizio",
   "welcome_message": "Benvenuto!",
   
   "about_us": "Chi siamo",
@@ -38,6 +38,16 @@
   "delete_task": "Elimina compito",
   "rename_task": "Rinomina compito",
   "move_task": "Sposta compito",
+
+  "go_to_login": "Vai al login",
+  "login_welcome": "Benvenuto su Taskfy!",
+  "login_message": "Per favore, inserisci le tue credenziali",
+  "theme_mode": "Modalità tema",
+
+  "dark_mode": "Modalità Scura",
+  "light_mode": "Modalità Chiara",
+
+  "user_not_found": "Utente non trovato",
 
     "about_title": "Taskfy: Gestore di attività moderno e personalizzabile",
     "about_p1": "Taskfy è un gestore di attività intuitivo ed efficiente progettato per migliorare l'organizzazione personale e professionale. Sviluppato per aiutarti a tenere sotto controllo le tue attività quotidiane, Taskfy consente la creazione, l'organizzazione e la priorizzazione delle attività in modo pratico ed efficace.",

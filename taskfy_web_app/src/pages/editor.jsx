@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { dbService } from '../services/db_service';
 import Task from '../model/task';
+import {t} from '../utils/translations';
 
 const TaskInterface = () => {
   const [tasks, setTasks] = useState([]);
@@ -56,7 +57,7 @@ const TaskInterface = () => {
         setError('');
   
         const user = await dbService.getUserByEmail(email, token);
-        if (!user) throw new Error('Usuário não encontrado');
+        if (!user) throw new Error(t("user_not_found"));
   
         let root = await dbService.getRootFoldersByUser(user.id, token);
         if (!root || root.length === 0) {
