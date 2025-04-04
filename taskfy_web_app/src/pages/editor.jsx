@@ -23,15 +23,28 @@ import Task from '../model/task';
 
 const TaskInterface = () => {
   const [tasks, setTasks] = useState([]);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [editData, setEditData] = useState({ title: '', content: '', status: 'PENDING' });
+  const [selectedTask, setSelectedTask] = useState({
+    id: null,
+    title: '',
+    content: '',
+    dueDate: '',
+    status: 'PENDING',
+    priority: 'LOW',
+    folder: null,
+    createdAt: ''
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [rootFolder, setRootFolder] = useState(() => {
-    const saved = localStorage.getItem('rootFolder');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('rootFolder');
+      return saved ? JSON.parse(saved) : null;
+    } catch (error) {
+      console.error('Failed to parse rootFolder from localStorage:', error);
+      localStorage.removeItem('rootFolder'); // Clean up invalid data
+      return null;
+    }
   });
-
 
   const email = localStorage.getItem('email');
   const token = localStorage.getItem('authToken');
@@ -39,62 +52,97 @@ const TaskInterface = () => {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        setLoading(true);
+        setError('');
+  
         const user = await dbService.getUserByEmail(email, token);
         if (!user) throw new Error('Usuário não encontrado');
-
+  
         let root = await dbService.getRootFoldersByUser(user.id, token);
         if (!root || root.length === 0) {
           const folderData = {
             name: 'Root',
             parentFolder: null,
             user: user
-          }
+          };
           root = await dbService.createFolder(folderData, token);
         }
-        console.log("Criar Pasata Root", root);
-
-        const rootFolderId = Array.isArray(root) ? root[0].id : root.id;
-        const tasksData = await dbService.getTasksByFolder(rootFolderId, token);
-        console.log("tasksData", tasksData);
-        const jsonFormatado = JSON.stringify(root[0], null, 2);
-        localStorage.setItem('rootFolder', jsonFormatado);
-        const testeRoot = localStorage.getItem('rootFolder');
-        console.log("rootFolderLocalStorage", localStorage.getItem('rootFolder'));
-
+  
+        // Ensure we have a single root folder object
+        const rootFolderObj = Array.isArray(root) ? root[0] : root;
+        
+        // Validate before saving to localStorage
+        if (!rootFolderObj || !rootFolderObj.id) {
+          throw new Error('Invalid root folder data');
+        }
+  
+        // Stringify with error handling
+        try {
+          localStorage.setItem('rootFolder', JSON.stringify(rootFolderObj));
+        } catch (storageError) {
+          console.error('Failed to save rootFolder to localStorage:', storageError);
+        }
+  
+        setRootFolder(rootFolderObj);
+  
+        const tasksData = await dbService.getTasksByFolder(rootFolderObj.id, token);
         const safeTasks = (tasksData || []).map(task => ({
           id: task.id,
           title: task.title || 'Sem título',
           content: task.content || '',
           status: task.status || 'PENDING',
+          priority: task.priority || 'LOW',
+          dueDate: task.dueDate || '',
+          folder: task.folder || rootFolderObj,
           createdAt: task.createdAt || new Date().toISOString()
         }));
-
+  
         setTasks(safeTasks);
       } catch (error) {
         setError(error.message);
+        console.error('Initialization error:', error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     initializeApp();
   }, []);
 
   const handleTaskSelect = (task) => {
-    setSelectedTask(task);
-    setEditData({
+    setSelectedTask({
+      id: task.id,
       title: task.title || '',
       content: task.content || '',
-      status: task.status || 'PENDING'
+      status: task.status || 'PENDING',
+      priority: task.priority || 'LOW',
+      dueDate: task.dueDate || '',
+      folder: task.folder || null,
+      createdAt: task.createdAt || new Date().toISOString()
     });
   };
 
+  const handleInputChange = (field, value) => {
+    setSelectedTask(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const handleSave = async () => {
+    if (!selectedTask.id) return;
+    
     try {
-      console.log("selectedTask", selectedTask);
-      console.log("editData", editData);
-      const updatedTask = await dbService.updateTask(selectedTask.id, selectedTask, token);
-      console.log("response", updatedTask);
+      const taskToUpdate = {
+        title: selectedTask.title,
+        content: selectedTask.content,
+        status: selectedTask.status,
+        priority: selectedTask.priority,
+        dueDate: selectedTask.dueDate,
+        folder: selectedTask.folder
+      };
+
+      const updatedTask = await dbService.updateTask(selectedTask.id, taskToUpdate, token);
 
       setTasks(tasks.map(task =>
         task.id === updatedTask.id ? updatedTask : task
@@ -114,8 +162,9 @@ const TaskInterface = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const due_date = tomorrow.toISOString().split('T')[0];
+    
     try {
-      const task ={
+      const newTaskData = {
         folder: rootFolder,
         title: 'Nova tarefa',
         content: 'New',
@@ -123,24 +172,43 @@ const TaskInterface = () => {
         status: 'REGISTERED',
         priority: "LOW",
       };
-      console.log("taskData", task);
-      const newTask = await dbService.createTask(task, token);
 
-      setTasks(newTask);
-      console.log("newTask", newTask);
-      handleTaskSelect(safeNewTask);
+      const newTask = await dbService.createTask(newTaskData, token);
+      
+      const safeNewTask = {
+        id: newTask.id,
+        title: newTask.title || 'Nova tarefa',
+        content: newTask.content || '',
+        status: newTask.status || 'REGISTERED',
+        priority: newTask.priority || 'LOW',
+        dueDate: newTask.dueDate || due_date,
+        folder: newTask.folder || rootFolder,
+        createdAt: newTask.createdAt || new Date().toISOString()
+      };
+
+      setTasks([...tasks, safeNewTask]);
+      setSelectedTask(safeNewTask);
     } catch (error) {
       setError('Erro ao criar nova tarefa');
     }
   };
 
   const handleDelete = async () => {
-    if (!selectedTask) return;
+    if (!selectedTask.id) return;
 
     try {
       await dbService.deleteTask(selectedTask.id, token);
       setTasks(tasks.filter(task => task.id !== selectedTask.id));
-      setSelectedTask(null);
+      setSelectedTask({
+        id: null,
+        title: '',
+        content: '',
+        dueDate: '',
+        status: 'PENDING',
+        priority: 'LOW',
+        folder: null,
+        createdAt: ''
+      });
     } catch (error) {
       setError('Erro ao deletar tarefa');
     }
@@ -186,7 +254,7 @@ const TaskInterface = () => {
               <Paper key={task.id} sx={{ mb: 1 }}>
                 <ListItem disablePadding>
                   <ListItemButton
-                    selected={selectedTask?.id === task.id}
+                    selected={selectedTask.id === task.id}
                     onClick={() => handleTaskSelect(task)}
                   >
                     <ListItemText
@@ -214,7 +282,7 @@ const TaskInterface = () => {
       {/* Editor de Tarefa */}
       <Grid item xs={12} md={8}>
         <Box sx={{ p: 3 }}>
-          {selectedTask ? (
+          {selectedTask.id ? (
             <>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h5">Editar Tarefa</Typography>
@@ -225,7 +293,7 @@ const TaskInterface = () => {
                   <Button
                     variant="contained"
                     onClick={handleSave}
-                    disabled={!editData.title.trim()}
+                    disabled={!selectedTask.title.trim()}
                   >
                     Salvar
                   </Button>
@@ -235,8 +303,8 @@ const TaskInterface = () => {
               <TextField
                 label="Título"
                 fullWidth
-                value={editData.title}
-                onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                value={selectedTask.title}
+                onChange={(e) => handleInputChange('title', e.target.value)}
                 sx={{ mb: 3 }}
               />
 
@@ -245,14 +313,14 @@ const TaskInterface = () => {
                 fullWidth
                 multiline
                 rows={4}
-                value={editData.content}
-                onChange={(e) => setEditData({ ...editData, content: e.target.value })}
+                value={selectedTask.content}
+                onChange={(e) => handleInputChange('content', e.target.value)}
                 sx={{ mb: 3 }}
               />
 
               <Select
-                value={editData.status}
-                onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+                value={selectedTask.status}
+                onChange={(e) => handleInputChange('status', e.target.value)}
                 fullWidth
                 sx={{ mb: 3 }}
               >
@@ -260,6 +328,18 @@ const TaskInterface = () => {
                 <MenuItem value="IN_PROGRESS">Em Progresso</MenuItem>
                 <MenuItem value="COMPLETED">Concluída</MenuItem>
               </Select>
+
+              <TextField
+                label="Data de Vencimento"
+                type="date"
+                fullWidth
+                value={selectedTask.dueDate}
+                onChange={(e) => handleInputChange('dueDate', e.target.value)}
+                sx={{ mb: 3 }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
               <Divider sx={{ my: 3 }} />
 
