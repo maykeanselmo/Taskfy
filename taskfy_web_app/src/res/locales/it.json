@@ -61,7 +61,24 @@
     "about_p3.4": "Collaborare in team su progetti e attività",
     "about_p3.5": "Generare report di produttività",
     "about_p4": "Taskfy è progettato per soddisfare le esigenze sia degli utenti individuali che dei team, offrendo una soluzione flessibile per la gestione di attività e progetti.",
-    "about_foot": "© 2025 Taskfy. Tutti i diritti riservati."
+    "about_foot": "© 2025 Taskfy. Tutti i diritti riservati.",
+
+    "task_list": "Elenco Attività",
+    "task_editor": "Editor di Attività",
+    "new": "Nuova",
+    "edit_task": "Modifica Attività",
+    "delete": "Elimina",
+    "save": "Salva",
+    "title": "Titolo",
+    "description": "Descrizione",
+    "in_progress": "In Corso",
+    "completed": "Completata",
+    "registered": "Registrata",
+    "created_at": "Creata il",
+    "select_task_to_edit": "Seleziona un'attività da modificare",
+    "due_date": "Data di Scadenza",
+    "no_description": "Nessuna descrizione",
+    "new_task": "Nuova Attività"
   
 }
 
