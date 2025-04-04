@@ -63,22 +63,6 @@ export default function App() {
         >
           <List>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to="/login">
-                <ListItemIcon>
-                  <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("login")} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/register">
-                <ListItemIcon>
-                  <RegisterIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("register")} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
               <ListItemButton component={Link} to="/">
                 <ListItemIcon>
                   <HomeIcon />
@@ -176,8 +160,6 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/editor" element={<Editor />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/tasks" element={<TasksViewer />} />
-            <Route path="/test" element={<Test />} />
           </Routes>
         </Box>
       </Box>

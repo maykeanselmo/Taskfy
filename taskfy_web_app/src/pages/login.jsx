@@ -43,7 +43,7 @@ const LoginPage = () => {
     try {
       const user = await validateCredentials(email, password);
 
-      navigate('/tasks'); // Redireciona após login bem-sucedido
+      navigate('/editor'); // Redireciona após login bem-sucedido
     } catch (err) {
       setError(err.message);
     } finally {
