@@ -37,7 +37,9 @@
     "add_folder": "Add Folder",
     "delete_task": "Delete Task",
     "rename_task": "Rename Task",
-    "move_task": "Move Task"
+    "move_task": "Move Task",
+
+    "go_to_login": "Go to Login"
   }
   
 

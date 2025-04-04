@@ -37,5 +37,7 @@
   "add_folder": "Adicionar pasta",
   "delete_task": "Excluir tarefa",
   "rename_task": "Renomear tarefa",
-  "move_task": "Mover tarefa"
+  "move_task": "Mover tarefa",
+
+  "go_to_login": "Ir para login"
 }

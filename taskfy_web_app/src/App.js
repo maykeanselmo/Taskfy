@@ -24,7 +24,6 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/editor" element={<Editor />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/tasks" element={<TasksViewer />} />
         </Route>
         
         {/* Rotas sem layout principal */}

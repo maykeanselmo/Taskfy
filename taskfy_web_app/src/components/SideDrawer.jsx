@@ -71,14 +71,6 @@ export const SideDrawer = ({ open, onClose }) => {
             <ListItemText primary={t("settings")} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/tasks">
-            <ListItemIcon>
-              <NotesIcon />
-            </ListItemIcon>
-            <ListItemText primary={t("tasks")} />
-          </ListItemButton>
-        </ListItem>
       </List>
       <Divider />
     </Drawer>
