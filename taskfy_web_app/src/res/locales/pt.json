@@ -79,6 +79,7 @@
     "due_date": "Data de Vencimento",
     "new_description": "Nova descrição",
     "new_task": "Nova tarefa",
-    "no_description": "Sem descrição"
+    "no_description": "Sem descrição",
+    "task_editor": "Editor de Tarefas"
     
 }
