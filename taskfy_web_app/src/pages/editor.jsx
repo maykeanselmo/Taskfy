@@ -24,7 +24,8 @@ import {
   Button,
   DialogActions,
   Paper,
-  CssBaseline
+  CssBaseline,
+  Chip
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -39,7 +40,8 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   CreateNewFolder as NewFolderIcon,
-  NoteAdd as NewTaskIcon
+  NoteAdd as NewTaskIcon,
+  Label as TagIcon
 } from '@mui/icons-material';
 
 import { dbService } from '../services/db_service';
@@ -64,15 +66,17 @@ const Editor = () => {
   const [loading, setLoading] = useState(true);
   const email = localStorage.getItem('email');
   const [allTasks, setAllTasks] = useState([]);
+  const [tagInput, setTagInput] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-          navigate('/login');
-          return;
-        }
+         if (!token) {
+           navigate('/login');
+           return;
+         }
   
         // Carrega as pastas raiz
         const user = await dbService.getUserByEmail(email, token);
@@ -147,6 +151,7 @@ const Editor = () => {
   
       setActiveFile(file);
       setFileContent(file.content);
+      setSelectedItem(file);
       
       if (!openFiles.some(f => f.id === file.id)) {
         setOpenFiles([...openFiles, file]);
@@ -302,6 +307,7 @@ const Editor = () => {
     const file = openFiles[newValue];
     setActiveFile(file);
     setFileContent(file.content);
+    setSelectedItem(file);
   };
 
   // Handle sidebar resize
@@ -331,6 +337,17 @@ const Editor = () => {
     };
   }, [isResizing]);
 
+  useEffect(() => {
+    if (activeFile) {
+      const current = openFiles.find(f => f.id === activeFile.id);
+      if (!current) {
+        setSelectedItem(null);
+      } else {
+        setSelectedItem(current);
+      }
+    }
+  }, [openFiles, activeFile]);
+
   // Context menu handlers
   const handleContextMenu = (e, folder) => {
     e.preventDefault();
@@ -353,6 +370,37 @@ const Editor = () => {
 
   const handleDialogClose = () => {
     setOpenDialog(false);
+  };
+
+  const handleAddTag = () => {
+    if (tagInput.trim() && selectedItem && selectedItem.type === 'task') {
+      const updateTags = (items) => items.map(item => {
+        if (item.id === selectedItem.id) {
+          return { ...item, tags: [...new Set([...item.tags, tagInput.trim()])] };
+        }
+        if (item.children) {
+          return { ...item, children: updateTags(item.children) };
+        }
+        return item;
+      });
+      setFolders(updateTags(folders));
+      setTagInput('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    if (selectedItem && selectedItem.type === 'task') {
+      const updateTags = (items) => items.map(item => {
+        if (item.id === selectedItem.id) {
+          return { ...item, tags: item.tags.filter(tag => tag !== tagToRemove) };
+        }
+        if (item.children) {
+          return { ...item, children: updateTags(item.children) };
+        }
+        return item;
+      });
+      setFolders(updateTags(folders));
+    }
   };
 
   // Render folder tree recursively
@@ -407,8 +455,7 @@ const Editor = () => {
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />
-
-      {/* Left Sidebar */}
+      
       <Paper 
         elevation={2} 
         sx={{ 
@@ -454,13 +501,8 @@ const Editor = () => {
           sx={{ 
             flexGrow: 1,
             overflow: 'auto',
-            '&::-webkit-scrollbar': {
-              width: '6px'
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: '#888',
-              borderRadius: '3px'
-            }
+            '&::-webkit-scrollbar': { width: '6px' },
+            '&::-webkit-scrollbar-thumb': { backgroundColor: '#888', borderRadius: '3px' }
           }}
         >
           <List>
@@ -468,20 +510,49 @@ const Editor = () => {
           </List>
         </Box>
         
-        {/* Resize handle */}
+        <Box sx={{ p: 2 }}>
+          <TextField 
+            label="Add Tag" 
+            value={tagInput} 
+            onChange={(e) => setTagInput(e.target.value)}
+            fullWidth
+            size="small"
+          />
+          <Button 
+            onClick={handleAddTag}
+            variant="contained"
+            size="small"
+            fullWidth
+            sx={{ mt: 1 }}
+            startIcon={<TagIcon />}
+          >
+            Add Tag
+          </Button>
+          {selectedItem?.type === 'task' && (
+            <Box sx={{ mt: 2 }}>
+              {selectedItem.tags?.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  onDelete={() => handleRemoveTag(tag)}
+                  sx={{ m: 0.5 }}
+                  size="small"
+                />
+              ))}
+            </Box>
+          )}
+        </Box>
+
         <Box 
           sx={{
             width: '4px',
             cursor: 'col-resize',
-            '&:hover': {
-              backgroundColor: 'primary.main'
-            }
+            '&:hover': { backgroundColor: 'primary.main' }
           }}
           onMouseDown={startResizing}
         />
       </Paper>
       
-      {/* Add Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -501,9 +572,7 @@ const Editor = () => {
         </MenuItem>
       </Menu>
       
-      {/* Main Content */}
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Top Tabs */}
         <AppBar position="static" color="default" elevation={0}>
           <Tabs
             value={openFiles.findIndex(file => file.id === activeFile?.id)}
@@ -520,9 +589,12 @@ const Editor = () => {
                     size="small" 
                     onClick={(e) => {
                       e.stopPropagation();
-                      setOpenFiles(openFiles.filter((_, i) => i !== index));
+                      const newOpenFiles = openFiles.filter((_, i) => i !== index);
+                      setOpenFiles(newOpenFiles);
                       if (file.id === activeFile?.id) {
-                        setActiveFile(openFiles[index + 1] || openFiles[index - 1] || null);
+                        const newActiveFile = newOpenFiles[index + 1] || newOpenFiles[index - 1] || null;
+                        setActiveFile(newActiveFile);
+                        setSelectedItem(newActiveFile);
                       }
                     }}
                   >
@@ -535,7 +607,6 @@ const Editor = () => {
           </Tabs>
         </AppBar>
         
-        {/* Editor Area */}
         <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
           {activeFile ? (
             <TextField
@@ -560,7 +631,7 @@ const Editor = () => {
               }}
             />
           ) : (
-            <Box sx={{
+            <Box sx={{ 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 
@@ -572,9 +643,8 @@ const Editor = () => {
           )}
         </Box>
         
-        {/* Status Bar */}
         <Box 
-          sx={{
+          sx={{ 
             p: 1,
             display: 'flex',
             justifyContent: 'space-between',
@@ -592,7 +662,6 @@ const Editor = () => {
         </Box>
       </Box>
       
-      {/* Context Menu */}
       <Menu
         anchorEl={folderAnchorEl}
         open={Boolean(folderAnchorEl)}
@@ -633,7 +702,6 @@ const Editor = () => {
         </MenuItem>
       </Menu>
       
-      {/* Dialog for creating/renaming */}
       <Dialog open={openDialog} onClose={handleDialogClose}>
         <DialogTitle>
           {dialogType === 'newFolder' && 'New Folder'}
