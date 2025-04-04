@@ -15,13 +15,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TaskResponseDTO {
 
+    private Long id;
     private String title;
     private String content;
     private LocalDate dueDate;
     private Status status;
     private Priority priority;
     private FolderResponseDTO folder;
-
-
-
 }

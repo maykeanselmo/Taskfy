@@ -24,10 +24,14 @@ import Task from '../model/task';
 const TaskInterface = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [editData, setEditData] = useState({ title: '', description: '', status: 'PENDING' });
+  const [editData, setEditData] = useState({ title: '', content: '', status: 'PENDING' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [rootFolder, setRootFolder] = useState(null);
+  const [rootFolder, setRootFolder] = useState(() => {
+    const saved = localStorage.getItem('rootFolder');
+    return saved ? JSON.parse(saved) : null;
+  });
+
 
   const email = localStorage.getItem('email');
   const token = localStorage.getItem('authToken');
@@ -40,29 +44,32 @@ const TaskInterface = () => {
 
         let root = await dbService.getRootFoldersByUser(user.id, token);
         if (!root || root.length === 0) {
-          root = await dbService.createFolder({
+          const folderData = {
             name: 'Root',
-            parentId: null,
-            ownerId: user.id
-          }, token);
+            parentFolder: null,
+            user: user
+          }
+          root = await dbService.createFolder(folderData, token);
         }
-        console.log("root", root);
+        console.log("Criar Pasata Root", root);
 
         const rootFolderId = Array.isArray(root) ? root[0].id : root.id;
         const tasksData = await dbService.getTasksByFolder(rootFolderId, token);
         console.log("tasksData", tasksData);
-        setRootFolder(root[0]);
+        const jsonFormatado = JSON.stringify(root[0], null, 2);
+        localStorage.setItem('rootFolder', jsonFormatado);
+        const testeRoot = localStorage.getItem('rootFolder');
+        console.log("rootFolderLocalStorage", localStorage.getItem('rootFolder'));
 
         const safeTasks = (tasksData || []).map(task => ({
           id: task.id,
           title: task.title || 'Sem título',
-          description: task.description || '',
+          content: task.content || '',
           status: task.status || 'PENDING',
           createdAt: task.createdAt || new Date().toISOString()
         }));
 
         setTasks(safeTasks);
-        setRootFolder(rootFolderId);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -77,23 +84,16 @@ const TaskInterface = () => {
     setSelectedTask(task);
     setEditData({
       title: task.title || '',
-      description: task.description || '',
+      content: task.content || '',
       status: task.status || 'PENDING'
     });
   };
 
   const handleSave = async () => {
     try {
-      const task = new Task({
-        folder_id: rootFolder.id,
-        title: editData.title,
-        description: editData.description,
-        due_date: null,
-        status: editData.status,
-        priority: null,
-    });
-      console.log("task", task);
-      const updatedTask = await dbService.updateTask(task.id, token, task);
+      console.log("selectedTask", selectedTask);
+      console.log("editData", editData);
+      const updatedTask = await dbService.updateTask(selectedTask.id, selectedTask, token);
       console.log("response", updatedTask);
 
       setTasks(tasks.map(task =>
@@ -107,19 +107,27 @@ const TaskInterface = () => {
   };
 
   const handleCreate = async () => {
+    if (!rootFolder) {
+      setError('Root folder não encontrada');
+      return;
+    }
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const due_date = tomorrow.toISOString().split('T')[0];
     try {
-      const task = new Task({
+      const task ={
         folder: rootFolder,
         title: 'Nova tarefa',
         content: 'New',
-        due_date: new Date().toISOString().split('T')[0],
+        dueDate: due_date,
         status: 'REGISTERED',
         priority: "LOW",
-      })
-      console.log("task", task);
+      };
+      console.log("taskData", task);
       const newTask = await dbService.createTask(task, token);
 
       setTasks(newTask);
+      console.log("newTask", newTask);
       handleTaskSelect(safeNewTask);
     } catch (error) {
       setError('Erro ao criar nova tarefa');
@@ -184,8 +192,8 @@ const TaskInterface = () => {
                     <ListItemText
                       primary={task.title || 'Sem título'}
                       secondary={
-                        task.description
-                          ? task.description.substring(0, 30) + '...'
+                        task.content
+                          ? task.content.substring(0, 30) + '...'
                           : 'Sem descrição'
                       }
                     />
@@ -237,8 +245,8 @@ const TaskInterface = () => {
                 fullWidth
                 multiline
                 rows={4}
-                value={editData.description}
-                onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                value={editData.content}
+                onChange={(e) => setEditData({ ...editData, content: e.target.value })}
                 sx={{ mb: 3 }}
               />
 
