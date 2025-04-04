@@ -42,8 +42,22 @@
     "go_to_login": "Go to Login",
     "login_welcome": "Welcome to Taskfy!",
     "login_message": "Please log in to your account",
-    "theme_mode": "Theme Mode"
+    "theme_mode": "Theme Mode",
+
+    
+    "about_title": "Taskfy: Modern and Customizable Task Manager",
+    "about_p1": "Taskfy is an intuitive and efficient task manager designed to improve personal and professional organization. Developed to help you keep track of your daily activities, Taskfy enables the creation, organization, and prioritization of tasks in a practical and effective way.",
+    "about_p2": "Our platform provides a user-friendly environment with advanced features that simplify task management, such as setting deadlines, categories, and priorities for your activities. Additionally, Taskfy offers integration with other productivity services like calendars and cloud storage, delivering a complete and optimized user experience.",
+    "about_p3": "With Taskfy, you can:",
+    "about_p3.1": "Organize tasks by categories",
+    "about_p3.2": "Set deadlines and priorities",
+    "about_p3.3": "Receive deadline reminders and alerts",
+    "about_p3.4": "Collaborate as a team on projects and tasks",
+    "about_p3.5": "Generate productivity reports",
+    "about_p4": "Taskfy is designed to meet the needs of both individual users and teams, offering a flexible solution for managing tasks and projects.",
+    "about_foot": "© 2025 Taskfy. All rights reserved."
   }
-  
+
+    
 
 
