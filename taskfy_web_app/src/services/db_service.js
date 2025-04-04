@@ -312,6 +312,15 @@ class DatabaseService {
     }
   }
 
+  async getFolderById(id, token) {
+    try {
+        const apiFolder = await getFolderById(id, token);
+        return apiFolder;
+    } catch (apiError) {
+        console.warn('Falling back to local storage for folder:', id);
+    }
+  }
+
   async getTask(id, token) {
     try {
         const apiTask = await getTaskById(id, token);

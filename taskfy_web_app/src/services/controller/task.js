@@ -4,7 +4,7 @@ import { VER } from "./const";
 
 export const createTask = async (taskData, token) => {
     try {
-        const response = await fetch(API_BASE_URL, {
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

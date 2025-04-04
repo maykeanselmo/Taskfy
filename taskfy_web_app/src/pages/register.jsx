@@ -36,10 +36,12 @@ const RegisterPage = () => {
 
         try {
           const userData = {
-            name: nickname,
+            nickname: nickname,
             email: email,
             username: username,
-            password: password
+            password: password,
+            active: true,
+            role: "USER"
           };
           console.log('Dados do usuário a serem salvos:', userData);
           const user = await dbService.createUser(userData)
