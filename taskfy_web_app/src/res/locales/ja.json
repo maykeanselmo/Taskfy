@@ -61,7 +61,24 @@
     "about_p3.4": "プロジェクトやタスクでチームと協力",
     "about_p3.5": "生産性レポートを生成",
     "about_p4": "Taskfyは、個々のユーザーとチームのニーズを満たすよう設計されており、タスクとプロジェクト管理の柔軟なソリューションを提供します。",
-    "about_foot": "© 2025 Taskfy. 全著作権所有。"
+    "about_foot": "© 2025 Taskfy. 全著作権所有。",
+
+    "task_list": "タスクリスト",
+    "task_editor": "タスクエディター",
+    "new": "新規",
+    "edit_task": "タスクを編集",
+    "delete": "削除",
+    "save": "保存",
+    "title": "タイトル",
+    "description": "説明",
+    "in_progress": "進行中",
+    "completed": "完了",
+    "registered": "登録済み",
+    "created_at": "作成日",
+    "select_task_to_edit": "編集するタスクを選択",
+    "due_date": "期限日",
+    "no_description": "説明なし",
+    "new_task": "新しいタスク"
   
 }
 
