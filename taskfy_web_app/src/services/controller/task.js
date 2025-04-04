@@ -47,7 +47,7 @@ export const getTaskById = async (id, token) => {
 
 export const deleteTask = async (id, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -67,7 +67,7 @@ export const deleteTask = async (id, token) => {
 
 export const updateTask = async (id, taskData, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/tasks/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

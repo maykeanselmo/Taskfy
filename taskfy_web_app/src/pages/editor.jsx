@@ -1,733 +1,282 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import {
   Box,
-  Drawer,
-  IconButton,
+  Grid,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  Divider,
+  CircularProgress,
+  Alert,
   TextField,
-  Typography,
-  Tabs,
-  Tab,
-  AppBar,
-  Toolbar,
-  Menu,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
   Button,
-  DialogActions,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  Chip,
   Paper,
-  CssBaseline,
-  Chip
+  Stack
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Add as AddIcon,
-  MoreVert as MoreIcon,
-  Settings as SettingsIcon,
-  Folder as FolderIcon,
-  InsertDriveFile as FileIcon,
-  ChevronRight as ChevronRightIcon,
-  ExpandMore as ExpandMoreIcon,
-  Close as CloseIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  CreateNewFolder as NewFolderIcon,
-  NoteAdd as NewTaskIcon,
-  Label as TagIcon
-} from '@mui/icons-material';
-
 import { dbService } from '../services/db_service';
+import Task from '../model/task';
 
-const Editor = () => {
-  const [parentFolderId, setParentFolderId] = useState(null);
-  const navigate = useNavigate();
-  const [folders, setFolders] = useState([]);
-  const [openFiles, setOpenFiles] = useState([]);
-  const [activeFile, setActiveFile] = useState(null);
-  const [fileContent, setFileContent] = useState('');
-  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
-  const [sidebarWidth, setSidebarWidth] = useState(240);
-  const [isResizing, setIsResizing] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [folderAnchorEl, setFolderAnchorEl] = useState(null);
-  const [currentFolder, setCurrentFolder] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogType, setDialogType] = useState('');
-  const [dialogValue, setDialogValue] = useState('');
-  const [expandedFolders, setExpandedFolders] = useState([]);
+const TaskInterface = () => {
+  const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [editData, setEditData] = useState({ title: '', description: '', status: 'PENDING' });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [rootFolder, setRootFolder] = useState(null);
+
   const email = localStorage.getItem('email');
-  const [allTasks, setAllTasks] = useState([]);
-  const [tagInput, setTagInput] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
+  const token = localStorage.getItem('authToken');
 
   useEffect(() => {
-    const loadData = async () => {
+    const initializeApp = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-         if (!token) {
-           navigate('/login');
-           return;
-         }
-  
-        // Carrega as pastas raiz
         const user = await dbService.getUserByEmail(email, token);
-        console.log('User:', user);
-        const rootFolders = await dbService.getRootFoldersByUser(user.id, token);
-        console.log('Root Folders:', rootFolders);
-  
-        let allTasks = []; // Declare allTasks to hold tasks from all folders
-  
-        for (const folder of rootFolders) {
-          try {
-            // Obtem as tarefas para o rootFolder atual
-            const tasks = await dbService.getTasksByFolder(folder.id, token);
-            console.log('Tasks for folder', folder.id, ':', tasks);
-  
-            // Adiciona as tarefas ao array de todas as tarefas
-            allTasks.push(...tasks); // Add tasks to allTasks
-          } catch (error) {
-            console.error(`Erro ao buscar tarefas para a pasta ${folder.id}:`, error);
-          }
+        if (!user) throw new Error('Usuário não encontrado');
+
+        let root = await dbService.getRootFoldersByUser(user.id, token);
+        if (!root || root.length === 0) {
+          root = await dbService.createFolder({
+            name: 'Root',
+            parentId: null,
+            ownerId: user.id
+          }, token);
         }
-  
-        const mappedFolders = rootFolders.map(folder => ({
-          ...folder,
-          type: 'folder',
-          name: folder.name || 'Unnamed', // Garanta que o nome está sendo mapeado
-          children: allTasks
-            .filter(task => task.folderId === folder.id)
-            .map(task => ({
-              ...task,
-              type: 'task',
-              content: task.description || ''
-            }))
+        console.log("root", root);
+
+        const rootFolderId = Array.isArray(root) ? root[0].id : root.id;
+        const tasksData = await dbService.getTasksByFolder(rootFolderId, token);
+        console.log("tasksData", tasksData);
+        setRootFolder(root[0]);
+
+        const safeTasks = (tasksData || []).map(task => ({
+          id: task.id,
+          title: task.title || 'Sem título',
+          description: task.description || '',
+          status: task.status || 'PENDING',
+          createdAt: task.createdAt || new Date().toISOString()
         }));
 
-        setFolders(mappedFolders); // Update the state with mapped folders
-        setExpandedFolders(mappedFolders.map(f => f.id)); // Expand the folders by default
+        setTasks(safeTasks);
+        setRootFolder(rootFolderId);
       } catch (error) {
-        console.error('Error loading data:', error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    loadData();
-  }, [navigate, email]);
+    initializeApp();
+  }, []);
 
-    // Handle file selection
-    const handleFileClick = async (file) => {
-      if (file.type === 'folder') {
-        if (expandedFolders.includes(file.id)) {
-          setExpandedFolders(expandedFolders.filter(id => id !== file.id));
-        } else {
-          try {
-            const token = localStorage.getItem('authToken');
-            const subFolders = await dbService.getSubFolders(file.id, token);
-            const subTasks = await dbService.getTasksByFolder(file.id, token);
+  const handleTaskSelect = (task) => {
+    setSelectedTask(task);
+    setEditData({
+      title: task.title || '',
+      description: task.description || '',
+      status: task.status || 'PENDING'
+    });
+  };
 
-            const updatedChildren = [
-              ...subFolders.map(f => ({ ...f, type: 'folder', children: [] })),
-              ...subTasks.map(t => ({ ...t, type: 'task', content: t.description || '' }))
-            ];
-  
-            setFolders(prev => updateFolderStructure(prev, file.id, updatedChildren));
-            setExpandedFolders([...expandedFolders, file.id]);
-          } catch (error) {
-            console.error('Error loading folder contents:', error);
-          }
-        }
-        return;
-      }
-  
-      setActiveFile(file);
-      setFileContent(file.content);
-      setSelectedItem(file);
-      
-      if (!openFiles.some(f => f.id === file.id)) {
-        setOpenFiles([...openFiles, file]);
-      }
-    };
-  
-    // Atualiza a estrutura de pastas recursivamente
-    const updateFolderStructure = (folders, folderId, newChildren) => {
-      return folders.map(folder => {
-        if (folder.id === folderId) {
-          return { ...folder, children: newChildren };
-        }
-        if (folder.children) {
-          return { ...folder, children: updateFolderStructure(folder.children, folderId, newChildren) };
-        }
-        return folder;
-      });
-    };
-  
-    // Handle content change
-    const handleContentChange = (e) => {
-      const newContent = e.target.value;
-      setFileContent(newContent);
-      
-      // Atualiza na lista de arquivos abertos
-      setOpenFiles(openFiles.map(file => 
-        file.id === activeFile.id ? { ...file, content: newContent } : file
+  const handleSave = async () => {
+    try {
+      const task = new Task({
+        folder_id: rootFolder.id,
+        title: editData.title,
+        description: editData.description,
+        due_date: null,
+        status: editData.status,
+        priority: null,
+    });
+      console.log("task", task);
+      const updatedTask = await dbService.updateTask(task.id, token, task);
+      console.log("response", updatedTask);
+
+      setTasks(tasks.map(task =>
+        task.id === updatedTask.id ? updatedTask : task
       ));
-      
-      // Atualiza a posição do cursor
-      const lines = newContent.substr(0, e.target.selectionStart).split('\n');
-      setCursorPosition({
-        line: lines.length,
-        column: lines[lines.length - 1].length + 1
-      });
-    };
-
-      // Handle create new item
-      const handleDialogSubmit = async () => {
-        try {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
-            if (dialogType === 'newFolder') {
-              const user = await dbService.getUserByEmail(email, token);
-              console.log('User:', user);
-              const folderData = {
-                name: dialogValue,
-                parentId: currentFolder?.id || null, // Access currentFolder.id here
-                user: user
-              };
-              const newFolder = await dbService.createFolder(folderData, token);
-              console.log('Folder created:', newFolder);
-            
-              setFolders(prev => currentFolder
-                ? updateFolderStructure(prev, currentFolder.id, [
-                    ...(currentFolder.children || []),
-                    {
-                      ...newFolder,
-                      type: 'folder',
-                      name: newFolder.name,
-                      children: []
-                    }
-                  ])
-                : [...prev, {
-                    ...newFolder,
-                    type: 'folder',
-                    name: newFolder.name,
-                    children: []
-                  }]
-              );
-            } else if (dialogType === 'newTask') {
-                const folder = await dbService.getFolderById(currentFolder.id, token);
-                const taskData = {
-                  folder: folder,
-                  title: dialogValue,
-                  content: fileContent,
-                  dueDate: Date.now(),
-                  status: 'REGISTERED',
-                  priority: 'LOW'
-              };
-                const newTask = await dbService.createTask(taskData, token);
-                console.log('Task created:', newTask); // Log da resposta
-                setFolders(prev => currentFolder
-                    ? updateFolderStructure(prev, currentFolder.id, [
-                        ...(currentFolder.children || []),
-                        { ...newTask, type: 'task', content: '' }
-                    ])
-                    : [...prev, { ...newTask, type: 'task', content: '' }]
-                );
-            } else if (dialogType === 'rename') {
-                if (currentFolder.type === 'folder') {
-                    await dbService.updateFolder(currentFolder.id, { name: dialogValue }, token);
-                } else if (currentFolder.type === 'task') {
-                    await dbService.updateTask(currentFolder.id, { name: dialogValue }, token);
-                }
-
-                setFolders(prev => updateFolderStructure(prev, currentFolder.id, { ...currentFolder, name: dialogValue }));
-            }
-
-            setOpenDialog(false);
-        } catch (error) {
-            console.error('Erro ao criar/atualizar item:', error.message);
-        }
-    };
-
-    // Handle delete item
-    const handleDelete = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          navigate('/login');
-          return;
-        }
-  
-        if (currentFolder.type === 'folder') {
-          await dbService.deleteFolder(currentFolder.id, token);
-        } else if (currentFolder.type === 'task') {
-          await dbService.deleteTask(currentFolder.id, token);
-        }
-  
-        // Remove da estrutura de pastas
-        const removeFromFolders = (items) => {
-          return items.filter(item => item.id !== currentFolder.id).map(item => {
-            if (item.children) {
-              return { ...item, children: removeFromFolders(item.children) };
-            }
-            return item;
-          });
-        };
-        
-        setFolders(removeFromFolders(folders));
-        
-        // Remove dos arquivos abertos
-        setOpenFiles(openFiles.filter(file => file.id !== currentFolder.id));
-        
-        // Fecha se for o arquivo ativo
-        if (activeFile?.id === currentFolder.id) {
-          setActiveFile(openFiles.find(file => file.id !== currentFolder.id) || null);
-        }
-        
-        handleMenuClose();
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      }
-    };
-
-  // Handle tab change
-  const handleTabChange = (event, newValue) => {
-    const file = openFiles[newValue];
-    setActiveFile(file);
-    setFileContent(file.content);
-    setSelectedItem(file);
-  };
-
-  // Handle sidebar resize
-  const startResizing = (e) => {
-    setIsResizing(true);
-  };
-
-  const stopResizing = () => {
-    setIsResizing(false);
-  };
-
-  const resize = (e) => {
-    if (isResizing) {
-      const newWidth = e.clientX;
-      if (newWidth > 150 && newWidth < 400) {
-        setSidebarWidth(newWidth);
-      }
+      setSelectedTask(updatedTask);
+      setError('');
+    } catch (error) {
+      setError('Erro ao salvar tarefa');
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('mousemove', resize);
-    window.addEventListener('mouseup', stopResizing);
-    return () => {
-      window.removeEventListener('mousemove', resize);
-      window.removeEventListener('mouseup', stopResizing);
-    };
-  }, [isResizing]);
+  const handleCreate = async () => {
+    try {
+      const task = new Task({
+        folder: rootFolder,
+        title: 'Nova tarefa',
+        content: 'New',
+        due_date: new Date().toISOString().split('T')[0],
+        status: 'REGISTERED',
+        priority: "LOW",
+      })
+      console.log("task", task);
+      const newTask = await dbService.createTask(task, token);
 
-  useEffect(() => {
-    if (activeFile) {
-      const current = openFiles.find(f => f.id === activeFile.id);
-      if (!current) {
-        setSelectedItem(null);
-      } else {
-        setSelectedItem(current);
-      }
-    }
-  }, [openFiles, activeFile]);
-
-  // Context menu handlers
-  const handleContextMenu = (e, folder) => {
-    e.preventDefault();
-    setFolderAnchorEl(e.currentTarget);
-    setCurrentFolder(folder);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setFolderAnchorEl(null);
-  };
-
-  // Dialog handlers
-  const handleDialogOpen = (type) => {
-    setDialogType(type);
-    setDialogValue('');
-    setOpenDialog(true);
-    handleMenuClose();
-  };
-
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
-
-  const handleAddTag = () => {
-    if (tagInput.trim() && selectedItem && selectedItem.type === 'task') {
-      const updateTags = (items) => items.map(item => {
-        if (item.id === selectedItem.id) {
-          return { ...item, tags: [...new Set([...item.tags, tagInput.trim()])] };
-        }
-        if (item.children) {
-          return { ...item, children: updateTags(item.children) };
-        }
-        return item;
-      });
-      setFolders(updateTags(folders));
-      setTagInput('');
+      setTasks(newTask);
+      handleTaskSelect(safeNewTask);
+    } catch (error) {
+      setError('Erro ao criar nova tarefa');
     }
   };
 
-  const handleRemoveTag = (tagToRemove) => {
-    if (selectedItem && selectedItem.type === 'task') {
-      const updateTags = (items) => items.map(item => {
-        if (item.id === selectedItem.id) {
-          return { ...item, tags: item.tags.filter(tag => tag !== tagToRemove) };
-        }
-        if (item.children) {
-          return { ...item, children: updateTags(item.children) };
-        }
-        return item;
-      });
-      setFolders(updateTags(folders));
+  const handleDelete = async () => {
+    if (!selectedTask) return;
+
+    try {
+      await dbService.deleteTask(selectedTask.id, token);
+      setTasks(tasks.filter(task => task.id !== selectedTask.id));
+      setSelectedTask(null);
+    } catch (error) {
+      setError('Erro ao deletar tarefa');
     }
   };
 
-  // Render folder tree recursively
-  const renderFolder = (folder) => {
-    const isExpanded = expandedFolders.includes(folder.id);
-    const icon = {
-      'folder': <FolderIcon fontSize="small" />,
-      'task': <NewTaskIcon fontSize="small" />
-    }[folder.type] || <FileIcon fontSize="small" />;
-  
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'PENDING': return 'warning';
+      case 'IN_PROGRESS': return 'info';
+      case 'COMPLETED': return 'success';
+      default: return 'default';
+    }
+  };
+
+  if (loading) {
     return (
-      <React.Fragment key={folder.id}>
-        <ListItem
-          disablePadding 
-          onContextMenu={(e) => handleContextMenu(e, folder)}
-        >
-          <ListItemButton
-            onClick={() => handleFileClick(folder)}
-            sx={{ pl: folder.type === 'folder' ? 2 : 4 }}
-          >
-            {folder.type === 'folder' && (
-              <ListItemIcon sx={{ minWidth: 24 }}>
-                {isExpanded ? <ExpandMoreIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />}
-              </ListItemIcon>
-            )}
-            <ListItemIcon sx={{ minWidth: 30 }}>
-              {icon}
-            </ListItemIcon>
-            <ListItemText 
-              primary={folder.name || 'Unnamed Folder'} // Fallback para nome vazio
-              primaryTypographyProps={{
-                noWrap: true,
-                title: folder.name // Tooltip com nome completo
-              }}
-            />
-          </ListItemButton>
-        </ListItem>
-        
-        {folder.type === 'folder' && isExpanded && folder.children && (
-          <List component="div" disablePadding sx={{ pl: 2 }}>
-            {folder.children.map(child => renderFolder(child))}
-          </List>
-        )}
-      </React.Fragment>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
     );
-  };
+  }
 
-  const saveFolder = () => {
-    activeFile
+  if (error) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
   }
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
-      <CssBaseline />
-      
-      <Paper 
-        elevation={2} 
-        sx={{ 
-          width: sidebarWidth, 
-          flexShrink: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%'
-        }}
-      >
-        <Box 
-          sx={{ 
-            p: 2,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Typography variant="subtitle1">EXPLORER</Typography>
-          <Box>
-            <IconButton 
-              size="small" 
-              onClick={() => navigate('/settings')}
-              sx={{ mr: 1 }}
-            >
-              <SettingsIcon fontSize="small" />
-            </IconButton>
-            <IconButton 
-              size="small" 
-              onClick={(e) => {
-                setCurrentFolder(null);
-                setAnchorEl(e.currentTarget);
-              }}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        </Box>
-        
-        <Divider />
-        
-        <Box 
-          sx={{ 
-            flexGrow: 1,
-            overflow: 'auto',
-            '&::-webkit-scrollbar': { width: '6px' },
-            '&::-webkit-scrollbar-thumb': { backgroundColor: '#888', borderRadius: '3px' }
-          }}
-        >
-          <List>
-            {folders.map(folder => renderFolder(folder))}
+    <Grid container sx={{ height: '100vh' }}>
+      {/* Lista de Tarefas */}
+      <Grid item xs={12} md={4} sx={{ borderRight: '1px solid #ddd', height: '100%' }}>
+        <Box sx={{ p: 2 }}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h6">Lista de Tarefas</Typography>
+            <Button variant="contained" onClick={handleCreate}>Nova</Button>
+          </Stack>
+
+          <List dense>
+            {tasks.map(task => (
+              <Paper key={task.id} sx={{ mb: 1 }}>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    selected={selectedTask?.id === task.id}
+                    onClick={() => handleTaskSelect(task)}
+                  >
+                    <ListItemText
+                      primary={task.title || 'Sem título'}
+                      secondary={
+                        task.description
+                          ? task.description.substring(0, 30) + '...'
+                          : 'Sem descrição'
+                      }
+                    />
+                    <Chip
+                      label={task.status}
+                      color={getStatusColor(task.status)}
+                      size="small"
+                      sx={{ ml: 2 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Paper>
+            ))}
           </List>
         </Box>
-        
-        <Box sx={{ p: 2 }}>
-          <TextField 
-            label="Add Tag" 
-            value={tagInput} 
-            onChange={(e) => setTagInput(e.target.value)}
-            fullWidth
-            size="small"
-          />
-          <Button 
-            onClick={handleAddTag}
-            variant="contained"
-            size="small"
-            fullWidth
-            sx={{ mt: 1 }}
-            startIcon={<TagIcon />}
-          >
-            Add Tag
-          </Button>
-          {selectedItem?.type === 'task' && (
-            <Box sx={{ mt: 2 }}>
-              {selectedItem.tags?.map((tag) => (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  onDelete={() => handleRemoveTag(tag)}
-                  sx={{ m: 0.5 }}
-                  size="small"
-                />
-              ))}
-            </Box>
-          )}
-        </Box>
+      </Grid>
 
-        <Box 
-          sx={{
-            width: '4px',
-            cursor: 'col-resize',
-            '&:hover': { backgroundColor: 'primary.main' }
-          }}
-          onMouseDown={startResizing}
-        />
-      </Paper>
-      
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={() => handleDialogOpen('newFolder')}>
-          <ListItemIcon>
-            <NewFolderIcon fontSize="small" />
-          </ListItemIcon>
-          New Folder
-        </MenuItem>
-        <MenuItem onClick={() => handleDialogOpen('newTask')}>
-          <ListItemIcon>
-            <NewTaskIcon fontSize="small" />
-          </ListItemIcon>
-          New Task
-        </MenuItem>
-      </Menu>
-      
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <AppBar position="static" color="default" elevation={0}>
-          <Tabs
-            value={openFiles.findIndex(file => file.id === activeFile?.id)}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            {openFiles.map((file, index) => (
-              <Tab 
-                key={file.id}
-                label={file.name}
-                icon={
-                  <IconButton 
-                    size="small" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const newOpenFiles = openFiles.filter((_, i) => i !== index);
-                      setOpenFiles(newOpenFiles);
-                      if (file.id === activeFile?.id) {
-                        const newActiveFile = newOpenFiles[index + 1] || newOpenFiles[index - 1] || null;
-                        setActiveFile(newActiveFile);
-                        setSelectedItem(newActiveFile);
-                      }
-                    }}
+      {/* Editor de Tarefa */}
+      <Grid item xs={12} md={8}>
+        <Box sx={{ p: 3 }}>
+          {selectedTask ? (
+            <>
+              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+                <Typography variant="h5">Editar Tarefa</Typography>
+                <Stack direction="row" spacing={1}>
+                  <Button variant="outlined" color="error" onClick={handleDelete}>
+                    Deletar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={handleSave}
+                    disabled={!editData.title.trim()}
                   >
-                    <CloseIcon fontSize="small" />
-                  </IconButton>
-                }
-                iconPosition="end"
+                    Salvar
+                  </Button>
+                </Stack>
+              </Stack>
+
+              <TextField
+                label="Título"
+                fullWidth
+                value={editData.title}
+                onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                sx={{ mb: 3 }}
               />
-            ))}
-          </Tabs>
-        </AppBar>
-        
-        <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-          {activeFile ? (
-            <TextField
-              multiline
-              fullWidth
-              value={fileContent}
-              onChange={handleContentChange}
-              sx={{ 
-                height: '100%',
-                '& .MuiInputBase-root': {
-                  height: '100%',
-                  alignItems: 'flex-start',
-                  p: 2
-                },
-                '& .MuiInputBase-input': {
-                  height: '100% !important',
-                  overflow: 'auto !important',
-                  fontFamily: 'monospace',
-                  fontSize: '14px',
-                  lineHeight: '1.5'
-                }
-              }}
-            />
+
+              <TextField
+                label="Descrição"
+                fullWidth
+                multiline
+                rows={4}
+                value={editData.description}
+                onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                sx={{ mb: 3 }}
+              />
+
+              <Select
+                value={editData.status}
+                onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+                fullWidth
+                sx={{ mb: 3 }}
+              >
+                <MenuItem value="PENDING">Pendente</MenuItem>
+                <MenuItem value="IN_PROGRESS">Em Progresso</MenuItem>
+                <MenuItem value="COMPLETED">Concluída</MenuItem>
+              </Select>
+
+              <Divider sx={{ my: 3 }} />
+
+              <Typography variant="body2" color="text.secondary">
+                Criado em: {selectedTask.createdAt
+                  ? new Date(selectedTask.createdAt).toLocaleDateString()
+                  : 'Data desconhecida'}
+              </Typography>
+            </>
           ) : (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
+            <Box sx={{
+              display: 'flex',
               height: '100%',
-              color: 'text.secondary'
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
-              <Typography>Select a file to edit</Typography>
+              <Typography variant="h6" color="text.secondary">
+                Selecione uma tarefa para editar
+              </Typography>
             </Box>
           )}
         </Box>
-        
-        <Box 
-          sx={{ 
-            p: 1,
-            display: 'flex',
-            justifyContent: 'space-between',
-            backgroundColor: 'background.default',
-            borderTop: '1px solid',
-            borderColor: 'divider'
-          }}
-        >
-          <Typography variant="caption">
-            {activeFile ? `${activeFile.name}` : 'No file selected'}
-          </Typography>
-          <Typography variant="caption">
-            LN {cursorPosition.line}, COL {cursorPosition.column}
-          </Typography>
-        </Box>
-      </Box>
-      
-      <Menu
-        anchorEl={folderAnchorEl}
-        open={Boolean(folderAnchorEl)}
-        onClose={handleMenuClose}
-      >
-        {currentFolder?.type === 'folder' && [
-          <MenuItem key="newFile" onClick={() => handleDialogOpen('newFile')}>
-            <ListItemIcon>
-              <FileIcon fontSize="small" />
-            </ListItemIcon>
-            New File
-          </MenuItem>,
-          <MenuItem key="newFolder" onClick={() => handleDialogOpen('newFolder')}>
-            <ListItemIcon>
-              <NewFolderIcon fontSize="small" />
-            </ListItemIcon>
-            New Folder
-          </MenuItem>,
-          <MenuItem key="newTask" onClick={() => handleDialogOpen('newTask')}>
-            <ListItemIcon>
-              <NewTaskIcon fontSize="small" />
-            </ListItemIcon>
-            New Task
-          </MenuItem>,
-          <Divider key="divider1" />
-        ]}
-        <MenuItem onClick={() => handleDialogOpen('rename')}>
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          Rename
-        </MenuItem>
-        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-          <ListItemIcon sx={{ color: 'error.main' }}>
-            <DeleteIcon fontSize="small" />
-          </ListItemIcon>
-          Delete
-        </MenuItem>
-      </Menu>
-      
-      <Dialog open={openDialog} onClose={handleDialogClose}>
-        <DialogTitle>
-          {dialogType === 'newFolder' && 'New Folder'}
-          {dialogType === 'newFile' && 'New File'}
-          {dialogType === 'newTask' && 'New Task'}
-          {dialogType === 'rename' && 'Rename'}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Name"
-            fullWidth
-            value={dialogValue}
-            onChange={(e) => setDialogValue(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleDialogSubmit} disabled={!dialogValue.trim()}>
-            {dialogType === 'rename' ? 'Rename' : 'Create'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
-export default Editor;
+export default TaskInterface;

@@ -1,9 +1,9 @@
 class Task {
     constructor({
       id = undefined,
-      folder_id,
+      folder_id: folder,
       title,
-      description,
+      content,
       due_date,
       status,
       priority,
@@ -11,9 +11,9 @@ class Task {
       updated_at = created_at,
     }) {
       this.id = id;
-      this.folder_id = folder_id;
+      this.folder = folder;
       this.title = title;
-      this.description = description;
+      this.content = content;
       this.due_date = due_date;
       this.status = status;
       this.priority = priority;
