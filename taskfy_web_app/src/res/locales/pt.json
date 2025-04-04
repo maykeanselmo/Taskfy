@@ -47,6 +47,8 @@
   "dark_mode": "Modo Escuro",
   "light_mode": "Modo Claro",
 
+  "user_not_found": "Usuário não encontrado",
+
     "about_title": "Taskfy: Gerenciador de tarefas moderno e personalizável",
     "about_p1": "O Taskfy é um gerenciador de tarefas intuitivo e eficiente que visa melhorar a organização pessoal e profissional. Desenvolvido para ajudar você a manter o controle sobre suas atividades diárias, o Taskfy permite a criação, organização e priorização de tarefas de maneira prática e eficaz.",
     "about_p2": "Nossa plataforma oferece um ambiente simples de usar, mas com recursos avançados que facilitam o gerenciamento de tarefas, como a possibilidade de configurar prazos, categorias e prioridades para suas atividades. Além disso, o Taskfy oferece integração com outros serviços de produtividade, como calendários e armazenamento em nuvem, proporcionando uma experiência completa e otimizada para o usuário.",

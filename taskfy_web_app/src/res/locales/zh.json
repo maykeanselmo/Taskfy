@@ -46,6 +46,8 @@
 
   "dark_mode": "深色模式",
   "light_mode": "浅色模式",
+
+  "user_not_found": "未找到用户",
   
     "about_title": "Taskfy：现代且可定制的任务管理工具",
     "about_p1": "Taskfy是一款直观高效的任务管理工具，旨在改善个人和职业组织。帮助您轻松跟踪日常活动，Taskfy能够以实用且有效的方式创建、组织和优先处理任务。",
