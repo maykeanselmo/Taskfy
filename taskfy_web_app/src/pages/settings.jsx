@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { settingsState, languageState } from '../model/state';
-import { Box, Typography, ToggleButton, ToggleButtonGroup, Button, Grid, Paper, useTheme } from '@mui/material';
+import { Box, Typography, Fade, ToggleButton, ToggleButtonGroup, Button, Grid, Paper, useTheme } from '@mui/material';
 import { t, setLanguage } from '../utils/translations';
 
 const Settings = () => {
@@ -44,65 +44,67 @@ const Settings = () => {
   };
 
   return (
-    <Box p={3} maxWidth="800px" margin="auto">
-      <Typography variant="h4" gutterBottom>{t("settings_title")}</Typography>
+    <Fade in timeout={800}>
+      <Box p={3} maxWidth="800px" margin="auto">
+        <Typography variant="h4" gutterBottom>{t("settings_title")}</Typography>
 
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" gutterBottom>{t("change_language")}</Typography>
-        <ToggleButtonGroup
-          value={language}
-          exclusive
-          onChange={(e, val) => val && handleLanguageChange(val)}
-          aria-label="language"
-          sx={{ flexWrap: 'wrap', gap: 1 }}
-        >
-          {languages.map((lang) => (
-            <ToggleButton key={lang} value={lang} sx={toggleButtonStyles}>
-              {lang.toUpperCase()}
+        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+          <Typography variant="h6" gutterBottom>{t("change_language")}</Typography>
+          <ToggleButtonGroup
+            value={language}
+            exclusive
+            onChange={(e, val) => val && handleLanguageChange(val)}
+            aria-label="language"
+            sx={{ flexWrap: 'wrap', gap: 1 }}
+          >
+            {languages.map((lang) => (
+              <ToggleButton key={lang} value={lang} sx={toggleButtonStyles}>
+                {lang.toUpperCase()}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Paper>
+
+        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+          <Typography variant="h6" gutterBottom>{t("theme_mode")}</Typography>
+          <ToggleButtonGroup
+            value={settings.darkMode}
+            exclusive
+            onChange={handleDarkModeChange}
+            aria-label="theme-mode"
+            sx={{ gap: 1 }}
+          >
+            <ToggleButton value="true" sx={toggleButtonStyles}>
+              {t("dark_mode")}
             </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </Paper>
+            <ToggleButton value="false" sx={toggleButtonStyles}>
+              {t("light_mode")}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Paper>
 
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" gutterBottom>{t("theme_mode")}</Typography>
-        <ToggleButtonGroup
-          value={settings.darkMode}
-          exclusive
-          onChange={handleDarkModeChange}
-          aria-label="theme-mode"
-          sx={{ gap: 1 }}
-        >
-          <ToggleButton value="true" sx={toggleButtonStyles}>
-            {t("dark_mode")}
-          </ToggleButton>
-          <ToggleButton value="false" sx={toggleButtonStyles}>
-            {t("light_mode")}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Paper>
-
-      <Paper elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h6" gutterBottom>{t("select_color")}</Typography>
-        <Grid container spacing={2}>
-          {colors.map((color) => (
-            <Grid item key={color}>
-              <Box
-                onClick={() => handleColorChange(color)}
-                sx={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  backgroundColor: color,
-                  border: color === settings.colorScheme ? '3px solid black' : '2px solid white',
-                  cursor: 'pointer'
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-    </Box>
+        <Paper elevation={3} sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>{t("select_color")}</Typography>
+          <Grid container spacing={2}>
+            {colors.map((color) => (
+              <Grid item key={color}>
+                <Box
+                  onClick={() => handleColorChange(color)}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    backgroundColor: color,
+                    border: color === settings.colorScheme ? '3px solid black' : '2px solid white',
+                    cursor: 'pointer'
+                  }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
+      </Box>
+    </Fade>
   );
 };
 
