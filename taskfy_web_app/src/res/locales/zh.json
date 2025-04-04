@@ -78,6 +78,7 @@
     "select_task_to_edit": "选择一个任务进行编辑",
     "due_date": "截止日期",
     "no_description": "无描述",
-    "new_task": "新任务"
+    "new_task": "新任务",
+    "new_description": "新描述"
   
 }

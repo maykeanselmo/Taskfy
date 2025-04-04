@@ -78,7 +78,8 @@
     "select_task_to_edit": "Sélectionnez une tâche à modifier",
     "due_date": "Date d'Échéance",
     "no_description": "Aucune description",
-    "new_task": "Nouvelle Tâche"
+    "new_task": "Nouvelle Tâche",
+    "new_description": "Nouvelle Description"
   
 }
 

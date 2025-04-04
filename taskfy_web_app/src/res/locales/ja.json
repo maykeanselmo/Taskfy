@@ -78,7 +78,8 @@
     "select_task_to_edit": "編集するタスクを選択",
     "due_date": "期限日",
     "no_description": "説明なし",
-    "new_task": "新しいタスク"
+    "new_task": "新しいタスク",
+    "new_description": "新しい説明"
   
 }
 

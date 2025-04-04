@@ -78,6 +78,7 @@
     "select_task_to_edit": "Seleccione una tarea para editar",
     "due_date": "Fecha de Vencimiento",
     "no_description": "Sin descripción",
-    "new_task": "Nueva Tarea"
+    "new_task": "Nueva Tarea",
+    "new_description": "Nueva descripción"
   
 }

@@ -78,7 +78,8 @@
     "select_task_to_edit": "Select a task to edit",
     "due_date": "Due Date",
     "no_description": "No description",
-    "new_task": "New Task"
+    "new_task": "New Task",
+    "new_description": "New Description"
   }
 
     

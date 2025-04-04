@@ -78,7 +78,8 @@
     "select_task_to_edit": "편집할 작업을 선택하세요",
     "due_date": "마감일",
     "no_description": "설명 없음",
-    "new_task": "새 작업"
+    "new_task": "새 작업",
+    "new_description": "새 성명"
   
 }
 

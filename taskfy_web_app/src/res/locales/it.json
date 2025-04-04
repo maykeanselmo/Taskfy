@@ -78,7 +78,8 @@
     "select_task_to_edit": "Seleziona un'attività da modificare",
     "due_date": "Data di Scadenza",
     "no_description": "Nessuna descrizione",
-    "new_task": "Nuova Attività"
+    "new_task": "Nuova Attività",
+    "new_description": "Nuova Descrizione"
   
 }
 

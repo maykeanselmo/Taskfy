@@ -76,7 +76,9 @@
     "registered": "Registrada",
     "created_at": "Criado em",
     "select_task_to_edit": "Selecione uma tarefa para editar",
-    "due_date": "Data de Vencimento"
+    "due_date": "Data de Vencimento",
+    "new_description": "Nova descrição",
+    "new_task": "Nova tarefa",
+    "no_description": "Sem descrição"
     
-  
 }

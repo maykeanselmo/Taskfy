@@ -77,7 +77,10 @@
     "registered": "Registriert",
     "created_at": "Erstellt am",
     "select_task_to_edit": "Wählen Sie eine Aufgabe zum Bearbeiten aus",
-    "due_date": "Fälligkeitsdatum"
+    "due_date": "Fälligkeitsdatum",
+    "no_description": "Keine Beschreibung",
+    "new_task": "Neue Aufgabe",
+    "new_description": "Neue Beschreibung"
   
 }
 
