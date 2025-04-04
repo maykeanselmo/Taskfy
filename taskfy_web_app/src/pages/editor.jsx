@@ -203,37 +203,41 @@ const Editor = () => {
               console.log('User:', user);
               const folderData = {
                 name: dialogValue,
-                parentId: currentFolder?.id || null,
+                parentId: currentFolder?.id || null, // Access currentFolder.id here
                 user: user
-              }
+              };
               const newFolder = await dbService.createFolder(folderData, token);
-              console.log('Folder created:', newFolder); // Log da resposta
-
+              console.log('Folder created:', newFolder);
+            
               setFolders(prev => currentFolder
                 ? updateFolderStructure(prev, currentFolder.id, [
                     ...(currentFolder.children || []),
                     {
                       ...newFolder,
                       type: 'folder',
-                      name: newFolder.name, // Garanta que o nome está incluído
+                      name: newFolder.name,
                       children: []
                     }
                   ])
                 : [...prev, {
                     ...newFolder,
                     type: 'folder',
-                    name: newFolder.name, // Garanta que o nome está incluído
+                    name: newFolder.name,
                     children: []
                   }]
               );
             } else if (dialogType === 'newTask') {
+                const folder = await dbService.getFolderById(currentFolder.id, token);
                 const taskData = {
-                    name: dialogValue,
-                    description: '',
-                    folderId: currentFolder?.id || null,
-                    status: 'PENDING'
-                };
+                  folder: folder,
+                  title: dialogValue,
+                  content: fileContent,
+                  dueDate: Date.now(),
+                  status: 'REGISTERED',
+                  priority: 'LOW'
+              };
                 const newTask = await dbService.createTask(taskData, token);
+                console.log('Task created:', newTask); // Log da resposta
                 setFolders(prev => currentFolder
                     ? updateFolderStructure(prev, currentFolder.id, [
                         ...(currentFolder.children || []),
@@ -247,7 +251,7 @@ const Editor = () => {
                 } else if (currentFolder.type === 'task') {
                     await dbService.updateTask(currentFolder.id, { name: dialogValue }, token);
                 }
-    
+
                 setFolders(prev => updateFolderStructure(prev, currentFolder.id, { ...currentFolder, name: dialogValue }));
             }
 
@@ -559,12 +563,6 @@ const Editor = () => {
             <NewFolderIcon fontSize="small" />
           </ListItemIcon>
           New Folder
-        </MenuItem>
-        <MenuItem onClick={() => handleDialogOpen('newFile')}>
-          <ListItemIcon>
-            <FileIcon fontSize="small" />
-          </ListItemIcon>
-          New File
         </MenuItem>
         <MenuItem onClick={() => handleDialogOpen('newTask')}>
           <ListItemIcon>

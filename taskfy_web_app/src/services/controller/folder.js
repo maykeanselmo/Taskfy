@@ -33,7 +33,7 @@ export const createFolder = async (folderData, token) => {
 
 export const getFolderById = async (id, token) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const response = await fetch(`${API_BASE_URL}${VER}/folders/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
